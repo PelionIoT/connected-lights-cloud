@@ -1,0 +1,32 @@
+#header { margin-top: 20px; }
+#logo { width: 167px; }
+body {
+  font-family: 'Open Sans', Arial, sans-serif;
+  margin: 0;
+  padding: 0 20px;
+  font-weight: 300;
+  color: rgb(80, 79, 77);
+  font-size: 16px;
+}
+h1 {
+  background-color: #159ab5;
+  background-image: url('/blueband_BG.png');
+  background-position-x: right;
+  background-size: 140%;
+  color: white;
+  font-weight: 400;
+  font-size: 48px;
+  margin: 20px -20px;
+  padding: 30px 20px;
+}
+a {
+  color: rgb(232, 146, 45);
+  text-decoration: none;
+}
+a:hover { color: #008CBA; }
+p, li {
+  line-height: 23px;
+}
+h2 {
+  font-weight: 300;
+}

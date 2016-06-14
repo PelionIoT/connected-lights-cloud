@@ -1,0 +1,20 @@
+{
+  "name": "mbed-cloud-lighting-webapp",
+  "version": "1.0.0",
+  "description": "Talking to lighting system over mbed Cloud from node.js",
+  "main": "main.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Jan Jongboom <jan.jongboom@arm.com>",
+  "license": "Apache-2.0",
+  "dependencies": {
+    "body-parser": "^1.15.1",
+    "es6-promisify": "^4.1.0",
+    "express": "^4.13.4",
+    "hbs": "^4.0.0",
+    "mbed-connector-api": "^2.0.0",
+    "promise-series": "^1.0.0",
+    "socket.io": "^1.4.6"
+  }
+}

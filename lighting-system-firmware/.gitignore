@@ -1,0 +1,5 @@
+mbed-os/
+simple-mbed-client/
+.build/
+*.pyc
+mbed_settings.py

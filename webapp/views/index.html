@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Light System</title>
+  <link rel="stylesheet" href="/style.css">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  <style>
+    #lights { padding: 0; }
+    #lights li {
+      display: flex;
+      flex-direction: row;
+      margin: 0;
+    }
+    .color {
+      min-width: 25vw;
+      height: 25vw;
+      margin-right: 5vw;
+    }
+    .right-col {
+      max-width: calc(100% - 30vw);
+    }
+    .endpoint {
+      margin: 0;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      font-weight: 400;
+      font-size: 20px;
+    }
+    .timeout {
+      margin: 10px 0;
+    }
+    .status {
+      display: flex;
+      flex-direction: row;
+      border: solid 1px gray;
+      border-radius: 4px;
+    }
+    .status div {
+      padding: 6px;
+      flex-grow: 1;
+      width: 33%;
+      text-align: center;
+      border-right: solid 1px gray;
+    }
+    .status div.selected {
+      background: lightgray;
+    }
+    .status div:last-child {
+      border-right: none;
+    }
+  </style>
+</head>
+
+<body>
+  <div id="header">
+    <a href="/"><img id="logo" src="/ARMmbedLogo.svg"></a>
+  </div>
+
+  <h1>Lights</h1>
+
+  <ul id="lights">
+  {{#devices}}
+    <li data-endpoint="{{name}}">
+      <div class="color" style="background-color: rgb({{color}})">{{count}}</div>
+      <div class="right-col">
+        <p class="endpoint">{{name}}</p>
+        <p class="timeout">Motion timeout: <a href="#" class="change-timeout">{{timeout}} seconds</a></p>
+        <div class="status">
+          <div class="change-status {{motionClass}}" data-action="0">Motion</div>
+          <div class="change-status {{onClass}}" data-action="1">On</div>
+          <div class="change-status {{offClass}}" data-action="2">Off</div>
+        </div>
+      </div>
+    {{/devices}}
+    </li>
+  </ul>
+
+  <script src="/socket.io/socket.io.js"></script>
+  <script>
+    /*global io location */
+    var socket = io.connect(location.origin);
+
+    document.querySelector('#lights').addEventListener('click', function(e) {
+
+      var parent = e.target;
+      while (e.target.parentElement && !((parent = parent.parentElement).dataset.endpoint)) {
+        // noop
+      }
+      if (!parent.dataset.endpoint) return console.error('Could not find parent for', e.target);
+
+      console.log('endpoint is', parent.dataset.endpoint);
+
+      if (e.target.classList.contains('change-timeout')) {
+        var v = prompt('Enter a new value for the motion timeout');
+        if (!v || isNaN(v)) {
+          return alert('Not a number...');
+        }
+        else {
+          e.target.textContent = v + ' seconds';
+        }
+        socket.emit('change-timeout', parent.dataset.endpoint, Number(v));
+        return false;
+      }
+
+      if (e.target.classList.contains('change-status')) {
+        // clear the others
+        [].forEach.call(e.target.parentElement.querySelectorAll('.change-status'), function(el) {
+          el.classList.remove('selected');
+        });
+        e.target.classList.add('selected');
+
+        socket.emit('change-status', parent.dataset.endpoint, Number(e.target.dataset.action));
+        return;
+      }
+
+      console.log(e.target);
+    });
+  </script>
+
+</body>
+</html>
