@@ -30,3 +30,67 @@ p, li {
 h2 {
   font-weight: 300;
 }
+#lights { padding: 0; margin-top: -20px; }
+#lights li {
+  display: flex;
+  flex-direction: row;
+  margin: 0;
+  padding: 20px 0;
+  border-bottom: solid 1px lightgray;
+}
+.color {
+  min-width: 25vw;
+  height: 25vw;
+  margin-right: 5vw;
+}
+.right-col {
+  width: 100%;
+  max-width: calc(100% - 30vw);
+}
+.endpoint {
+  margin: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font-weight: 400;
+  font-size: 20px;
+  padding-bottom: 2px;
+}
+.timeout {
+  margin: 8px 0;
+}
+.status {
+  display: flex;
+  flex-direction: row;
+  border: solid 1px gray;
+  border-radius: 4px;
+}
+.status div {
+  padding: 6px;
+  flex-grow: 1;
+  width: 33%;
+  text-align: center;
+  border-right: solid 1px gray;
+}
+.status div.selected {
+  background: lightgray;
+}
+.status div:last-child {
+  border-right: none;
+}
+#color-picker-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+  background: rgba(0, 0, 0, 0.7);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+}
+#color-picker-overlay h2 {
+  color: white;
+}
+

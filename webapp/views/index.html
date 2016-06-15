@@ -4,54 +4,8 @@
   <meta charset="utf-8">
   <title>Light System</title>
   <link rel="stylesheet" href="/style.css">
+  <link rel="import" href="/color-picker-element/dist/color-picker.html">
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-
-  <style>
-    #lights { padding: 0; }
-    #lights li {
-      display: flex;
-      flex-direction: row;
-      margin: 0;
-    }
-    .color {
-      min-width: 25vw;
-      height: 25vw;
-      margin-right: 5vw;
-    }
-    .right-col {
-      max-width: calc(100% - 30vw);
-    }
-    .endpoint {
-      margin: 0;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      font-weight: 400;
-      font-size: 20px;
-    }
-    .timeout {
-      margin: 10px 0;
-    }
-    .status {
-      display: flex;
-      flex-direction: row;
-      border: solid 1px gray;
-      border-radius: 4px;
-    }
-    .status div {
-      padding: 6px;
-      flex-grow: 1;
-      width: 33%;
-      text-align: center;
-      border-right: solid 1px gray;
-    }
-    .status div.selected {
-      background: lightgray;
-    }
-    .status div:last-child {
-      border-right: none;
-    }
-  </style>
 </head>
 
 <body>
@@ -66,7 +20,7 @@
     <li data-endpoint="{{name}}">
       <div class="color" style="background-color: rgb({{color}})">{{count}}</div>
       <div class="right-col">
-        <p class="endpoint">{{name}}</p>
+        <p class="endpoint change-endpoint-name">{{name}}</p>
         <p class="timeout">Motion timeout: <a href="#" class="change-timeout">{{timeout}} seconds</a></p>
         <div class="status">
           <div class="change-status {{motionClass}}" data-action="0">Motion</div>
@@ -74,14 +28,20 @@
           <div class="change-status {{offClass}}" data-action="2">Off</div>
         </div>
       </div>
-    {{/devices}}
     </li>
+  {{/devices}}
   </ul>
+
+  <div id="color-picker-overlay" style="display: none">
+    <h2>Change color</h2>
+  </div>
 
   <script src="/socket.io/socket.io.js"></script>
   <script>
-    /*global io location */
+    /*global io location localStorage */
     var socket = io.connect(location.origin);
+
+    var cpOverlay = document.querySelector('#color-picker-overlay');
 
     document.querySelector('#lights').addEventListener('click', function(e) {
 
@@ -116,8 +76,61 @@
         return;
       }
 
+      if (e.target.classList.contains('change-endpoint-name')) {
+        var n = prompt('Enter new name');
+        if (n) {
+          e.target.textContent = n;
+          localStorage.setItem(parent.dataset.endpoint + '-name', n);
+        }
+        else {
+          e.target.textContent = parent.dataset.endpoint;
+          localStorage.setItem(parent.dataset.endpoint + '-name', '');
+        }
+        return;
+      }
+
+      if (e.target.classList.contains('color')) {
+        cpOverlay.dataset.endpoint = parent.dataset.endpoint;
+        cpOverlay.style.display = 'flex';
+        return;
+      }
+
       console.log(e.target);
     });
+
+    [].forEach.call(document.querySelectorAll('#lights li'), function(li) {
+      var n = localStorage.getItem(li.dataset.endpoint + '-name');
+      if (n) {
+        li.querySelector('.change-endpoint-name').textContent = n;
+      }
+    });
+
+    // this is needed by color-picker component unfortunately (does reflow)
+    var vw = window.innerWidth * 0.8;
+    // so this thing reads its attributes when creating, not when adding to body
+    // that's a mess... dont feel like patching the library
+    cpOverlay.innerHTML +=
+      '<color-picker width="' + vw + '" height="' + vw + '"></color-picker>';
+
+    document.querySelector('color-picker').addEventListener('colorselected', function(e) {
+      var rgb = e.detail.rgb;
+      var v = (rgb.r << 16) + (rgb.g << 8) + rgb.b;
+      if (v === 0) return;
+
+      console.log('new value is', v);
+
+      if (!cpOverlay.dataset.endpoint) return console.error('No data-endpoint attribute found...');
+
+      document.querySelector('*[data-endpoint="' + cpOverlay.dataset.endpoint + '"] .color')
+        .style.backgroundColor = 'rgb(' + rgb.r + ', ' + rgb.g + ', ' + rgb.b + ')';
+
+      socket.emit('change-color', cpOverlay.dataset.endpoint, v);
+    });
+
+    cpOverlay.onclick = function(e) {
+      if (e.target !== e.currentTarget) return;
+      this.style.display = 'none';
+    };
   </script>
 
 </body>

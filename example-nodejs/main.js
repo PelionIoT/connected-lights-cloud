@@ -1,6 +1,6 @@
 var CloudApi = require('mbed-connector-api');
 var api = new CloudApi({
-  accessKey: 'YOUR_ACCESS_KEY'
+  accessKey: process.env.TOKEN
 });
 
 // Start notification channel
@@ -15,7 +15,9 @@ api.startLongPolling(function(err) {
 
     devices.forEach(function(d) {
       // For every light, we will request notifications on the PIR resource
-      api.putResourceSubscription(d.name, '/pir/0/count');
+      api.putResourceSubscription(d.name, '/pir/0/count', function(err) {
+        console.log('subscribed to resource', err);
+      });
 
       // and set the color to orange, as your's truly is Dutch
       var orange = (255 << 16) + (100 << 8) + 0;

@@ -17,7 +17,7 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 
 var api = new CloudApi({
-  accessKey: 'YOUR_ACCESS_KEY'
+  accessKey: process.env.TOKEN
 });
 
 app.get('/', function(req, res, next) {
@@ -31,25 +31,20 @@ app.get('/', function(req, res, next) {
         api.putResourceSubscription(device.name, '/pir/0/count', function(err) {
           if (err) return rej(err);
 
-          console.log(device.name, 'resourceSubscription succeeded');
-
           api.getResourceValue(device.name, '/led/0/permanent_status', function(err, status) {
             if (err) return rej(err);
             console.log(device.name, 'status is', status);
 
             api.getResourceValue(device.name, '/led/0/timeout', function(err, timeout) {
               if (err) return rej(err);
-
               console.log(device.name, 'timeout is', timeout);
 
               api.getResourceValue(device.name, '/led/0/color', function(err, color) {
                 if (err) return rej(err);
-
                 console.log(device.name, 'color is', color);
 
                 api.getResourceValue(device.name, '/pir/0/count', function(err, count) {
                   if (err) return rej(err);
-
                   console.log(device.name, 'count is', count);
 
                   res({
@@ -97,6 +92,10 @@ io.on('connection', function(socket) {
   socket.on('change-timeout', function(endpoint, newtimeout) {
     console.log('change-timeout', endpoint, newtimeout);
     api.putResourceValue(endpoint, '/led/0/timeout', newtimeout);
+  });
+  socket.on('change-color', function(endpoint, newcolor) {
+    console.log('change-color', endpoint, newcolor);
+    api.putResourceValue(endpoint, '/led/0/color', newcolor);
   });
 });
 
