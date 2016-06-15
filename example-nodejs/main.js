@@ -1,6 +1,8 @@
+var TOKEN = 'YOUR_ACCESS_TOKEN';
+
 var CloudApi = require('mbed-connector-api');
 var api = new CloudApi({
-  accessKey: process.env.TOKEN
+  accessKey: process.env.TOKEN || TOKEN
 });
 
 // Start notification channel

@@ -1,3 +1,5 @@
+var TOKEN = 'YOUR_ACCESS_TOKEN';
+
 var CloudApi = require('mbed-connector-api');
 var express = require('express');
 var bodyParser = require('body-parser');
@@ -16,8 +18,12 @@ app.engine('html', require('hbs').__express);
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 
+if (!process.env.TOKEN && TOKEN === 'YOUR_ACCESS_TOKEN') {
+  throw 'Please set your access token first!';
+}
+
 var api = new CloudApi({
-  accessKey: process.env.TOKEN
+  accessKey: process.env.TOKEN || TOKEN
 });
 
 app.get('/', function(req, res, next) {

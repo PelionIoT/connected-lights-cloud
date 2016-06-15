@@ -3,7 +3,9 @@ import time
 import base64
 import os
 
-connector = mbed_connector_api.connector(os.environ['TOKEN'])
+TOKEN = "YOUR_ACCESS_TOKEN"
+
+connector = mbed_connector_api.connector(os.environ['TOKEN'] or TOKEN)
 
 def notificationHandler(data):
     for n in data['notifications']:
