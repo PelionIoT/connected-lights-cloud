@@ -18,7 +18,7 @@
   <ul id="lights">
   {{#devices}}
     <li data-endpoint="{{name}}">
-      <div class="color" style="background-color: rgb({{color}})">{{count}}</div>
+      <div class="color" style="background-color: rgb({{color}})"></div>
       <div class="right-col">
         <p class="endpoint change-endpoint-name">{{name}}</p>
         <p class="timeout">Motion timeout: <a href="#" class="change-timeout">{{timeout}} seconds</a></p>
@@ -34,6 +34,11 @@
 
   <div id="color-picker-overlay" style="display: none">
     <h2>Change color</h2>
+  </div>
+  <div id="notification-wrapper" style="opacity: 0">
+    <div id="notification">
+      Movement detected at <span id="notification-name">Living room (3)</span>
+    </div>
   </div>
 
   <script src="/socket.io/socket.io.js"></script>
@@ -96,6 +101,21 @@
       }
 
       console.log(e.target);
+    });
+
+    var notificationTimeout;
+    socket.on('notification', function(notification) {
+      clearTimeout(notificationTimeout);
+
+      var el = document.querySelector('#notification-wrapper');
+      el.style.opacity = '1';
+      document.querySelector('#notification-name').textContent =
+        (localStorage.getItem(notification.ep + '-name') || notification.ep.substr(0, 20) + '...') +
+        ' (' + notification.payload + ')';
+
+      notificationTimeout = setTimeout(function() {
+        el.style.opacity = '0';
+      }, 5000);
     });
 
     [].forEach.call(document.querySelectorAll('#lights li'), function(li) {

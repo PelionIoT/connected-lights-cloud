@@ -118,4 +118,5 @@ api.startLongPolling(function(err) {
 // Notifications
 api.on('notification', function(notification) {
   console.log('Got a notification', notification);
+  io.sockets.emit('notification', notification);
 });
