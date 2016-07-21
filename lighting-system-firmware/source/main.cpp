@@ -1,18 +1,10 @@
 #include "mbed.h"
+#include "rtos.h"
 #include "config.h"
 #include "security.h"
-
-#if CONNECTIVITY_ESP8266 == 1
-#include "ESP8266Interface.h"
-ESP8266Interface iface(UART_TX, UART_RX, true);
-#elif CONNECTIVITY_ETHERNET == 1
-#include "LWIPInterface.h"
-LWIPInterface iface;
-#else
-#error "CONNECTIVITY_ESP8266 or CONNECTIVITY_ETHERNET should be declared"
-#endif
-
+#include "easy-connect.h"
 #include "simple-mbed-client.h"
+
 SimpleMbedClient client;
 
 // Declare our peripherals here
@@ -130,24 +122,15 @@ int main(int, char**) {
   // The PIR sensor uses interrupts, no need to poll
   pir.rise(&pir_rise);
 
-  // This is where we connect to the internet
-#if CONNECTIVITY_ESP8266 == 1
-  int connect = iface.connect(WIFI_SSID, WIFI_PASSWORD);
-#elif CONNECTIVITY_ETHERNET == 1
-  int connect = iface.connect();
-#endif
-
-  if (connect != 0) {
-    printf("Connect to internet failed... %d\n", connect);
+  NetworkInterface* network = easy_connect(true);
+  if (!network) {
+    printf("Connect to internet failed... See serial output.\n");
     return 1;
   }
 
-  // hmm.. why does Ethernet connection doesn't like this?
-  // printf("IP address %s\r\n", iface.get_ip_address());
-
   struct MbedClientOptions options = client.get_default_options();
   options.DeviceType = "light-system";
-  if (!client.setup(options, &iface)) {
+  if (!client.setup(options, network)) {
     printf("Setting up mbed_client failed...\n");
     return 1;
   }
@@ -157,7 +140,6 @@ int main(int, char**) {
   while (1) {
     int v = updates.wait(25000);
     if (v == 1) {
-      // YOUR CODE HERE (2)
       pirCount = pirCount + 1;
     }
     client.keep_alive();
