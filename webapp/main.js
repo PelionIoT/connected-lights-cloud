@@ -7,6 +7,7 @@ var server = require('http').Server(app);
 var io = require('socket.io')(server);
 var hbs = require('hbs');
 
+// Some options for express (node.js web app library)
 hbs.registerPartials(__dirname + '/views/partials');
 app.use(express.static(__dirname + '/public'));
 app.set('view engine', 'html');
@@ -17,6 +18,9 @@ if (!process.env.TOKEN && TOKEN === 'YOUR_ACCESS_TOKEN') {
   throw 'Please set your access token first in main.js!';
 }
 
+// This is how we go from device => view model
+// we'll use this to render the device view, this will also be sent to the client
+// when a device connects (so it knows what to render)
 function mapToView(d) {
   var hex = Number(d.color).toString(16);
   var model = {
@@ -30,26 +34,28 @@ function mapToView(d) {
     status: d.status
   };
 
+  // create the device HTML
   var html = hbs.handlebars.compile('{{> device}}')(model);
 
   return { model: model, html: html };
 }
 
 var options = {
-  endpointType: 'light-system',
+  endpointType: 'light-system',     // what endpoint types to look for
   token: TOKEN,
   io: io,
-  retrieve: {
+  retrieve: {                       // building the initial device model (w/ 4 properties)
     status: 'led/0/permanent_status',
     timeout: 'led/0/timeout',
     color: 'led/0/color',
     count: 'pir/0/count'
   },
-  subscribe: {
+  subscribe: {                      // list of resources to subscribe to.
+                                    // Will auto get events on socket for this (via update-X events)
     count: 'pir/0/count'
   },
-  updates: {
-    status: {
+  updates: {                        // list of updateable resources (with their action and path)
+    status: {                       // will automatically also be accessible over socket (via change-X call)
       method: 'put',
       path: 'led/0/permanent_status'
     },
@@ -63,19 +69,23 @@ var options = {
     }
   },
   mapToView: mapToView,
-  verbose: true
+  verbose: true                         // Verbose logging
 };
 
+// Start konekuta (connects to mbed Cloud, and retrieves initial device model)
 konekuta(options, (err, devices, ee, connector) => {
   if (err) {
     throw err;
   }
 
+  // Now we can start the web server
   server.listen(process.env.PORT || 5265, process.env.HOST || '0.0.0.0', function() {
     console.log('Web server listening on port %s!', process.env.PORT || 5265);
   });
 
+  // And handle requests
   app.get('/', function(req, res, next) {
+    // Render index view, with the devices based on mapToView function
     res.render('index', { devices: devices.map(d => mapToView(d).model) });
   });
 });
