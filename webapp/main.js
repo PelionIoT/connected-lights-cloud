@@ -47,7 +47,7 @@ app.get('/', function(req, res, next) {
 
               api.getResourceValue(device.name, '/led/0/color', function(err, color) {
                 if (err) return rej(err);
-                console.log(device.name, 'color is', color);
+                console.log(device.name, 'color is', '0x' + Number(color).toString(16));
 
                 api.getResourceValue(device.name, '/pir/0/count', function(err, count) {
                   if (err) return rej(err);
@@ -100,7 +100,7 @@ io.on('connection', function(socket) {
     api.putResourceValue(endpoint, '/led/0/timeout', newtimeout);
   });
   socket.on('change-color', function(endpoint, newcolor) {
-    console.log('change-color', endpoint, newcolor);
+    console.log('change-color', endpoint, '0x' + Number(newcolor).toString(16));
     api.putResourceValue(endpoint, '/led/0/color', newcolor);
   });
 });
