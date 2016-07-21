@@ -3,8 +3,10 @@
 <head>
   <meta charset="utf-8">
   <title>Light System</title>
+  <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,300,600' rel='stylesheet' type='text/css'>
   <link rel="stylesheet" href="/style.css">
   <link rel="import" href="/color-picker-element/dist/color-picker.html">
+  <link rel="manifest" href="/manifest.json">
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 </head>
 
@@ -17,140 +19,205 @@
 
   <ul id="lights">
   {{#devices}}
-    <li data-endpoint="{{name}}">
-      <div class="color" style="background-color: rgb({{color}})"></div>
-      <div class="right-col">
-        <p class="endpoint change-endpoint-name">{{name}}</p>
-        <p class="timeout">Motion timeout: <a href="#" class="change-timeout">{{timeout}} seconds</a></p>
-        <div class="status">
-          <div class="change-status {{motionClass}}" data-action="0">Motion</div>
-          <div class="change-status {{onClass}}" data-action="1">On</div>
-          <div class="change-status {{offClass}}" data-action="2">Off</div>
-        </div>
-      </div>
-    </li>
+    {{> device}}
   {{/devices}}
   </ul>
 
   <div id="color-picker-overlay" style="display: none">
     <h2>Change color</h2>
   </div>
-  <div id="notification-wrapper" style="opacity: 0">
-    <div id="notification">
-      Movement detected at <span id="notification-name">Living room (3)</span>
-    </div>
-  </div>
+  <div id="notification" style="opacity: 0; visibility: hidden;"></div>
 
+  <script src="/helper-functions.js"></script>
+  <script src="/color-picker.js"></script>
   <script src="/socket.io/socket.io.js"></script>
   <script>
-    /*global io location localStorage */
+    /*global io getElement updateStatusUi getDeviceName showNotification localStorage */
+
+    // Here is how we connect back to the server
     var socket = io.connect(location.origin);
 
-    var cpOverlay = document.querySelector('#color-picker-overlay');
+    // ==== BEGIN SERVER EVENTS ====
 
+    var createDeviceEv, deleteDeviceEv, changeStatusEv, changeColorEv, changeTimeoutEv;
+
+    // Device came online, add it to the UI
+    socket.on('created-device', createDeviceEv = function(viewModel) {
+      document.querySelector('#lights').insertAdjacentHTML('beforeend', viewModel.html);
+    });
+
+    // Device was deleted, remove it from the UI
+    socket.on('deleted-device', deleteDeviceEv = function(endpoint) {
+      var li = getElement(endpoint);
+      li.parentNode.removeChild(li);
+
+      showNotification(getDeviceName(endpoint, true) + ' was de-registered');
+    });
+
+    // Status of a device was updated
+    socket.on('change-status', changeStatusEv = function(endpoint, status) {
+      updateStatusUi(endpoint, status);
+    });
+
+    // Color of a device was updated
+    socket.on('change-color', changeColorEv = function(endpoint, color) {
+      var hex = Number(color).toString(16);
+      getElement(endpoint).querySelector('.color').style.backgroundColor =
+        '#' + '000000'.substring(0, 6 - hex.length) + hex;
+    });
+
+    // Timeout of a device was updated
+    socket.on('change-timeout', changeTimeoutEv = function(endpoint, timeout) {
+      getElement(endpoint).querySelector('.change-timeout').textContent =
+        timeout + ' seconds';
+    });
+
+    // When you go offline=>online, server will automatically send current state
+    // So you're always up to date with other clients.
+    socket.on('device-list', function(list) {
+      list.forEach(function(device) {
+        // element not in the UI yet? Create it!
+        if (!getElement(device.endpoint)) {
+          return createDeviceEv(device.view);
+        }
+
+        // otherwise, update the properties
+        changeStatusEv(device.endpoint, device.view.model.status);
+        changeColorEv(device.endpoint, device.view.model.rawColor);
+        changeTimeoutEv(device.endpoint, device.view.model.timeout);
+      });
+
+      // find devices that are still in the UI, but no longer in the list...
+      var validEndpoints = list.map(function(device) { return device.endpoint; });
+      [].forEach.call(document.querySelectorAll('li[data-endpoint]'), function(li) {
+        if (validEndpoints.indexOf(li.dataset.endpoint) === -1) {
+          deleteDeviceEv(li.dataset.endpoint);
+        }
+      });
+
+    });
+
+    // ==== END OF SERVER EVENTS ====
+
+
+
+    // ==== BEGIN UI EVENTS ====
+
+    // When someone clicks on an element in the device area...
     document.querySelector('#lights').addEventListener('click', function(e) {
 
+      // We look at which endpoint we're clicking on...
       var parent = e.target;
       while (e.target.parentElement && !((parent = parent.parentElement).dataset.endpoint)) {
         // noop
       }
       if (!parent.dataset.endpoint) return console.error('Could not find parent for', e.target);
 
-      console.log('endpoint is', parent.dataset.endpoint);
+      var endpoint = parent.dataset.endpoint;
 
+      // Now we can check which element we clicked on:
       if (e.target.classList.contains('change-timeout')) {
-        var v = prompt('Enter a new value for the motion timeout');
-        if (!v || isNaN(v)) {
-          return alert('Not a number...');
-        }
-        else {
-          e.target.textContent = v + ' seconds';
-        }
-        socket.emit('change-timeout', parent.dataset.endpoint, Number(v));
+        changeTimeout(endpoint, e.target);
         return false;
       }
 
       if (e.target.classList.contains('change-status')) {
-        // clear the others
-        [].forEach.call(e.target.parentElement.querySelectorAll('.change-status'), function(el) {
-          el.classList.remove('selected');
-        });
-        e.target.classList.add('selected');
-
-        socket.emit('change-status', parent.dataset.endpoint, Number(e.target.dataset.action));
-        return;
+        changeStatus(endpoint, e.target);
+        return false;
       }
 
+      // Names are stored locally...
       if (e.target.classList.contains('change-endpoint-name')) {
         var n = prompt('Enter new name');
         if (n) {
           e.target.textContent = n;
-          localStorage.setItem(parent.dataset.endpoint + '-name', n);
+          localStorage.setItem(endpoint + '-name', n);
         }
-        else {
-          e.target.textContent = parent.dataset.endpoint;
-          localStorage.setItem(parent.dataset.endpoint + '-name', '');
+        else if (n === '') {
+          e.target.textContent = endpoint;
+          localStorage.setItem(endpoint + '-name', '');
         }
-        return;
+        return false;
       }
 
+      // Click on color => show color picker
       if (e.target.classList.contains('color')) {
-        cpOverlay.dataset.endpoint = parent.dataset.endpoint;
-        cpOverlay.style.display = 'flex';
-        return;
-      }
-
-      console.log(e.target);
-    });
-
-    var notificationTimeout;
-    socket.on('notification', function(notification) {
-      clearTimeout(notificationTimeout);
-
-      var el = document.querySelector('#notification-wrapper');
-      el.style.opacity = '1';
-      document.querySelector('#notification-name').textContent =
-        (localStorage.getItem(notification.ep + '-name') || notification.ep.substr(0, 20) + '...') +
-        ' (' + notification.payload + ')';
-
-      notificationTimeout = setTimeout(function() {
-        el.style.opacity = '0';
-      }, 5000);
-    });
-
-    [].forEach.call(document.querySelectorAll('#lights li'), function(li) {
-      var n = localStorage.getItem(li.dataset.endpoint + '-name');
-      if (n) {
-        li.querySelector('.change-endpoint-name').textContent = n;
+        var cp = document.querySelector('#color-picker-overlay');
+        cp.dataset.endpoint = endpoint;
+        cp.style.display = 'flex';
+        return false;
       }
     });
 
-    // this is needed by color-picker component unfortunately (does reflow)
-    var vw = window.innerWidth * 0.8;
-    // so this thing reads its attributes when creating, not when adding to body
-    // that's a mess... dont feel like patching the library
-    cpOverlay.innerHTML +=
-      '<color-picker width="' + vw + '" height="' + vw + '"></color-picker>';
+    // ==== END UI EVENTS ====
 
-    document.querySelector('color-picker').addEventListener('colorselected', function(e) {
-      var rgb = e.detail.rgb;
-      var v = (rgb.r << 16) + (rgb.g << 8) + rgb.b;
-      if (v === 0) return;
 
-      console.log('new value is', v);
 
-      if (!cpOverlay.dataset.endpoint) return console.error('No data-endpoint attribute found...');
+    // ==== BEGIN UI ACTIONS ====
 
-      document.querySelector('*[data-endpoint="' + cpOverlay.dataset.endpoint + '"] .color')
-        .style.backgroundColor = 'rgb(' + rgb.r + ', ' + rgb.g + ', ' + rgb.b + ')';
+    function changeTimeout(endpoint, el) {
+      var old = el.textContent.split(' ')[0];
 
-      socket.emit('change-color', cpOverlay.dataset.endpoint, v);
-    });
+      // Ask for a new value and verify that it's a number
+      var v = prompt('Enter a new value for the motion timeout');
+      if (v === false) return;
+      if (!v || isNaN(v)) {
+        return showNotification('Updating timeout failed: not a number');
+      }
 
-    cpOverlay.onclick = function(e) {
-      if (e.target !== e.currentTarget) return;
-      this.style.display = 'none';
-    };
+      // Update the UI
+      el.textContent = v + ' seconds';
+      // Send to the server
+      socket.emit('change-timeout', endpoint, Number(v), function(err) {
+        // If it fails, reset to old value and show notification
+        if (err) {
+          el.textContent = old + ' seconds';
+          showNotification('Updating timeout failed: ' + err);
+        }
+      });
+    }
+
+    function changeStatus(endpoint, el) {
+      // get the currently selected value
+      var old = el.parentNode.querySelector('.selected').dataset.action;
+
+      // update the UI
+      updateStatusUi(endpoint, el.dataset.action);
+
+      // send to server
+      socket.emit('change-status', endpoint, Number(el.dataset.action), function(err) {
+        // if it fails, reset to old value and show notification
+        if (err) {
+          updateStatusUi(endpoint, old);
+          showNotification('Updating status failed: ' + err);
+        }
+      });
+    }
+
+    function changeColor(endpoint, newColor) {
+      var colorEl = getElement(endpoint).querySelector('.color');
+      var oldHex = Number(colorEl.dataset.value).toString(16);
+      var newHex = Number(newColor).toString(16);
+
+      if (newColor === 0) return;
+
+      console.log('new value is', newColor);
+
+      // Update UI
+      colorEl.style.backgroundColor = '#' + '000000'.substring(0, 6 - newHex.length) + newHex;
+
+      // Send to server
+      socket.emit('change-color', endpoint, newColor, function(err) {
+        // If all fails, reset back to old color
+        if (err) {
+          colorEl.style.backgroundColor = '#' + '000000'.substring(0, 6 - oldHex.length) + oldHex;
+          showNotification('Updating color failed: ' + err);
+        }
+      });
+    }
+
+    // ==== END UI ACTIONS ====
+
   </script>
 
 </body>
