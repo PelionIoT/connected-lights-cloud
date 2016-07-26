@@ -13,7 +13,7 @@ All data that goes from the device to mbed Cloud (and vice-versa) is end-to-end 
 1. Copy the contents of the gray box. This is your certificate.
 
 
-![assets/lights16.png](The certificate is located in the gray box)
+![The certificate is located in the gray box](assets/lights16.png)
 
 Now go back to the online compiler, and create a new file ``security.h``. Paste the certificate in this file.
 
@@ -27,7 +27,7 @@ If you have a development board that connects over Ethernet, just plug in an Eth
 
 To wire the ESP8266 module up to your development board, look at the [ESP8266 Cookbook page]().
 
-## 6LoWPAN
+### 6LoWPAN
 
 First connect your 6LoWPAN gateway to an IPv6-enabled network by following the steps under 'Gateway Configuration' on [this page](https://github.com/ARMmbed/mbed-client-example-6lowpan#gateway-configuration). Then just click the 6LoWPAN shield on top of your development board.
 
@@ -77,7 +77,7 @@ Under `config.network-interface.value` select your connectivity method.
 
 ## Writing code
 
-We need to add some code to the application so it connects to the internet and sets up a connection to mbed Cloud. 
+We need to add some code to the application so it connects to the internet and sets up a connection to mbed Cloud.
 
 Replace ``main.cpp`` with:
 
@@ -157,7 +157,7 @@ We can implement these actions by defining resources. Resources are actions that
 * led/0/permanent_status - whether we should have the lights permanently on (or off).
 * pir/0/count - the number of times the PIR sensor was triggered. Read only, and should allow notifications.
 
-We can use SimpleClient to define these resources and attach actions to each resource. 
+We can use SimpleClient to define these resources and attach actions to each resource.
 
 Replace `YOUR CODE HERE` in ``main.cpp`` with (comments inline):
 
@@ -255,7 +255,7 @@ void pir_rise() {
 
 When you compile and flash this program, you'll see that when you wave your hand in front of the PIR sensor the color of the LED changes to green, and the LED always goes off after 5 seconds.
 
-When the connection to mbed Cloud is created, the onboard LED will turn on. We can now control this device from the cloud. 
+When the connection to mbed Cloud is created, the onboard LED will turn on. We can now control this device from the cloud.
 
 **Note:** No connection? [Inspect the logs on the device](https://developer.mbed.org/handbook/SerialPC#host-interface-and-terminal-applications).
 
