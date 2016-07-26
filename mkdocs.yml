@@ -1,0 +1,13 @@
+site_name: Building an internet connected lighting system
+
+docs_dir: docs
+
+pages:
+- ['1_intro.md','Requirements']
+- ['2_circuit.md', 'Building the circuit']
+- ['3_software.md', 'Writing the software']
+- ['4_connectivity.md', 'Adding connectivity']
+- ['5_controlling-from-cloud.md', 'Controlling the device from mbed Cloud']
+- ['6_cloud-api.md', 'Using the mbed Cloud API']
+- ['7_app.md', 'Bringing it all together']
+- ['8_conclusion.md', 'Conclusion']
