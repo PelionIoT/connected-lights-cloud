@@ -3,7 +3,7 @@ site_name: Building an internet connected lighting system
 docs_dir: docs
 
 pages:
-- ['1_intro.md','Requirements']
+- ['index.md','Requirements']
 - ['2_circuit.md', 'Building the circuit']
 - ['3_software.md', 'Writing the software']
 - ['4_connectivity.md', 'Adding connectivity']
