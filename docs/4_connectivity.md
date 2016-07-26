@@ -257,5 +257,5 @@ When you compile and flash this program, you'll see that when you wave your hand
 
 When the connection to mbed Cloud is created, the onboard LED will turn on. We can now control this device from the cloud.
 
-**Note:** No connection? [Inspect the logs on the device](https://developer.mbed.org/handbook/SerialPC#host-interface-and-terminal-applications).
+<span class="notes">**Note:** No connection? [Inspect the logs on the device](https://developer.mbed.org/handbook/SerialPC#host-interface-and-terminal-applications).</span>
 

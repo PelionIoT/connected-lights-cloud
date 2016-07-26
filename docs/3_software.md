@@ -99,7 +99,7 @@ When you connect your board to your computer, it will mount as a USB mass storag
 
 *Drag the firmware file onto the mass storage device to flash the application.*
 
-**Note:** On some boards you might need to press the *RESET* button to load the program.
+<span class="notes">**Note:** On some boards you might need to press the *RESET* button to load the program.</span>
 
 After flashing the application the red LED should light up when you wave your hand in front of the PIR sensor.
 

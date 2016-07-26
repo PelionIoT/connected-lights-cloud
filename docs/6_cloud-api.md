@@ -52,7 +52,7 @@ This will return something like this:
 ]
 ```
 
-**Note:** The official API documentation for the mbed Cloud REST interface is [located here](https://docs.mbed.com/docs/mbed-device-connector-web-interfaces/en/latest/).
+<span class="notes">**Note:** The official API documentation for the mbed Cloud REST interface is [located here](https://docs.mbed.com/docs/mbed-device-connector-web-interfaces/en/latest/).</span>
 
 ## Using the official libraries
 
