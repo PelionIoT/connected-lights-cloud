@@ -44,28 +44,31 @@ var options = {
   endpointType: 'light-system',     // what endpoint types to look for
   token: TOKEN,
   io: io,
-  retrieve: {                       // building the initial device model (w/ 4 properties)
-    status: 'led/0/permanent_status',
-    timeout: 'led/0/timeout',
-    color: 'led/0/color',
-    count: 'pir/0/count'
-  },
-  subscribe: {                      // list of resources to subscribe to.
-                                    // Will auto get events on socket for this (via update-X events)
-    count: 'pir/0/count'
-  },
-  updates: {                        // list of updateable resources (with their action and path)
-    status: {                       // will automatically also be accessible over socket (via change-X call)
-      method: 'put',
-      path: 'led/0/permanent_status'
+  deviceModel: {                    // building the initial device model (w/ 4 properties)
+    status: {
+      retrieve: 'led/0/permanent_status',   // when device registers, retrieve value
+      update: {
+        method: 'put',                      // update actions
+        path: 'led/0/permanent_status'
+      }
     },
     timeout: {
-      method: 'put',
-      path: 'led/0/timeout'
+      retrieve: 'led/0/timeout',
+      update: {
+        method: 'put',
+        path: 'led/0/timeout'
+      }
     },
     color: {
-      method: 'put',
-      path: 'led/0/color'
+      retrieve: 'led/0/color',
+      update: {
+        method: 'put',
+        path: 'led/0/color'
+      }
+    },
+    count: {
+      retrieve: 'pir/0/count',
+      subscribe: true                       // subscribe to updates
     }
   },
   mapToView: mapToView,
