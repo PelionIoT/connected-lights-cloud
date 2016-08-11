@@ -39,7 +39,12 @@ We will also use [EasyConnect](https://github.com/ARMmbed/easy-connect) to handl
 
 To add these libraries to your project go back to the online compiler, and:
 
-@todo: how to add SimpleClient and EasyConnect. It's not published yet.
+1. Right click on your program in the tree and select *Import Library > From URL*.
+1. Under 'Source URL' enter: ``https://github.com/armmbed/easy-connect``.
+1. Click *Import*.
+1. Again, right click on your program and select *Import Library > From URL*.
+1. Under 'Source URL' enter: ``https://developer.mbed.org/teams/sandbox/code/simple-mbed-client/``.
+1. Click *Import*.
 
 ## Adding libraries with mbed CLI
 

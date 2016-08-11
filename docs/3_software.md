@@ -8,18 +8,22 @@ Part of the ARM mbed IoT Device Platform is an online compiler, which we will us
 
 1. Find your development board's [platform page](https://developer.mbed.org/platforms/).
 1. In the right hand panel, choose *Add to your mbed Compiler*.
-1. When prompted sign up (or sign in). You are redirected to the platform page. 
-1. Choose *Open mbed Compiler*. The online compiler opens. 
+1. When prompted sign up (or sign in). You are redirected to the platform page.
+1. Choose *Open mbed Compiler*. The online compiler opens.
 1. Under 'Template', choose 'Empty Program', and pick a name. Then click *OK*.
 
 
 ![Creating a program in the online compiler](assets/lights6.png)
 
-@todo: how to add mbed OS? Lib is not published.
+After creating the program we need to add mbed OS as a dependency to your program.
+
+1. Right click on your program in the tree and select *Import Library > From URL*.
+1. Under 'Source URL' enter: ``https://github.com/armmbed/mbed-os``.
+1. Click *Import*.
 
 ## Adding the code
 
-You'll need to create two files; the first one is a configuration file in which you specify which pins you are using. 
+You'll need to create two files; the first one is a configuration file in which you specify which pins you are using.
 Create a new file (right click on the project and select *New File…*), and name it ``config.h``:
 
 ```cpp
@@ -90,7 +94,7 @@ Now you compile the code by clicking the *Compile* button on the top of the scre
 
 ![The compile button](assets/lights7.png)
 
-When compilation succeeds, a file is downloaded. This is the compiled firmware for your development board. 
+When compilation succeeds, a file is downloaded. This is the compiled firmware for your development board.
 
 When you connect your board to your computer, it will mount as a USB mass storage device, like a USB drive. You can drag and drop the firmware onto the board to flash the new application onto the board.
 
