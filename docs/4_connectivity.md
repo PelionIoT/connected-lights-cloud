@@ -25,7 +25,7 @@ If you have a development board that connects over Ethernet, just plug in an Eth
 
 ### ESP8266 WiFi module
 
-To wire the ESP8266 module up to your development board, look at the [ESP8266 Cookbook page]().
+To wire the ESP8266 module up to your development board, look at the [ESP8266 Cookbook page](https://developer.mbed.org/users/4180_1/notebook/using-the-esp8266-with-the-mbed-lpc1768/).
 
 ### 6LoWPAN
 
@@ -41,6 +41,7 @@ To add these libraries to your project go back to the online compiler, and:
 
 1. Right click on your program in the tree and select *Import Library > From URL*.
 1. Under 'Source URL' enter: ``https://github.com/armmbed/easy-connect``.
+1. Do **not** tick 'Update all sub-libraries to the latest version'.
 1. Click *Import*.
 1. Again, right click on your program and select *Import Library > From URL*.
 1. Under 'Source URL' enter: ``https://developer.mbed.org/teams/sandbox/code/simple-mbed-client/``.
@@ -63,16 +64,30 @@ We need to tell EasyConnect which connectivity method to use. Create a new file 
 {
     "config": {
         "network-interface":{
-            "help": "options are ETHERNET,WIFI,MESH_LOWPAN_ND,MESH_THREAD",
-            "value": ""
+            "help": "options are ETHERNET,WIFI_ESP8266,MESH_LOWPAN_ND,MESH_THREAD",
+            "value": "ETHERNET"
         },
-        "wifi-ssid": {
-            "help": "WiFi SSID",
+        "esp8266-tx": {
+            "help": "Pin used as TX (connects to ESP8266 RX)",
+            "value": "D1"
+        },
+        "esp8266-rx": {
+            "help": "Pin used as RX (connects to ESP8266 TX)",
+            "value": "D0"
+        },
+        "esp8266-ssid": {
             "value": "\"SSID\""
         },
-        "wifi-password": {
-            "help": "WiFi Password",
+        "esp8266-password": {
             "value": "\"Password\""
+        },
+        "esp8266-debug": {
+            "value": true
+        }
+    },
+    "target_overrides": {
+        "*": {
+            "target.features_add": ["IPV4", "IPV6"]
         }
     }
 }
