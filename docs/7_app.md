@@ -38,7 +38,7 @@ $ npm install
 $ node main.js
 ```
 
-Open your web browser and go to http://localhost:5266 to see the application running.
+Open your web browser and go to http://localhost:5265 to see the application running.
 
 ## Konekuta
 
