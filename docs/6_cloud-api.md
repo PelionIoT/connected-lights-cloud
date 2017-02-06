@@ -1,15 +1,15 @@
-# Using the mbed Cloud API
+# Using the mbed Device Connector API
 
-The mbed Cloud web interface that we used in the previous section is a wrapper around the mbed Cloud API. Through this API we can connect any app to any device. We can use this API to build an app that allows us to control any of the lighting systems that we deploy in our house or office.
+The mbed Device Connector web interface that we used in the previous section is a wrapper around the mbed Device Connector API. Through this API we can connect any app to any device. We can use this API to build an app that allows us to control any of the lighting systems that we deploy in our house or office.
 
 ## Obtaining an access key
 
-To talk to the API we need to obtain an access key. This key is used to authenticate with the API. To create a new access key, go to the [Access Keys](https://connector.mbed.com/#accesskeys) page in the mbed Cloud web interface.
+To talk to the API we need to obtain an access key. This key is used to authenticate with the API. To create a new access key, go to the [Access Keys](https://connector.mbed.com/#accesskeys) page in the mbed Device Connector web interface.
 
 Click *CREATE NEW ACCESS KEY* to create a new access key, and give it a descriptive name.
 
 
-![Creating a new access key in mbed Cloud](assets/lights14.png)
+![Creating a new access key in mbed Device Connector](assets/lights14.png)
 
 ## Testing the API
 
@@ -52,11 +52,11 @@ This will return something like this:
 ]
 ```
 
-<span class="notes">**Note:** The official API documentation for the mbed Cloud REST interface is [located here](https://docs.mbed.com/docs/mbed-device-connector-web-interfaces/en/latest/).</span>
+<span class="notes">**Note:** The official API documentation for the mbed Device Connector REST interface is [located here](https://docs.mbed.com/docs/mbed-device-connector-web-interfaces/en/latest/).</span>
 
 ## Using the official libraries
 
-You don't need to write raw HTTP requests to deal with the mbed Cloud REST interface, as there are official libraries available for node.js, Python and Java. This is especially nice because the APIs to interact with resources are [asynchronous](https://docs.mbed.com/docs/mbed-device-connector-web-interfaces/en/latest/#asynchronous-requests), because for many functions it's not guaranteed that an action (such as writing to a device) will happen straight away, as the device might be in deep sleep or otherwise slow to respond. Therefore, you need to listen to callbacks on a [notification channel](https://docs.mbed.com/docs/mbed-device-connector-web-interfaces/en/latest/api-reference/#notifications). If you're using any of the official libraries, notification channels are abstracted away, making it easier to write applications on top of mbed Cloud.
+You don't need to write raw HTTP requests to deal with the mbed Device Connector REST interface, as there are official libraries available for node.js, Python and Java. This is especially nice because the APIs to interact with resources are [asynchronous](https://docs.mbed.com/docs/mbed-device-connector-web-interfaces/en/latest/#asynchronous-requests), because for many functions it's not guaranteed that an action (such as writing to a device) will happen straight away, as the device might be in deep sleep or otherwise slow to respond. Therefore, you need to listen to callbacks on a [notification channel](https://docs.mbed.com/docs/mbed-device-connector-web-interfaces/en/latest/api-reference/#notifications). If you're using any of the official libraries, notification channels are abstracted away, making it easier to write applications on top of mbed Device Connector.
 
 An additional feature in the libraries is that they support subscriptions. We can subscribe to resources and get a notification whenever they change. This is useful for our `/pir/0/count` resource, as we can get notified whenever someone moves in front of the sensor.
 
@@ -64,7 +64,7 @@ The following sections show an example of changing the color of the light, and r
 
 ### node.js
 
-First, make sure you have installed [node.js](http://nodejs.org). Then create a new folder, and install the mbed Cloud node.js library via npm:
+First, make sure you have installed [node.js](http://nodejs.org). Then create a new folder, and install the mbed Device Connector node.js library via npm:
 
 ```bash
 $ npm install mbed-connector-api
@@ -129,7 +129,7 @@ See here for the [full docs](https://github.com/ARMmbed/mbed-connector-api-node)
 
 ### Python
 
-First make sure that you have installed [Python 2.7 or Python 3](https://www.python.org/downloads/) and [pip](https://pip.pypa.io/en/stable/installing/). Then create a new folder, and install the mbed Cloud library through pip:
+First make sure that you have installed [Python 2.7 or Python 3](https://www.python.org/downloads/) and [pip](https://pip.pypa.io/en/stable/installing/). Then create a new folder, and install the mbed Device Connector library through pip:
 
 ```bash
 $ pip install -U mbed-connector-api

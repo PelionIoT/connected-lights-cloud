@@ -26,7 +26,7 @@ for endpoint in e.result:
     connector.putResourceSubscription(endpoint['name'], "/pir/0/count")
 
     # And change the color to pink, because that's nice
-    pink = (255 << 16) + (100 << 8) + 15
+    pink = 0xff69b4
     x = connector.putResourceValue(endpoint['name'], "/led/0/color", pink)
     while not x.isDone():
         None

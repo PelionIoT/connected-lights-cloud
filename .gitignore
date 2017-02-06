@@ -1,2 +1,7 @@
 .build/
 node_modules/
+BUILD/
+.vscode/
+tags
+
+

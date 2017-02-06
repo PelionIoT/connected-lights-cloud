@@ -1,0 +1,85 @@
+{
+    "config": {
+
+        "pir-pin": {
+            "help": "Pin to which the PIR sensor is connected",
+            "macro_name": "PIR_PIN",
+            "value": "D2"
+        },
+
+        "led-type": {
+            "help": "options are TRICOLOR_ANODE,TRICOLOR_CATHODE,GROVE_CHAINABLE",
+            "value": "TRICOLOR_ANODE"
+        },
+
+        "led-pin-red": {
+            "help": "Only used for TRICOLOR_* LED types",
+            "value": "D5"
+        },
+        "led-pin-green": {
+            "help": "Only used for TRICOLOR_* LED types",
+            "value": "D6"
+        },
+        "led-pin-blue": {
+            "help": "Only used for TRICOLOR_* LED types",
+            "value": "D7"
+        },
+
+        "grove-clock-pin": {
+            "help": "Only used for GROVE_CHAINABLE LED types",
+            "value": "D5"
+        },
+        "grove-data-pin": {
+            "help": "Only used for GROVE_CHAINABLE LED types",
+            "value": "D6"
+        },
+
+
+        "network-interface":{
+            "help": "options are ETHERNET,WIFI_ESP8266,MESH_LOWPAN_ND,MESH_THREAD",
+            "value": "ETHERNET"
+        },
+        "esp8266-tx": {
+            "help": "Pin used as TX (connects to ESP8266 RX)",
+            "value": "D1"
+        },
+        "esp8266-rx": {
+            "help": "Pin used as RX (connects to ESP8266 TX)",
+            "value": "D0"
+        },
+        "esp8266-ssid": {
+            "value": "\"SSID\""
+        },
+        "esp8266-password": {
+            "value": "\"Password\""
+        },
+        "esp8266-debug": {
+            "value": true
+        },
+        "mesh_radio_type": {
+            "help": "options are ATMEL, MCR20",
+            "value": "ATMEL"
+        }
+
+    },
+
+    "macros": ["MBEDTLS_USER_CONFIG_FILE=\"mbedtls_mbed_client_config.h\""],
+
+    "target_overrides": {
+        "*": {
+            "target.features_add": ["NANOSTACK", "LOWPAN_ROUTER", "COMMON_PAL"],
+            "mbed-mesh-api.6lowpan-nd-channel-page": 0,
+            "mbed-mesh-api.6lowpan-nd-channel": 12,
+            "mbed-trace.enable": 0
+        },
+        "NUCLEO_F401RE": {
+            "esp8266-tx": "D8",
+            "esp8266-rx": "D2"
+        },
+        "NUCLEO_F411RE": {
+            "esp8266-tx": "D8",
+            "esp8266-rx": "D2"
+        }
+    }
+
+}

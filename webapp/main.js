@@ -75,7 +75,7 @@ var options = {
   verbose: true                         // Verbose logging
 };
 
-// Start konekuta (connects to mbed Cloud, and retrieves initial device model)
+// Start konekuta (connects to mbed Device Connector, and retrieves initial device model)
 konekuta(options, (err, devices, ee, connector) => {
   if (err) {
     throw err;
