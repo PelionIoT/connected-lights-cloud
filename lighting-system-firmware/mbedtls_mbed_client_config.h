@@ -32,11 +32,12 @@
 #ifndef MBEDTLS_CUSTOM_CONFIG_H
 #define MBEDTLS_CUSTOM_CONFIG_H
 
-/* Disable entropy for everything but K64F and K22F. Do *not* use this in production. */
+/* Enable entropy for K64F and K22F. This means entropy is disabled for all other targets. */
+/* Do **NOT** deploy this code in production on other targets! */
 /* See https://tls.mbed.org/kb/how-to/add-entropy-sources-to-entropy-pool */
-#if !defined(TARGET_K64F) && !defined(TARGET_K22F)
-#define MBEDTLS_NO_DEFAULT_ENTROPY_SOURCES
-#define MBEDTLS_TEST_NULL_ENTROPY
+#if defined(TARGET_K64F) || defined(TARGET_K22F)
+#undef MBEDTLS_NO_DEFAULT_ENTROPY_SOURCES
+#undef MBEDTLS_TEST_NULL_ENTROPY
 #endif
 
 /* System support */

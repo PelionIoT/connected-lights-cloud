@@ -63,7 +63,7 @@
 
     },
 
-    "macros": ["MBEDTLS_USER_CONFIG_FILE=\"mbedtls_mbed_client_config.h\""],
+    "macros": ["MBEDTLS_USER_CONFIG_FILE=\"mbedtls_mbed_client_config.h\"", "MBEDTLS_NO_DEFAULT_ENTROPY_SOURCES", "MBEDTLS_TEST_NULL_ENTROPY"],
 
     "target_overrides": {
         "*": {
