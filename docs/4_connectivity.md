@@ -166,8 +166,6 @@ int main(int, char**) {
 
   client.on_registered(eventQueue.event(&registered));
 
-  eventQueue.call_every(25000, callback(&client, &SimpleMbedClientBase::keep_alive));
-
   // We can just let the main thread end here, no need to busy-loop
 }
 ```

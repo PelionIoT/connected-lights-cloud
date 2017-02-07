@@ -13,13 +13,16 @@ Part of the ARM mbed IoT Device Platform is an online compiler, which we will us
 1. Click the *Import* button.
 
     ![Import button](assets/lights17.png)
+
 1. Click on the following link:
 
     ![Import from URL](assets/lights18.png)
+
 1. Under 'Source URL' enter 'https://github.com/armmbed/connected-lights'.
     Do not tick 'Update all libraries to the latest revision'.
 
     ![Creating a program in the online compiler](assets/lights6.png)
+
 
 The program you just imported already contains some boilerplate, including mbed OS and a configuration file. In this configuration file you can configure the pins you're using, after which you can start writing some code.
 
@@ -29,7 +32,7 @@ mbed OS comes with a powerful [configuration system](https://docs.mbed.com/docs/
 
 Open ``mbed_app.json`` in the tree and edit the file to reflect your LED chose, and the pins you used to connect the LED and the PIR sensor.
 
-```cpp
+```js
 /* mbed_app.json */
 
 /* snip */
