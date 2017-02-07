@@ -118,7 +118,10 @@ SimpleMbedClient client;
 // PIR sensor acts as an interrupt - signals us whenever it goes high (or low)
 InterruptIn pir(PIR_PIN);   // This pin value comes out mbed_app.json
 
+
 // YOUR CODE HERE
+void pir_rise() { }
+// END OF YOUR CODE HERE
 
 // Use the built-in LED as a status LED
 DigitalOut statusLed(LED1);
@@ -185,7 +188,15 @@ We can implement these actions by defining resources. Resources are actions that
 
 We can use SimpleClient to define these resources and attach actions to each resource.
 
-Replace `YOUR CODE HERE` in ``main.cpp`` with (comments inline):
+Replace the following section in ``main.cpp``:
+
+```cpp
+// YOUR CODE HERE
+void pir_rise() { }
+// END OF YOUR CODE HERE
+```
+
+with (comments inline):
 
 ```cpp
 // Fwd declaration
