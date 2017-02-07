@@ -1,12 +1,12 @@
 # Adding connectivity
 
-Now that we built our basic circuit and wrote the code to control the circuit, we can start adding connectivity to the project. Part of the ARM mbed IoT Device Platform is mbed Cloud, a unified solution to connect devices to the internet and communicate with them regardless of *how* these devices connect to the internet. There are libraries available for a variety of connectivity methods, including Ethernet, WiFi, 6LoWPAN, Thread and Cellular.
+Now that we built our basic circuit and wrote the code to control the circuit, we can start adding connectivity to the project. Part of the ARM mbed IoT Device Platform is mbed Device Connector, a unified solution to connect devices to the internet and communicate with them regardless of *how* these devices connect to the internet. There are libraries available for a variety of connectivity methods, including Ethernet, WiFi, 6LoWPAN, Thread and Cellular.
 
 ## Obtaining a device certificate
 
-All data that goes from the device to mbed Cloud (and vice-versa) is end-to-end encrypted by [mbed TLS](https://tls.mbed.org). To set up secure communications we need a security certificate. We can get one from the mbed Cloud website:
+All data that goes from the device to mbed Device Connector (and vice-versa) is end-to-end encrypted by [mbed TLS](https://tls.mbed.org). To set up secure communications we need a security certificate. We can get one from the mbed Device Connector website:
 
-1. Go to the [mbed Cloud homepage](https://connector.mbed.com) and click *Sign in to get connected*.
+1. Go to the [mbed Device Connector homepage](https://connector.mbed.com) and click *Sign in to get connected*.
 1. If prompted for your login credentials, use your mbed developer account (the same account you use to log into the mbed Online Compiler).
 1. Go to *My Devices* > *Security Credentials*.
 1. Click *Get my security credentials*.
@@ -15,7 +15,7 @@ All data that goes from the device to mbed Cloud (and vice-versa) is end-to-end 
 
 ![The certificate is located in the gray box](assets/lights16.png)
 
-Now go back to the online compiler, and create a new file ``security.h``. Paste the certificate in this file.
+Now go back to the online compiler, and create a new file ``security.h`` in the ``source`` directory. Paste the certificate in this file.
 
 ## Adding connectivity to the board
 
@@ -25,7 +25,11 @@ If you have a development board that connects over Ethernet, just plug in an Eth
 
 ### ESP8266 WiFi module
 
-To wire the ESP8266 module up to your development board, look at the [ESP8266 Cookbook page](https://developer.mbed.org/users/4180_1/notebook/using-the-esp8266-with-the-mbed-lpc1768/).
+To wire the ESP8266 module up to your development board, look at the [ESP8266 Cookbook page](https://developer.mbed.org/users/4180_1/notebook/using-the-esp8266-with-the-mbed-lpc1768/). In general this means hooking up the ESP8266 TX pin up to `D0` and the ESP8266 RX pin up to `D1` on your development board.
+
+#### ESP8266 on NUCLEO boards
+
+On the NUCLEO boards pins `D0` and `D1` are used for serial communication with the computer. Use pins `D8` and `D2` instead.
 
 ### 6LoWPAN
 
@@ -33,7 +37,7 @@ First connect your 6LoWPAN gateway to an IPv6-enabled network by following the s
 
 ## Adding libraries
 
-For the device and mbed Cloud to talk we need the [mbed Client library](https://docs.mbed.com/docs/mbed-client-guide/en/latest/). This library is already included in mbed OS, and is very powerful, but can also be daunting for new users. In this example we'll use an additional library built on top of mbed Client: SimpleClient. This library is designed to easily expose variables and resources to the cloud.
+For the device and mbed Device Connector to talk we need the [mbed Client library](https://docs.mbed.com/docs/mbed-client-guide/en/latest/). This library is already included in mbed OS, and is very powerful, but can also be daunting for new users. In this example we'll use an additional library built on top of mbed Client: SimpleClient. This library is designed to easily expose variables and resources to the cloud.
 
 We will also use [EasyConnect](https://github.com/ARMmbed/easy-connect) to handle connectivity.
 
@@ -52,17 +56,19 @@ To add these libraries to your project go back to the online compiler, and:
 If you are using mbed CLI, run the following commands to add the libraries:
 
 ```bash
-$ mbed add https://github.com/ARMmbed/easy-connect
+$ mbed add easy-connect
 $ mbed add http://developer.mbed.org/teams/sandbox/code/simple-mbed-client/
 ```
 
 ## Updating configuration
 
-We need to tell EasyConnect which connectivity method to use. Create a new file - ``mbed_app.json`` - and fill it with:
+We need to tell EasyConnect which connectivity method to use. Open ``mbed_app.json`` and locate the `network-interface` field. Change the `value` to the connectivity method used:
 
 ```json
-{
-    "config": {
+/* mbed_app.json */
+
+/* snip */
+
         "network-interface":{
             "help": "options are ETHERNET,WIFI_ESP8266,MESH_LOWPAN_ND,MESH_THREAD",
             "value": "ETHERNET"
@@ -84,82 +90,85 @@ We need to tell EasyConnect which connectivity method to use. Create a new file 
         "esp8266-debug": {
             "value": true
         }
-    },
-    "target_overrides": {
-        "*": {
-            "target.features_add": ["IPV4", "IPV6"]
-        }
     }
-}
+
+/* snip */
 ```
 
-Under `config.network-interface.value` select your connectivity method.
+If you are using WiFi, also set your WiFi SSID and your password. If you used different pins than `D0`/`D1`, update the pin names too.
 
 ## Writing code
 
-We need to add some code to the application so it connects to the internet and sets up a connection to mbed Cloud.
+We need to add some code to the application so it connects to the internet and sets up a connection to mbed Device Connector.
 
 Replace ``main.cpp`` with:
 
 ```cpp
 #include "mbed.h"
-#include "rtos.h"
-#include "config.h"
-#include "security.h"
+#include "led.h"        // Abstracts away the differens between the LED types
+#include "security.h"   // Security configuration
 #include "easy-connect.h"
 #include "simple-mbed-client.h"
 
+EventQueue eventQueue;  // An event queue
+Thread eventThread;     // An RTOS thread to process events in
+
 SimpleMbedClient client;
 
-// Declare our peripherals here
-PwmOut red(PIN_RED);
-PwmOut green(PIN_GREEN);
-PwmOut blue(PIN_BLUE);
+// PIR sensor acts as an interrupt - signals us whenever it goes high (or low)
+InterruptIn pir(PIR_PIN);   // This pin value comes out mbed_app.json
 
-InterruptIn pir(PIN_PIR);
-
-// We need a way to signal from an interrupt context -> main thread, use a Semaphore for it...
-Semaphore updates(0);
 
 // YOUR CODE HERE
+void pir_rise() { }
+// END OF YOUR CODE HERE
 
-// Registered callback for mbed Client
-DigitalOut statusLed(LED1, 1);
+// Use the built-in LED as a status LED
+DigitalOut statusLed(LED1);
+int        statusLedBlinkId;    // Callback ID
+void blink_builtin_led() {
+  statusLed = !statusLed;
+}
+
 void registered() {
-  statusLed = 0;
+  // When we registered with mbed Device Connector, blink faster
+  eventQueue.cancel(statusLedBlinkId);
+
+  statusLedBlinkId = eventQueue.call_every(300, &blink_builtin_led);
 }
 
 int main(int, char**) {
-  // Clear the channels on startup
-  setIntensity(red, 0.0f);
-  setIntensity(green, 0.0f);
-  setIntensity(blue, 0.0f);
+  // Using an event queue is a very useful abstraction around many microcontroller 'problems', like dealing with ISRs
+  // see https://developer.mbed.org/blog/entry/Simplify-your-code-with-mbed-events/
+  eventThread.start(callback(&eventQueue, &EventQueue::dispatch_forever));
+
+  // Blink the built-in LED every 1000ms. After registering we'll blink every 300ms.
+  statusLedBlinkId = eventQueue.call_every(1000, &blink_builtin_led);
+
+  // Disable the LED
+  setRgbColor(0.0f, 0.0f, 0.0f);
 
   // The PIR sensor uses interrupts, no need to poll
-  pir.rise(&pir_rise);
+  pir.rise(eventQueue.event(&pir_rise));
 
   NetworkInterface* network = easy_connect(true);
   if (!network) {
-    printf("Connect to internet failed... See serial output.\n");
+    printf("Connect to internet failed... See serial output.\r\n");
     return 1;
   }
 
   struct MbedClientOptions options = client.get_default_options();
   options.DeviceType = "light-system";
   if (!client.setup(options, network)) {
-    printf("Setting up mbed_client failed...\n");
+    printf("Setting up mbed_client failed...\r\n");
     return 1;
   }
 
-  client.on_registered(&registered);
+  client.on_registered(eventQueue.event(&registered));
 
-  while (1) {
-    int v = updates.wait(25000);
-    if (v == 1) {
-      pirCount = pirCount + 1;
-    }
-    client.keep_alive();
-  }
+  eventQueue.call_every(25000, callback(&client, &SimpleMbedClientBase::keep_alive));
+
+  // We can just let the main thread end here, no need to busy-loop
 }
 ```
 
@@ -168,7 +177,7 @@ The code sample above does not do much, except for setting up the connection. We
 1. The color of the LED should be configurable.
 1. The period between the moment of motion detection to the moment lights go out should be configurable.
 1. There should be a permanent-on mode for the lights.
-1. We should notify mbed Cloud whenever we detect movement.
+1. We should notify mbed Device Connector whenever we detect movement.
 
 We can implement these actions by defining resources. Resources are actions that can be read or written from the cloud, and which we can subscribe to (when a resource changes) on both device and cloud side. Resources are addressable under a path and an access modifier (for example, only write allowed). Let's define a resource for each of our actions:
 
@@ -179,7 +188,15 @@ We can implement these actions by defining resources. Resources are actions that
 
 We can use SimpleClient to define these resources and attach actions to each resource.
 
-Replace `YOUR CODE HERE` in ``main.cpp`` with (comments inline):
+Replace the following section in ``main.cpp``:
+
+```cpp
+// YOUR CODE HERE
+void pir_rise() { }
+// END OF YOUR CODE HERE
+```
+
+with (comments inline):
 
 ```cpp
 // Fwd declaration
@@ -199,9 +216,7 @@ Timeout pirTimeout;
 
 // clear the lights
 void putLightsOff() {
-  setIntensity(red, 0.0f);
-  setIntensity(green, 0.0f);
-  setIntensity(blue, 0.0f);
+  setRgbColor(0.0f, 0.0f, 0.0f);
 }
 
 // Status changes
@@ -232,9 +247,10 @@ void putLightsOn() {
   int blueCh  = ledColor & 0xff;
 
   // our color is 0..255, but we need a float between 0..1, cast it.
-  setIntensity(red, static_cast<float>(redCh) / 255.0f);
-  setIntensity(green, static_cast<float>(greenCh) / 255.0f);
-  setIntensity(blue, static_cast<float>(blueCh) / 255.0f);
+  float red = static_cast<float>(redCh) / 255.0f;
+  float green = static_cast<float>(greenCh) / 255.0f;
+  float blue = static_cast<float>(blueCh) / 255.0f;
+  setRgbColor(red, green, blue);
 }
 
 // Color updated from the cloud,
@@ -258,8 +274,8 @@ void onPirTimeout() {
 
 // When the PIR sensor fires...
 void pir_rise() {
-  // go back to main thread to update the resource (we can't do this in interrupt context)
-  updates.release();
+  // Update the resource
+  pirCount = pirCount + 1;
 
   // Permanent off? Don't put the lights on...
   if (ledStatus == STATUS_OFF) return;
@@ -269,13 +285,13 @@ void pir_rise() {
   putLightsOn();
 
   // And attach the timeout
-  pirTimeout.attach(&onPirTimeout, static_cast<float>(ledTimeout));
+  pirTimeout.attach(eventQueue.event(&onPirTimeout), static_cast<float>(ledTimeout));
 }
 ```
 
 When you compile and flash this program, you'll see that when you wave your hand in front of the PIR sensor the color of the LED changes to green, and the LED always goes off after 5 seconds.
 
-When the connection to mbed Cloud is created, the onboard LED will turn on. We can now control this device from the cloud.
+When the connection to mbed Device Connector is created, the onboard LED will blink faster. We can now control this device from the cloud.
 
 <span class="notes">**Note:** No connection? [Inspect the logs on the device](https://developer.mbed.org/handbook/SerialPC#host-interface-and-terminal-applications).</span>
 

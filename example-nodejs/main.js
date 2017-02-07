@@ -22,7 +22,7 @@ api.startLongPolling(function(err) {
       });
 
       // and set the color to orange, as your's truly is Dutch
-      var orange = (255 << 16) + (100 << 8) + 0;
+      var orange = 0xff6400;
       api.putResourceValue(d.name, '/led/0/color', orange, function(err) {
         if (err) console.error('Setting led/0/color for', d.name, 'failed', err);
         console.log('Set color of', d.name, 'to orange!');
