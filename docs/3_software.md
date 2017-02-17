@@ -1,36 +1,41 @@
 # Writing the software
 
-Now we can write some software to verify that the circuit works. We'll enable the LED whenever we see movement. We can either build locally - using mbed CLI - or in the cloud by using the mbed Online Compiler. We'll first show how to use the online compiler, and at the end of this section we'll show the respective commands in mbed CLI as well.
+Now we can write some software to verify that the circuit works. We'll enable the LED whenever we see movement. We can either build locally - using mbed CLI - or in the cloud by using the mbed Online Compiler. We'll first show how to use the online compiler, and at the end of this section we'll show the corresponding commands in mbed CLI.
 
 ## Setting up the online compiler
 
 Part of the ARM mbed IoT Device Platform is an online compiler, which we will use to write and compile software right in the browser. To get started:
 
 1. Find your development board's [platform page](https://developer.mbed.org/platforms/).
-1. In the right hand panel, choose *Add to your mbed Compiler*.
+1. In the right hand panel, choose **Add to your mbed Compiler**.
 1. When prompted sign up (or sign in). You are redirected to the platform page.
-1. Choose *Open mbed Compiler*. The online compiler opens.
-1. Click the *Import* button.
+1. Choose **Open mbed Compiler**. The online compiler opens.
+1. Click the **Import** button.
 
-    ![Import button](assets/lights17.png)
+    <span class="images">![Import button](assets/lights17.png)</span>
 
-1. Click on the following link:
+1. Click the "Click here to import from URL" link:
 
-    ![Import from URL](assets/lights18.png)
+    <span class="images">![Import from URL](assets/lights18.png)</span>
 
-1. Under 'Source URL' enter 'https://github.com/armmbed/connected-lights'.
-    Do not tick 'Update all libraries to the latest revision'.
+1. Under **Source URL** enter `https://github.com/armmbed/connected-lights`.
+    
+    Do not check the **Update all libraries to the latest revision** box.
 
-    ![Creating a program in the online compiler](assets/lights6.png)
+    <span class="images">![Creating a program in the online compiler](assets/lights6.png)</span>
 
-
-The program you just imported already contains some boilerplate, including mbed OS and a configuration file. In this configuration file you can configure the pins you're using, after which you can start writing some code.
+The program you just imported already contains some boilerplate, including mbed OS and a configuration file. We'll use this configuration file to configure the pins our software uses, then start writing some code.
 
 ## Adding the code
 
-mbed OS comes with a powerful [configuration system](https://docs.mbed.com/docs/mbedmicro-api/en/latest/api/md_docs_config_system.html) that makes it easy to separate configuration and application code. In this application you'll use this to separate the configuration of the LED (cathode, anode or a Grove LED), pins used, and - in the next section - the connectivity method used.
+mbed OS comes with a powerful [configuration system](https://docs.mbed.com/docs/mbedmicro-api/en/latest/api/md_docs_config_system.html) that makes it easy to separate configuration and application code. In this application we'll separate the configuration of the LED (cathode, anode or a Grove LED), pins, and connectivity method (next section).
 
-Open ``mbed_app.json`` in the tree and edit the file to reflect your LED chose, and the pins you used to connect the LED and the PIR sensor.
+From the mbed Online Compiler's tree, open ``mbed_app.json``. Edit the file to reflect your LED choice, and the pins you used to connect the LED and the PIR sensor:
+
+1. If you have a common cathode LED, set the `value` of `led-type` to `TRICOLOR_CATHODE`.
+1. If you have a Grove Chainable LED, set the `value` of `led-type` to `TRICOLOR_ANODE`.
+1. Replace the pins D2, D5, D6 and D7 with the pins you used when building the circuit.
+
 
 ```js
 /* mbed_app.json */
@@ -73,12 +78,6 @@ Open ``mbed_app.json`` in the tree and edit the file to reflect your LED chose, 
 /* snip */
 ```
 
-In this file:
-
-1. If you have a common cathode LED, set the `value` of `led-type` to `TRICOLOR_CATHODE`.
-1. If you have a Grove Chainable LED, set the `value` of `led-type` to `TRICOLOR_ANODE`.
-1. Replace the pins D2, D5, D6 and D7 with the pins you used when building the circuit.
-
 Next, create a file called ``main.cpp`` in the `source` directory:
 
 ```cpp
@@ -115,23 +114,25 @@ int main(int, char**) {
 
 ## Compiling and flashing
 
-Now you compile the code by clicking the *Compile* button on the top of the screen:
+### Compiling
 
+Compile the code by clicking the *Compile* button at the top of the screen:
 
-![The compile button](assets/lights7.png)
+<span class="images">![The compile button](assets/lights7.png)</span>
 
-When compilation succeeds, a file is downloaded. This is the compiled firmware for your development board.
+A successful compilation downloads a `bin` file to your computer. This is the compiled firmware for your development board.
 
-When you connect your board to your computer, it will mount as a USB mass storage device, like a USB drive. You can drag and drop the firmware onto the board to flash the new application onto the board.
+### Flashing
 
+When you connect your board to your computer, it mounts as a USB mass storage device, like a USB drive. To flash the new application onto the board, drag and drop the firmware file onto the mass storage device:
 
-![Flashing the application on Windows](assets/lights8.png)
+<span class="images">![Flashing the application on Windows](assets/lights8.png)<span>Drag the firmware file onto the mass storage device to flash the application.</span></span>
 
-*Drag the firmware file onto the mass storage device to flash the application.*
+<span class="notes">**Note:** On some boards you might need to press the *Reset* button to load the program.</span>
 
-<span class="notes">**Note:** On some boards you might need to press the *RESET* button to load the program.</span>
+### Testing the application
 
-After flashing the application the red LED should light up when you wave your hand in front of the PIR sensor.
+After flashing the application, you can test it by waving your hand in front of the PIR sensor; the red LED should light up.
 
 ## Developing using mbed CLI
 
@@ -158,5 +159,5 @@ $ mbed compile -t GCC_ARM -m YOUR_BOARD_NAME
 # Image: ./.build/K64F/GCC_ARM/simple-mbed-client-example.bin
 ```
 
-Now copy the binary file that was generated to your board using drag-and-drop programming (as shown under [Compiling and flashing](#compiling-and-flashing)).
+Copy the binary file that was generated to your board using drag-and-drop programming (as shown under [Compiling and flashing](#compiling-and-flashing)).
 
