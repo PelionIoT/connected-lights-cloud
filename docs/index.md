@@ -9,11 +9,11 @@ We'll go over all the steps required to build the hardware, the cloud integratio
 We need the following hardware:
 
 * A [development board](https://developer.mbed.org/platforms/?software=16) capable of running mbed OS.
-* A way of connecting to the internet, either:
-    * Via Ethernet, by using a development board with an Ethernet connection.
-    * Via WiFi, by using an [ESP8266 WiFi module](https://developer.mbed.org/teams/ESP8266/).
-    * Via 6LoWPAN, by using a [6LoWPAN gateway](https://firefly-iot.com/product/firefly-6lowpan-gateway-2-4ghz/) and a [6LoWPAN shield](https://firefly-iot.com/product/firefly-arduino-shield-2-4ghz/).
-* A breadboard, to hook up all components.
+* A way of connecting to the internet. Choose one:
+    * Ethernet, by using a development board with an Ethernet connection.
+    * Wi-Fi, by using an [ESP8266 Wi-Fi module](https://developer.mbed.org/teams/ESP8266/).
+    * 6LoWPAN, by using a [6LoWPAN gateway](https://firefly-iot.com/product/firefly-6lowpan-gateway-2-4ghz/) and a [6LoWPAN shield](https://firefly-iot.com/product/firefly-arduino-shield-2-4ghz/).
+* A breadboard, to hook up the components.
 * A PIR sensor to detect motion.
 * An RGB LED - preferably an extra-bright one.
     * For a better effect you can also use a [Grove Chainable LED](http://wiki.seeed.cc/Grove-Chainable_RGB_LED/).
@@ -22,8 +22,6 @@ We need the following hardware:
 * Resistors: 1x 100 Ohm, 2x 220 Ohm.
 
 
-![Components needed](assets/lights2.png)
+<span class="images">![Components needed](assets/lights2.png)<span>Components required to build our lighting system. Top row: RGB LED, PIR sensor, ESP8266 Wi-Fi module. Bottom row: breadboard, NXP FRDM-K64F, jumper wires.</span></span>
 
-*Components required to build our lighting system. On the top: RGB LED, PIR sensor, ESP8266 WiFi module. On the bottom: breadboard, NXP FRDM-K64F, jumper wires.*
-
-We also need an account on [developer.mbed.org](http://developer.mbed.org/), to access the online compiler and mbed Device Connector.
+We also need an account on [developer.mbed.org](http://developer.mbed.org/) to access the online compiler and mbed Device Connector.

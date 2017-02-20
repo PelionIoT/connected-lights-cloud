@@ -1,6 +1,6 @@
 # Adding connectivity
 
-Now that we built our basic circuit and wrote the code to control the circuit, we can start adding connectivity to the project. Part of the ARM mbed IoT Device Platform is mbed Device Connector, a unified solution to connect devices to the internet and communicate with them regardless of *how* these devices connect to the internet. There are libraries available for a variety of connectivity methods, including Ethernet, WiFi, 6LoWPAN, Thread and Cellular.
+Now that we've built our basic circuit and wrote the code to control that circuit, we can start adding connectivity to the project. Part of the ARM mbed IoT Device Platform is mbed Device Connector, a unified solution to connect devices to the internet and communicate with them regardless of *how* these devices connect to the internet. There are libraries available for a variety of connectivity methods, including Ethernet, Wi-Fi, 6LoWPAN, Thread and Cellular.
 
 ## Obtaining a device certificate
 
@@ -12,43 +12,45 @@ All data that goes from the device to mbed Device Connector (and vice-versa) is 
 1. Click *Get my security credentials*.
 1. Copy the contents of the gray box. This is your certificate.
 
+    <span class="images">![The certificate is located in the gray box](assets/lights16.png)</span>
 
-![The certificate is located in the gray box](assets/lights16.png)
-
-Now go back to the online compiler, and create a new file ``security.h`` in the ``source`` directory. Paste the certificate in this file.
+1. Go back to the online compiler.
+1. Create a new file ``security.h`` in your application's ``source`` directory. 
+1. Paste the certificate into this file.
 
 ## Adding connectivity to the board
 
 ### Ethernet
 
-If you have a development board that connects over Ethernet, just plug in an Ethernet cable. We’re assuming that the network has DHCP enabled and the firewall does not block connections to http://connector.mbed.com.
+If you have a development board that connects over Ethernet, just plug in an Ethernet cable. We’re assuming that the network has DHCP enabled and the firewall does not block connections to *http://connector.mbed.com*.
 
-### ESP8266 WiFi module
+### ESP8266 Wi-Fi module
 
-To wire the ESP8266 module up to your development board, look at the [ESP8266 Cookbook page](https://developer.mbed.org/users/4180_1/notebook/using-the-esp8266-with-the-mbed-lpc1768/). In general this means hooking up the ESP8266 TX pin up to `D0` and the ESP8266 RX pin up to `D1` on your development board.
+To wire the ESP8266 module up to your development board, look at the [ESP8266 Cookbook page](https://developer.mbed.org/users/4180_1/notebook/using-the-esp8266-with-the-mbed-lpc1768/). Broadly, this means hooking up the ESP8266's TX pin to `D0` and RX pin to `D1`.
 
-#### ESP8266 on NUCLEO boards
-
-On the NUCLEO boards pins `D0` and `D1` are used for serial communication with the computer. Use pins `D8` and `D2` instead.
+<span class="notes">**Note about ESP8266 on NUCLEO boards:** On the NUCLEO boards pins `D0` and `D1` are used for serial communication with the computer. Use pins `D8` and `D2` instead.</span>
 
 ### 6LoWPAN
 
-First connect your 6LoWPAN gateway to an IPv6-enabled network by following the steps under 'Gateway Configuration' on [this page](https://github.com/ARMmbed/mbed-client-example-6lowpan#gateway-configuration). Then just click the 6LoWPAN shield on top of your development board.
+First connect your 6LoWPAN gateway to an IPv6-enabled network by following the steps under 'Gateway Configuration' on [this page](https://github.com/ARMmbed/mbed-client-example-6lowpan#gateway-configuration). 
 
-## Adding libraries
+Then attach the 6LoWPAN shield to the top of your development board.
+
+## Adding libraries with the online compiler
 
 For the device and mbed Device Connector to talk we need the [mbed Client library](https://docs.mbed.com/docs/mbed-client-guide/en/latest/). This library is already included in mbed OS, and is very powerful, but can also be daunting for new users. In this example we'll use an additional library built on top of mbed Client: SimpleClient. This library is designed to easily expose variables and resources to the cloud.
 
 We will also use [EasyConnect](https://github.com/ARMmbed/easy-connect) to handle connectivity.
 
-To add these libraries to your project go back to the online compiler, and:
+To add these libraries to your project:
 
-1. Right click on your program in the tree and select *Import Library > From URL*.
-1. Under 'Source URL' enter: ``https://github.com/armmbed/easy-connect``.
+1. Go back to the online compiler.
+1. Right click on your program in the tree and select *Import Library* > *From URL*.
+1. Under *Source URL* enter: ``https://github.com/armmbed/easy-connect``.
 1. Do **not** tick 'Update all sub-libraries to the latest version'.
 1. Click *Import*.
-1. Again, right click on your program and select *Import Library > From URL*.
-1. Under 'Source URL' enter: ``https://developer.mbed.org/teams/sandbox/code/simple-mbed-client/``.
+1. Again, right click on your program and select *Import Library* > *From URL*.
+1. Under *Source URL* enter: ``https://developer.mbed.org/teams/sandbox/code/simple-mbed-client/``.
 1. Click *Import*.
 
 ## Adding libraries with mbed CLI
@@ -95,9 +97,14 @@ We need to tell EasyConnect which connectivity method to use. Open ``mbed_app.js
 /* snip */
 ```
 
-If you are using WiFi, also set your WiFi SSID and your password. If you used different pins than `D0`/`D1`, update the pin names too.
+If you:
+
+* Are using Wi-Fi: also set your Wi-Fi SSID and your password. 
+* Used pins other than `D0`/`D1`: also change the pin names.
 
 ## Writing code
+
+### Setting up a connection
 
 We need to add some code to the application so it connects to the internet and sets up a connection to mbed Device Connector.
 
@@ -170,6 +177,8 @@ int main(int, char**) {
 }
 ```
 
+### Program logic
+
 The code sample above does not do much, except for setting up the connection. We can now define some logic for this program:
 
 1. The color of the LED should be configurable.
@@ -177,12 +186,14 @@ The code sample above does not do much, except for setting up the connection. We
 1. There should be a permanent-on mode for the lights.
 1. We should notify mbed Device Connector whenever we detect movement.
 
-We can implement these actions by defining resources. Resources are actions that can be read or written from the cloud, and which we can subscribe to (when a resource changes) on both device and cloud side. Resources are addressable under a path and an access modifier (for example, only write allowed). Let's define a resource for each of our actions:
+We can implement these actions by defining *resources*: pieces of information the device makes available. We can read or write to them from the cloud, and the device can use a resource's value to determine the correct action to perform. We can reach a resource with a URI and access modifier (for example, only write allowed), and we can also subscribe to them, so we'll be notified when a resource changes.
 
-* led/0/color - the color of the LED.
-* led/0/timeout - the timeout (in seconds) after detection; lights are disabled when this period ends.
-* led/0/permanent_status - whether we should have the lights permanently on (or off).
-* pir/0/count - the number of times the PIR sensor was triggered. Read only, and should allow notifications.
+Let's define a resource for each of our actions:
+
+* `led/0/color` - the color of the LED.
+* `led/0/timeout` - the timeout (in seconds) after detection; lights are disabled when this period ends.
+* `led/0/permanent_status` - whether we should have the lights permanently on (or off).
+* `pir/0/count` - the number of times the PIR sensor was triggered. Read only, and should allow notifications.
 
 We can use SimpleClient to define these resources and attach actions to each resource.
 
