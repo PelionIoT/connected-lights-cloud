@@ -1,6 +1,6 @@
 # Building an internet connected lighting system
 
-In this tutorial we'll use the ARM mbed IoT Device Platform to build a complete connected lighting system that you can deploy in your house or office. The system consists of one (or more) extra-bright RGB LEDs hooked up to an mbed OS development board. The lights can be turned on or off by a motion sensor, but are also connected to the internet, so you can change their color. The system uses mbed Device Connector to connect to the internet, and is secured end-to-end.
+In this tutorial we'll use the ARM mbed IoT Device Platform to build a complete connected lighting system that you can deploy in your house or office. The system consists of one (or more) extra-bright RGB LEDs hooked up to an mbed OS development board. The lights can be turned on or off by a motion sensor, but are also connected to the internet, so you can change their color. The system uses mbed Cloud to connect to the internet, is secured end-to-end, and can be updated via over-the-air firmware updates.
 
 We'll go over all the steps required to build the hardware, the cloud integration, and the application. At the end of the tutorial you'll have a firm understanding of building complete connected IoT solutions on the mbed IoT Device Platform. You'll also have a cool light.
 
@@ -8,11 +8,11 @@ We'll go over all the steps required to build the hardware, the cloud integratio
 
 We need the following hardware:
 
-* A [development board](https://developer.mbed.org/platforms/?software=16) capable of running mbed OS.
-* A way of connecting to the internet. Choose one:
-    * Ethernet, by using a development board with an Ethernet connection.
-    * Wi-Fi, by using an [ESP8266 Wi-Fi module](https://developer.mbed.org/teams/ESP8266/).
-    * 6LoWPAN, by using a [6LoWPAN gateway](https://firefly-iot.com/product/firefly-6lowpan-gateway-2-4ghz/) and a [6LoWPAN shield](https://firefly-iot.com/product/firefly-arduino-shield-2-4ghz/).
+* A [development board](https://developer.mbed.org/platforms/?software=16) capable of connecting to mbed Cloud. Either:
+    * [NXP FRDM-K64F](https://developer.mbed.org/platforms/FRDM-K64F/) using Ethernet.
+    * [ST NUCLEO-F429ZI](https://developer.mbed.org/platforms/ST-Nucleo-F429ZI/) with Ethernet.
+    * [Ameba RTL8195]() with Wi-Fi.
+    * [u-blox EVK-ODIN-W2](https://developer.mbed.org/platforms/ublox-EVK-ODIN-W2/) with Ethernet and Wi-Fi.
 * A breadboard, to hook up the components.
 * A PIR sensor to detect motion.
 * An RGB LED - preferably an extra-bright one.
@@ -22,6 +22,9 @@ We need the following hardware:
 * Resistors: 1x 100 Ohm, 2x 220 Ohm.
 
 
-<span class="images">![Components needed](assets/lights2.png)<span>Components required to build our lighting system. Top row: RGB LED, PIR sensor, ESP8266 Wi-Fi module. Bottom row: breadboard, NXP FRDM-K64F, jumper wires.</span></span>
+<span class="images">![Components needed](assets/lights2.png)<span>Components required to build our lighting system. Top row: RGB LED, PIR sensor, Grove Chainable LED. Bottom row: breadboard, NXP FRDM-K64F, jumper wires.</span></span>
 
-We also need an account on [developer.mbed.org](http://developer.mbed.org/) to access the online compiler and mbed Device Connector.
+We also need:
+
+* An account on [developer.mbed.org](https://developer.mbed.org/) to access the online compiler.
+* An account on [portal.mbedcloud.com](https://portal.mbedcloud.com) to access to the mbed Cloud Portal.
