@@ -11,7 +11,7 @@
   "dependencies": {
     "express": "^4.13.4",
     "hbs": "^4.0.0",
-    "konekuta": "^0.3.4",
+    "konekuta-cloud": "^1.0.1",
     "socket.io": "^1.4.6"
   }
 }

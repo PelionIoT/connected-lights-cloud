@@ -3,5 +3,7 @@ node_modules/
 BUILD/
 .vscode/
 tags
-
+.update-certificates/
+identity_dev_security.c
+.mbed_cloud_config.json
 

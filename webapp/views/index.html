@@ -5,7 +5,6 @@
   <title>Light System</title>
   <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,300,600' rel='stylesheet' type='text/css'>
   <link rel="stylesheet" href="/style.css">
-  <link rel="import" href="/color-picker-element/dist/color-picker.html">
   <link rel="manifest" href="/manifest.json">
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 </head>
@@ -29,10 +28,11 @@
   <div id="notification" style="opacity: 0; visibility: hidden;"></div>
 
   <script src="/helper-functions.js"></script>
+  <script src="/cp.js"></script>
   <script src="/color-picker.js"></script>
   <script src="/socket.io/socket.io.js"></script>
   <script>
-    /*global io getElement updateStatusUi getDeviceName showNotification localStorage */
+    /*global io getElement updateStatusUi getDeviceName showNotification */
 
     // Here is how we connect back to the server
     var socket = io.connect(location.origin);
@@ -47,11 +47,11 @@
     });
 
     // Device was deleted, remove it from the UI
-    socket.on('deleted-device', deleteDeviceEv = function(endpoint) {
+    socket.on('removed-device', deleteDeviceEv = function(endpoint) {
+      showNotification(getDeviceName(endpoint, true) + ' was de-registered');
+
       var li = getElement(endpoint);
       li.parentNode.removeChild(li);
-
-      showNotification(getDeviceName(endpoint, true) + ' was de-registered');
     });
 
     // Status of a device was updated
@@ -126,20 +126,6 @@
         return false;
       }
 
-      // Names are stored locally...
-      if (e.target.classList.contains('change-endpoint-name')) {
-        var n = prompt('Enter new name');
-        if (n) {
-          e.target.textContent = n;
-          localStorage.setItem(endpoint + '-name', n);
-        }
-        else if (n === '') {
-          e.target.textContent = endpoint;
-          localStorage.setItem(endpoint + '-name', '');
-        }
-        return false;
-      }
-
       // Click on color => show color picker
       if (e.target.classList.contains('color')) {
         var cp = document.querySelector('#color-picker-overlay');
@@ -159,7 +145,7 @@
       var old = el.textContent.split(' ')[0];
 
       // Ask for a new value and verify that it's a number
-      var v = prompt('Enter a new value for the motion timeout');
+      var v = prompt('Enter a new value for the PIR timeout');
       if (v === false) return;
       if (!v || isNaN(v)) {
         return showNotification('Updating timeout failed: not a number');
@@ -217,6 +203,15 @@
     }
 
     // ==== END UI ACTIONS ====
+
+
+    // ==== Notifications ====
+
+    // Movement detected! This is an event sent by the server...
+    socket.on('change-count', function(endpoint, count) {
+      // At the bottom of the page show a notification :-)
+      showNotification('Movement detected at ' + getDeviceName(endpoint));
+    });
 
   </script>
 

@@ -4,12 +4,12 @@
         "pir-pin": {
             "help": "Pin to which the PIR sensor is connected",
             "macro_name": "PIR_PIN",
-            "value": "D2"
+            "value": "SW2"
         },
 
         "led-type": {
             "help": "options are TRICOLOR_ANODE,TRICOLOR_CATHODE,GROVE_CHAINABLE",
-            "value": "TRICOLOR_ANODE"
+            "value": "GROVE_CHAINABLE"
         },
 
         "led-pin-red": {
@@ -59,17 +59,31 @@
         "mesh_radio_type": {
             "help": "options are ATMEL, MCR20",
             "value": "ATMEL"
-        }
+        },
 
+        "endpoint-type": {
+            "help": "mbed Cloud endpoint type (used to find this device back through the API)",
+            "value": "\"light-system\""
+        },
+
+        "developer-mode": {
+            "help": "Enable Developer mode to skip Factory enrollment",
+            "value": 1
+        }
     },
 
-    "macros": ["MBEDTLS_USER_CONFIG_FILE=\"mbedtls_mbed_client_config.h\"", "MBEDTLS_NO_DEFAULT_ENTROPY_SOURCES", "MBEDTLS_TEST_NULL_ENTROPY"],
+    "macros": ["MBEDTLS_USER_CONFIG_FILE=\"mbedtls_mbed_client_config.h\"",
+               "MBED_CLOUD_CLIENT_USER_CONFIG_FILE=\"mbed_cloud_client_user_config.h\"",
+               "MBEDTLS_NO_DEFAULT_ENTROPY_SOURCES",
+               "MBEDTLS_TEST_NULL_ENTROPY"],
 
     "target_overrides": {
         "*": {
             "target.features_add": ["NANOSTACK", "LOWPAN_ROUTER", "COMMON_PAL"],
-            "mbed-mesh-api.6lowpan-nd-channel-page": 0,
-            "mbed-mesh-api.6lowpan-nd-channel": 12,
+            "platform.stdio-baud-rate": 115200,
+            "platform.stdio-convert-newlines": true,
+            "mbed-client.sn-coap-max-blockwise-payload-size": 1024,
+            "nanostack-hal.event_loop_thread_stack_size": 8192,
             "mbed-trace.enable": 0
         },
         "NUCLEO_F401RE": {

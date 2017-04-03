@@ -19,7 +19,7 @@ Part of the ARM mbed IoT Device Platform is an online compiler, which we will us
     <span class="images">![Import from URL](assets/lights18.png)</span>
 
 1. Under **Source URL** enter `https://github.com/armmbed/connected-lights`.
-    
+
     Do not check the **Update all libraries to the latest revision** box.
 
     <span class="images">![Creating a program in the online compiler](assets/lights6.png)</span>
@@ -91,24 +91,24 @@ InterruptIn pir(PIR_PIN);   // This pin value comes out mbed_app.json
 
 // Whenever movement is not detected
 void pir_fall() {
-  setRgbColor(0.0f, 0.0f, 0.0f);
+    setRgbColor(0.0f, 0.0f, 0.0f);
 }
 
 // Whenever movement is detected
 void pir_rise() {
-  // set the color to red
-  setRgbColor(1.0f, 0.0f, 0.0f);
+    // set the color to red
+    setRgbColor(1.0f, 0.0f, 0.0f);
 }
 
 int main(int, char**) {
-  // Blink the LED when the application starts
-  setRgbColor(0.0f, 1.0f, 0.0f);
-  Thread::wait(500);
-  setRgbColor(0.0f, 0.0f, 0.0f);
+    // Blink the LED when the application starts
+    setRgbColor(0.0f, 1.0f, 0.0f);
+    Thread::wait(500);
+    setRgbColor(0.0f, 0.0f, 0.0f);
 
-  // The PIR sensor uses interrupts, no need to poll
-  pir.fall(&pir_fall);
-  pir.rise(&pir_rise);
+    // The PIR sensor uses interrupts, no need to poll
+    pir.fall(&pir_fall);
+    pir.rise(&pir_rise);
 }
 ```
 
@@ -156,7 +156,7 @@ $ mbed compile -t GCC_ARM -m YOUR_BOARD_NAME
 
 # … building …
 # ends with something like:
-# Image: ./.build/K64F/GCC_ARM/simple-mbed-client-example.bin
+# Image: ./BUILD/K64F/GCC_ARM/simple-mbed-client-example.bin
 ```
 
 Copy the binary file that was generated to your board using drag-and-drop programming (as shown under [Compiling and flashing](#compiling-and-flashing)).

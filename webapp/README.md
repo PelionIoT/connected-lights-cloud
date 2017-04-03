@@ -1,6 +1,6 @@
 # Connected Lights Web Application
 
-This is the web application that goes with the article [Building an internet connected lighting system](https://docs.mbed.com/docs/building-an-internet-connected-lighting-system/en/latest/), in which we build a lighting system on top of the ARM mbed IoT Device Platform.
+This is the web application that goes with the article [Building an internet connected lighting system](), in which we build a lighting system on top of the ARM mbed IoT Device Platform.
 
 To get started, install a recent version of [node.js](https://nodejs.org/en/). Then:
 

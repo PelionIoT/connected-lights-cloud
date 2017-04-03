@@ -11,7 +11,8 @@ function updateStatusUi(endpoint, status) {
 }
 
 function getDeviceName(endpoint, trim) {
-  var name = localStorage.getItem(endpoint + '-name') || endpoint;
+  var el = document.querySelector('li[data-endpoint="' + endpoint + '"] .endpoint');
+  var name = el ? el.textContent : endpoint;
   if (trim && name.length > 20) name = name.substr(0, 20) + '...';
   return name;
 }

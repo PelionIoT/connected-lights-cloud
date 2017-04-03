@@ -15,7 +15,7 @@ All data that goes from the device to mbed Device Connector (and vice-versa) is 
     <span class="images">![The certificate is located in the gray box](assets/lights16.png)</span>
 
 1. Go back to the online compiler.
-1. Create a new file ``security.h`` in your application's ``source`` directory. 
+1. Create a new file ``security.h`` in your application's ``source`` directory.
 1. Paste the certificate into this file.
 
 ## Adding connectivity to the board
@@ -32,7 +32,7 @@ To wire the ESP8266 module up to your development board, look at the [ESP8266 Co
 
 ### 6LoWPAN
 
-First connect your 6LoWPAN gateway to an IPv6-enabled network by following the steps under 'Gateway Configuration' on [this page](https://github.com/ARMmbed/mbed-client-example-6lowpan#gateway-configuration). 
+First connect your 6LoWPAN gateway to an IPv6-enabled network by following the steps under 'Gateway Configuration' on [this page](https://github.com/ARMmbed/mbed-client-example-6lowpan#gateway-configuration).
 
 Then attach the 6LoWPAN shield to the top of your development board.
 
@@ -50,7 +50,7 @@ To add these libraries to your project:
 1. Do **not** tick 'Update all sub-libraries to the latest version'.
 1. Click *Import*.
 1. Again, right click on your program and select *Import Library* > *From URL*.
-1. Under *Source URL* enter: ``https://developer.mbed.org/teams/sandbox/code/simple-mbed-client/``.
+1. Under *Source URL* enter: ``https://github.com/armmbed/simple-cloud-client/``.
 1. Click *Import*.
 
 ## Adding libraries with mbed CLI
@@ -59,7 +59,7 @@ If you are using mbed CLI, run the following commands to add the libraries:
 
 ```bash
 $ mbed add easy-connect
-$ mbed add http://developer.mbed.org/teams/sandbox/code/simple-mbed-client/
+$ mbed add simple-cloud-client
 ```
 
 ## Updating configuration
@@ -99,7 +99,7 @@ We need to tell EasyConnect which connectivity method to use. Open ``mbed_app.js
 
 If you:
 
-* Are using Wi-Fi: also set your Wi-Fi SSID and your password. 
+* Are using Wi-Fi: also set your Wi-Fi SSID and your password.
 * Used pins other than `D0`/`D1`: also change the pin names.
 
 ## Writing code
@@ -134,46 +134,48 @@ void pir_rise() { }
 DigitalOut statusLed(LED1);
 int        statusLedBlinkId;    // Callback ID
 void blink_builtin_led() {
-  statusLed = !statusLed;
+    statusLed = !statusLed;
 }
 
 void registered() {
-  // When we registered with mbed Device Connector, blink faster
-  eventQueue.cancel(statusLedBlinkId);
+    // When we registered with mbed Device Connector, blink faster
+    eventQueue.cancel(statusLedBlinkId);
 
-  statusLedBlinkId = eventQueue.call_every(300, &blink_builtin_led);
+    statusLedBlinkId = eventQueue.call_every(300, &blink_builtin_led);
+
+    printf("Registered\n");
 }
 
 int main(int, char**) {
-  // Using an event queue is a very useful abstraction around many microcontroller 'problems', like dealing with ISRs
-  // see https://developer.mbed.org/blog/entry/Simplify-your-code-with-mbed-events/
-  eventThread.start(callback(&eventQueue, &EventQueue::dispatch_forever));
+    // Using an event queue is a very useful abstraction around many microcontroller 'problems', like dealing with ISRs
+    // see https://developer.mbed.org/blog/entry/Simplify-your-code-with-mbed-events/
+    eventThread.start(callback(&eventQueue, &EventQueue::dispatch_forever));
 
-  // Blink the built-in LED every 1000ms. After registering we'll blink every 300ms.
-  statusLedBlinkId = eventQueue.call_every(1000, &blink_builtin_led);
+    // Blink the built-in LED every 1000ms. After registering we'll blink every 300ms.
+    statusLedBlinkId = eventQueue.call_every(1000, &blink_builtin_led);
 
-  // Disable the LED
-  setRgbColor(0.0f, 0.0f, 0.0f);
+    // Disable the LED
+    setRgbColor(0.0f, 0.0f, 0.0f);
 
-  // The PIR sensor uses interrupts, no need to poll
-  pir.rise(eventQueue.event(&pir_rise));
+    // The PIR sensor uses interrupts, no need to poll
+    pir.rise(eventQueue.event(&pir_rise));
 
-  NetworkInterface* network = easy_connect(true);
-  if (!network) {
-    printf("Connect to internet failed... See serial output.\r\n");
-    return 1;
-  }
+    NetworkInterface* network = easy_connect(true);
+    if (!network) {
+        printf("Connect to internet failed... See serial output.\r\n");
+        return 1;
+    }
 
-  struct MbedClientOptions options = client.get_default_options();
-  options.DeviceType = "light-system";
-  if (!client.setup(options, network)) {
-    printf("Setting up mbed_client failed...\r\n");
-    return 1;
-  }
+    struct MbedClientOptions options = client.get_default_options();
+    options.DeviceType = "light-system";
+    if (!client.setup(options, network)) {
+        printf("Setting up mbed_client failed...\r\n");
+        return 1;
+    }
 
-  client.on_registered(eventQueue.event(&registered));
+    client.on_registered(&registered);
 
-  // We can just let the main thread end here, no need to busy-loop
+    wait(osWaitForever);
 }
 ```
 
@@ -219,26 +221,28 @@ bool ledOnBecauseOfPir = false;
 Timeout pirTimeout;
 
 // Permanent statuses (set by led/0/permanent_status)
-#define STATUS_NONE     0
-#define STATUS_ON       1
-#define STATUS_OFF      2
+enum PermanentStatus {
+    STATUS_NONE = 0,
+    STATUS_ON   = 1,
+    STATUS_OFF  = 2
+};
 
 // clear the lights
 void putLightsOff() {
-  setRgbColor(0.0f, 0.0f, 0.0f);
+    setRgbColor(0.0f, 0.0f, 0.0f);
 }
 
 // Status changes
 void statusChanged(int newStatus) {
-  switch (newStatus) {
-    case STATUS_ON: // Permanently on? OK.
-      putLightsOn();
-      break;
-    case STATUS_NONE: // Otherwise listen to PIR sensor
-    case STATUS_OFF:  // Or be off forever
-      putLightsOff();
-      break;
-  }
+    switch (newStatus) {
+        case STATUS_ON: // Permanently on? OK.
+            putLightsOn();
+            break;
+        case STATUS_NONE: // Otherwise listen to PIR sensor
+        case STATUS_OFF:  // Or be off forever
+            putLightsOff();
+            break;
+    }
 }
 
 // Here are our resources:
@@ -250,51 +254,51 @@ SimpleResourceInt pirCount = client.define_resource("pir/0/count", 0, M2MBase::G
 
 // As said above, color is encoded in three bytes
 void putLightsOn() {
-  // parse the individual channels
-  int redCh   = ledColor >> 16 & 0xff;
-  int greenCh = ledColor >> 8 & 0xff;
-  int blueCh  = ledColor & 0xff;
+    // parse the individual channels
+    int redCh   = ledColor >> 16 & 0xff;
+    int greenCh = ledColor >> 8 & 0xff;
+    int blueCh  = ledColor & 0xff;
 
-  // our color is 0..255, but we need a float between 0..1, cast it.
-  float red = static_cast<float>(redCh) / 255.0f;
-  float green = static_cast<float>(greenCh) / 255.0f;
-  float blue = static_cast<float>(blueCh) / 255.0f;
-  setRgbColor(red, green, blue);
+    // our color is 0..255, but we need a float between 0..1, cast it.
+    float red = static_cast<float>(redCh) / 255.0f;
+    float green = static_cast<float>(greenCh) / 255.0f;
+    float blue = static_cast<float>(blueCh) / 255.0f;
+    setRgbColor(red, green, blue);
 }
 
 // Color updated from the cloud,
 // if the LED is on because of the PIR, or if the LED is on permanently -> Set the color.
 void colorChanged(int newColor) {
-  if (ledOnBecauseOfPir || ledStatus == STATUS_ON) {
-    putLightsOn();
-  }
+    if (ledOnBecauseOfPir || ledStatus == STATUS_ON) {
+        putLightsOn();
+    }
 }
 
 // Timeout (from led/0/timeout) happened after PIR sensor was triggered...
 void onPirTimeout() {
-  // if we're not permanent on
-  if (ledStatus != STATUS_ON) {
-    // clear the lights
-    putLightsOff();
+    // if we're not permanent on
+    if (ledStatus != STATUS_ON) {
+        // clear the lights
+        putLightsOff();
 
-    ledOnBecauseOfPir = false;
-  }
+        ledOnBecauseOfPir = false;
+    }
 }
 
 // When the PIR sensor fires...
 void pir_rise() {
-  // Update the resource
-  pirCount = pirCount + 1;
+    // Update the resource
+    pirCount = pirCount + 1;
 
-  // Permanent off? Don't put the lights on...
-  if (ledStatus == STATUS_OFF) return;
+    // Permanent off? Don't put the lights on...
+    if (ledStatus == STATUS_OFF) return;
 
-  // Otherwise do it!
-  ledOnBecauseOfPir = true;
-  putLightsOn();
+    // Otherwise do it!
+    ledOnBecauseOfPir = true;
+    putLightsOn();
 
-  // And attach the timeout
-  pirTimeout.attach(eventQueue.event(&onPirTimeout), static_cast<float>(ledTimeout));
+    // And attach the timeout
+    pirTimeout.attach(eventQueue.event(&onPirTimeout), static_cast<float>(ledTimeout));
 }
 ```
 
