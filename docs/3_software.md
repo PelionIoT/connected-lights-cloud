@@ -18,7 +18,7 @@ Part of the ARM mbed IoT Device Platform is an online compiler, which we will us
 
     <span class="images">![Import from URL](assets/lights18.png)</span>
 
-1. Under **Source URL** enter `https://github.com/armmbed/connected-lights`.
+1. Under **Source URL** enter `https://github.com/armmbed/connected-lights-cloud`.
 
     Do not check the **Update all libraries to the latest revision** box.
 
@@ -139,11 +139,11 @@ After flashing the application, you can test it by waving your hand in front of 
 You can also develop locally using [mbed CLI](http://github.com/armmbed/mbed-cli), a command line tool for mbed OS. First follow [the installation steps](https://github.com/ARMmbed/mbed-cli#installing-mbed-cli), then use the following commands to recreate the flow above:
 
 ```bash
-# import the connected-lights project
-$ mbed import connected-lights
+# import the connected-lights-cloud project
+$ mbed import connected-lights-cloud
 
 # go into the folder
-cd connected-lights/
+cd connected-lights-cloud/
 
 # now edit the mbed_app.json file, and create the main.cpp file
 
@@ -156,7 +156,7 @@ $ mbed compile -t GCC_ARM -m YOUR_BOARD_NAME
 
 # … building …
 # ends with something like:
-# Image: ./BUILD/K64F/GCC_ARM/simple-mbed-client-example.bin
+# Image: ./BUILD/K64F/GCC_ARM/connected-lights-cloud.bin
 ```
 
 Copy the binary file that was generated to your board using drag-and-drop programming (as shown under [Compiling and flashing](#compiling-and-flashing)).
