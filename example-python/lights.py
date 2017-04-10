@@ -1,39 +1,31 @@
-import mbed_connector_api
-import time
-import base64
 import os
+import pprint
+from mbed_cloud.devices import DeviceAPI
 
 TOKEN = "YOUR_ACCESS_TOKEN"
 
-connector = mbed_connector_api.connector(os.environ['TOKEN'] or TOKEN)
+# set up the Python SDK
+config = {}
+config['api_key'] = os.environ['TOKEN'] or TOKEN
+api = DeviceAPI(config)
+api.start_long_polling()
 
-def notificationHandler(data):
-    for n in data['notifications']:
-        print "Got a notification for %s: %s -> new value %s" % (n['ep'], n['path'], base64.b64decode(n['payload']))
+# todo, filter by endpoint type, see https://github.com/ARMmbed/mbed-cloud-sdk-python/issues/88
+devices = list(api.list_connected_devices())
 
-connector.startLongPolling()
-connector.setHandler('notifications', notificationHandler)
+print("Found %d lights" % (len(devices)), [ c.id for c in devices ])
 
-e = connector.getEndpoints("light-system")
-while not e.isDone():
-    None
-if e.error:
-    raise(e.error.error)
-print("Found %d lights: %s" % (len(e.result), str(e.result)))
+for device in devices:
+    def pir_callback(count):
+        print("Motion detected at %s, new count is %s" % (device.id, count))
 
-for endpoint in e.result:
-    # Get a notification whenever the PIR count changes
-    connector.putResourceSubscription(endpoint['name'], "/pir/0/count")
+    api.add_subscription_with_callback(device.id, '/pir/0/count', pir_callback)
+    print("subscribed to resource")
 
-    # And change the color to pink, because that's nice
     pink = 0xff69b4
-    x = connector.putResourceValue(endpoint['name'], "/led/0/color", pink)
-    while not x.isDone():
-        None
-    if (x.error):
-        print("Setting pink color for %s failed: %s" % (endpoint['name'], x.error.error))
-    else:
-        print("Set color of %s to pink!" % endpoint['name'])
+    api.set_resource_value(device.id, '/led/0/color', pink)
+    print("set color to pink")
 
-while 1:
-    time.sleep(1.0)
+# Run forever
+while True:
+    pass

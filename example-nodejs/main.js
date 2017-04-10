@@ -1,39 +1,46 @@
 var TOKEN = 'YOUR_ACCESS_TOKEN';
 
-var CloudApi = require('mbed-connector-api');
-var api = new CloudApi({
-  accessKey: process.env.TOKEN || TOKEN
+var mbed = require('mbed-cloud-sdk');
+var api = new mbed.DevicesApi({
+    apiKey: process.env.TOKEN || TOKEN
 });
 
-// Start notification channel
-api.startLongPolling(function(err) {
-  if (err) throw err;
+// Start notification channel (to receive data back from the device)
+api.startNotifications(function(err) {
+    if (err) return console.error(err);
 
-  // Find all lights
-  api.getEndpoints(function(err, devices) {
-    if (err) throw err;
+    // Find all the lights
+    api.listConnectedDevices({ type: 'light-system' }, function(err, resp) {
+        if (err) return console.error(err);
 
-    console.log('Found', devices.length, 'lights', devices);
+        var devices = resp.data;
+        if (devices.length === 0) return console.error('No lights found...');
 
-    devices.forEach(function(d) {
-      // For every light, we will request notifications on the PIR resource
-      api.putResourceSubscription(d.name, '/pir/0/count', function(err) {
-        console.log('subscribed to resource', err);
-      });
+        console.log('Found', devices.length, 'lights', devices.map(d => d.id));
 
-      // and set the color to orange, as your's truly is Dutch
-      var orange = 0xff6400;
-      api.putResourceValue(d.name, '/led/0/color', orange, function(err) {
-        if (err) console.error('Setting led/0/color for', d.name, 'failed', err);
-        console.log('Set color of', d.name, 'to orange!');
-      });
+        devices.forEach(function(d) {
 
+            // Subscribe to the PIR sensor
+            api.addResourceSubscription({
+                id: d.id,
+                path: '/pir/0/count',
+                fn: function(count) {
+                    console.log('Motion detected at', d.id, 'new count is', count);
+                }
+            }, function(err) {
+                console.log('subscribed to resource', err || 'OK');
+            });
+
+            // Set the color of the light
+            var orange = 0xff6400;
+            api.setResourceValue({
+                id: d.id,
+                path: '/led/0/color',
+                value: orange
+            }, function(err) {
+                console.log('set color to orange', err || 'OK');
+            });
+
+        });
     });
-
-  }, { parameters: { type: 'light-system' } });
-});
-
-// Notifications
-api.on('notification', function(notification) {
-  console.log('Got a notification', notification);
 });

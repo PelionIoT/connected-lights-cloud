@@ -1,6 +1,6 @@
 var TOKEN = 'YOUR_ACCESS_TOKEN';
 
-var konekuta = require('../../konekuta');
+var konekuta = require('konekuta-cloud');
 var express = require('express');
 var app = express();
 var server = require('http').Server(app);
