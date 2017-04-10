@@ -4,7 +4,7 @@
         "pir-pin": {
             "help": "Pin to which the PIR sensor is connected",
             "macro_name": "PIR_PIN",
-            "value": "SW2"
+            "value": "D2"
         },
 
         "led-type": {
