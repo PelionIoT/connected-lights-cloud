@@ -1,10 +1,10 @@
 # Controlling the device from mbed Device Connector
 
-At this moment the device is connected through mbed Device Connector. In the code sample that we gave in the previous section, we defined a number of resources using calls to `client.define_resource()`. These resources are automatically exposed to mbed Device Connector, from where you can read and write resources. Then, changes are automatically synced back to the device. That means that we already have a remote management interface for this device.
+At this moment the device is connected through mbed Cloud. In the code sample that we gave in the previous section, we defined a number of resources using calls to `client.define_resource()`. These resources are automatically exposed to mbed Cloud, from where you can read and write resources. Then, changes are automatically synced back to the device. That means that we already have a remote management interface for this device.
 
 ## Seeing the status of a device
 
-Each device that you connect to mbed Device Connector has an endpoint name. This is a GUID (in the form of 8874e0eb-96ef-4799-b948-e91d05147bfe), which is the unique identifier of your device. If you don't know the endpoint name of your device, check the ``security.h`` file in the online compiler.
+Each device that you connect to mbed Cloud has an endpoint name. This is a GUID (in the form of 8874e0eb-96ef-4799-b948-e91d05147bfe), which is the unique identifier of your device. If you don't know the endpoint name of your device, check the ``security.h`` file in the online compiler.
 
 We need the know the endpoint's name to check the device's status in the mbed Device Connector's online interface. The [endpoint](https://connector.mbed.com/#endpoints) page lists all devices associated with your account, with their current status.
 

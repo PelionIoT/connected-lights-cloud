@@ -1,44 +1,34 @@
 # Adding connectivity
 
-Now that we've built our basic circuit and wrote the code to control that circuit, we can start adding connectivity to the project. Part of the ARM mbed IoT Device Platform is mbed Device Connector, a unified solution to connect devices to the internet and communicate with them regardless of *how* these devices connect to the internet. There are libraries available for a variety of connectivity methods, including Ethernet, Wi-Fi, 6LoWPAN, Thread and Cellular.
+Now that we've built our basic circuit and wrote the code to control that circuit, we can start adding connectivity to the project. Part of the ARM mbed IoT Device Platform is mbed Cloud, a unified solution to connect devices to the internet and communicate with them regardless of *how* these devices connect to the internet. There are libraries available for a variety of connectivity methods, including Ethernet, Wi-Fi and Cellular. It's also easy to add new connectivity methods with the [unified networking APIs](https://docs.mbed.com/docs/mbed-os-api-reference/en/latest/APIs/communication/network_sockets/) in mbed OS 5.
 
 ## Obtaining a device certificate
 
-All data that goes from the device to mbed Device Connector (and vice-versa) is end-to-end encrypted by [mbed TLS](https://tls.mbed.org). To set up secure communications we need a security certificate. We can get one from the mbed Device Connector website:
+All data that goes from the device to mbed Cloud (and vice-versa) is end-to-end encrypted by [mbed TLS](https://tls.mbed.org). To set up secure communications we need a security certificate. We can get one from the mbed Cloud Portal:
 
-1. Go to the [mbed Device Connector homepage](https://connector.mbed.com) and click *Sign in to get connected*.
-1. If prompted for your login credentials, use your mbed developer account (the same account you use to log into the mbed Online Compiler).
-1. Go to *My Devices* > *Security Credentials*.
-1. Click *Get my security credentials*.
-1. Copy the contents of the gray box. This is your certificate.
+1. Go to the [mbed Cloud Portal](https://portal.mbedcloud.com/login) and sign in.
+1. If prompted for your login credentials, use your mbed Cloud credentials. These are different from your credentials for the online compiler.
+1. Go to *Developer Tools* > *Certificate*.
+1. Click *Get new device security credentials*.
+1. Copy the contents of the white box, by clicking *Copy to clipboard*. This is your certificate.
 
-    <span class="images">![The certificate is located in the gray box](assets/lights16.png)</span>
+    <span class="images">![The certificate is located in the white box](assets/lights16.png)</span>
 
 1. Go back to the online compiler.
-1. Create a new file ``security.h`` in your application's ``source`` directory.
+1. Create a new file ``identity_dev_security.c`` in your application's ``source`` directory.
 1. Paste the certificate into this file.
+
+<span class="notes">**Note:** The certificate can only be downloaded once. It's not stored in the mbed Cloud Portal.</span>
 
 ## Adding connectivity to the board
 
-### Ethernet
+We’re assuming that the network has DHCP enabled and the firewall does not block connections to *https://mbedcloud.com*.
 
-If you have a development board that connects over Ethernet, just plug in an Ethernet cable. We’re assuming that the network has DHCP enabled and the firewall does not block connections to *http://connector.mbed.com*.
-
-### ESP8266 Wi-Fi module
-
-To wire the ESP8266 module up to your development board, look at the [ESP8266 Cookbook page](https://developer.mbed.org/users/4180_1/notebook/using-the-esp8266-with-the-mbed-lpc1768/). Broadly, this means hooking up the ESP8266's TX pin to `D0` and RX pin to `D1`.
-
-<span class="notes">**Note about ESP8266 on NUCLEO boards:** On the NUCLEO boards pins `D0` and `D1` are used for serial communication with the computer. Use pins `D8` and `D2` instead.</span>
-
-### 6LoWPAN
-
-First connect your 6LoWPAN gateway to an IPv6-enabled network by following the steps under 'Gateway Configuration' on [this page](https://github.com/ARMmbed/mbed-client-example-6lowpan#gateway-configuration).
-
-Then attach the 6LoWPAN shield to the top of your development board.
+If you have a development board that connects over Ethernet, just plug in an Ethernet cable. If you have a board that connects over cellular or Wi-Fi no actions are required.
 
 ## Adding libraries with the online compiler
 
-For the device and mbed Device Connector to talk we need the [mbed Client library](https://docs.mbed.com/docs/mbed-client-guide/en/latest/). This library is already included in mbed OS, and is very powerful, but can also be daunting for new users. In this example we'll use an additional library built on top of mbed Client: SimpleClient. This library is designed to easily expose variables and resources to the cloud.
+For the device and mbed Cloud to talk we need the [mbed Cloud Client library](https://cloud.mbed.com/docs/latest/mbed-cloud-client/index.html). This is a cross-platform library which runs on mbed OS, Linux and can be ported to other RTOS'es. In this example we'll use an additional library built on top of mbed Cloud Client: SimpleCloudClient. This library is designed specifically to be used with mbed OS 5, and makes it easy to expose variables and resources to the cloud.
 
 We will also use [EasyConnect](https://github.com/ARMmbed/easy-connect) to handle connectivity.
 
@@ -100,22 +90,20 @@ We need to tell EasyConnect which connectivity method to use. Open ``mbed_app.js
 If you:
 
 * Are using Wi-Fi: also set your Wi-Fi SSID and your password.
-* Used pins other than `D0`/`D1`: also change the pin names.
 
 ## Writing code
 
 ### Setting up a connection
 
-We need to add some code to the application so it connects to the internet and sets up a connection to mbed Device Connector.
+We need to add some code to the application so it connects to the internet and sets up a connection to mbed Cloud.
 
 Replace ``main.cpp`` with:
 
 ```cpp
 #include "mbed.h"
 #include "led.h"        // Abstracts away the differens between the LED types
-#include "security.h"   // Security configuration
 #include "easy-connect.h"
-#include "simple-mbed-client.h"
+#include "simple-cloud-client.h"
 
 EventQueue eventQueue;  // An event queue
 Thread eventThread;     // An RTOS thread to process events in
@@ -127,8 +115,9 @@ InterruptIn pir(PIR_PIN);   // This pin value comes out mbed_app.json
 
 
 // YOUR CODE HERE
-void pir_rise() { }
+void pir_rise() {}
 // END OF YOUR CODE HERE
+
 
 // Use the built-in LED as a status LED
 DigitalOut statusLed(LED1);
@@ -138,7 +127,7 @@ void blink_builtin_led() {
 }
 
 void registered() {
-    // When we registered with mbed Device Connector, blink faster
+    // When we registered with mbed Cloud, blink faster
     eventQueue.cancel(statusLedBlinkId);
 
     statusLedBlinkId = eventQueue.call_every(300, &blink_builtin_led);
@@ -166,11 +155,9 @@ int main(int, char**) {
         return 1;
     }
 
-    struct MbedClientOptions options = client.get_default_options();
-    options.DeviceType = "light-system";
-    if (!client.setup(options, network)) {
-        printf("Setting up mbed_client failed...\r\n");
-        return 1;
+    if (!client.setup(network)) {
+      printf("Setting up mbed_client failed...\r\n");
+      return 1;
     }
 
     client.on_registered(&registered);
@@ -186,7 +173,7 @@ The code sample above does not do much, except for setting up the connection. We
 1. The color of the LED should be configurable.
 1. The period between the moment of motion detection to the moment lights go out should be configurable.
 1. There should be a permanent-on mode for the lights.
-1. We should notify mbed Device Connector whenever we detect movement.
+1. We should notify mbed Cloud whenever we detect movement.
 
 We can implement these actions by defining *resources*: pieces of information the device makes available. We can read or write to them from the cloud, and the device can use a resource's value to determine the correct action to perform. We can reach a resource with a URI and access modifier (for example, only write allowed), and we can also subscribe to them, so we'll be notified when a resource changes.
 
@@ -197,7 +184,7 @@ Let's define a resource for each of our actions:
 * `led/0/permanent_status` - whether we should have the lights permanently on (or off).
 * `pir/0/count` - the number of times the PIR sensor was triggered. Read only, and should allow notifications.
 
-We can use SimpleClient to define these resources and attach actions to each resource.
+We can use SimpleCloudClient to define these resources and attach actions to each resource.
 
 Replace the following section in ``main.cpp``:
 
@@ -222,27 +209,27 @@ Timeout pirTimeout;
 
 // Permanent statuses (set by led/0/permanent_status)
 enum PermanentStatus {
-    STATUS_NONE = 0,
-    STATUS_ON   = 1,
-    STATUS_OFF  = 2
+  STATUS_NONE = 0,
+  STATUS_ON   = 1,
+  STATUS_OFF  = 2
 };
 
 // clear the lights
 void putLightsOff() {
-    setRgbColor(0.0f, 0.0f, 0.0f);
+  setRgbColor(0.0f, 0.0f, 0.0f);
 }
 
 // Status changes
 void statusChanged(int newStatus) {
-    switch (newStatus) {
-        case STATUS_ON: // Permanently on? OK.
-            putLightsOn();
-            break;
-        case STATUS_NONE: // Otherwise listen to PIR sensor
-        case STATUS_OFF:  // Or be off forever
-            putLightsOff();
-            break;
-    }
+  switch (newStatus) {
+    case STATUS_ON: // Permanently on? OK.
+      putLightsOn();
+      break;
+    case STATUS_NONE: // Otherwise listen to PIR sensor
+    case STATUS_OFF:  // Or be off forever
+      putLightsOff();
+      break;
+  }
 }
 
 // Here are our resources:
@@ -254,57 +241,57 @@ SimpleResourceInt pirCount = client.define_resource("pir/0/count", 0, M2MBase::G
 
 // As said above, color is encoded in three bytes
 void putLightsOn() {
-    // parse the individual channels
-    int redCh   = ledColor >> 16 & 0xff;
-    int greenCh = ledColor >> 8 & 0xff;
-    int blueCh  = ledColor & 0xff;
+  // parse the individual channels
+  int redCh   = ledColor >> 16 & 0xff;
+  int greenCh = ledColor >> 8 & 0xff;
+  int blueCh  = ledColor & 0xff;
 
-    // our color is 0..255, but we need a float between 0..1, cast it.
-    float red = static_cast<float>(redCh) / 255.0f;
-    float green = static_cast<float>(greenCh) / 255.0f;
-    float blue = static_cast<float>(blueCh) / 255.0f;
-    setRgbColor(red, green, blue);
+  // our color is 0..255, but we need a float between 0..1, cast it.
+  float red = static_cast<float>(redCh) / 255.0f;
+  float green = static_cast<float>(greenCh) / 255.0f;
+  float blue = static_cast<float>(blueCh) / 255.0f;
+  setRgbColor(red, green, blue);
 }
 
 // Color updated from the cloud,
 // if the LED is on because of the PIR, or if the LED is on permanently -> Set the color.
 void colorChanged(int newColor) {
-    if (ledOnBecauseOfPir || ledStatus == STATUS_ON) {
-        putLightsOn();
-    }
+  if (ledOnBecauseOfPir || ledStatus == STATUS_ON) {
+    putLightsOn();
+  }
 }
 
 // Timeout (from led/0/timeout) happened after PIR sensor was triggered...
 void onPirTimeout() {
-    // if we're not permanent on
-    if (ledStatus != STATUS_ON) {
-        // clear the lights
-        putLightsOff();
+  // if we're not permanent on
+  if (ledStatus != STATUS_ON) {
+    // clear the lights
+    putLightsOff();
 
-        ledOnBecauseOfPir = false;
-    }
+    ledOnBecauseOfPir = false;
+  }
 }
 
 // When the PIR sensor fires...
 void pir_rise() {
-    // Update the resource
-    pirCount = pirCount + 1;
+  // Update the resource
+  pirCount = pirCount + 1;
 
-    // Permanent off? Don't put the lights on...
-    if (ledStatus == STATUS_OFF) return;
+  // Permanent off? Don't put the lights on...
+  if (ledStatus == STATUS_OFF) return;
 
-    // Otherwise do it!
-    ledOnBecauseOfPir = true;
-    putLightsOn();
+  // Otherwise do it!
+  ledOnBecauseOfPir = true;
+  putLightsOn();
 
-    // And attach the timeout
-    pirTimeout.attach(eventQueue.event(&onPirTimeout), static_cast<float>(ledTimeout));
+  // And attach the timeout
+  pirTimeout.attach(eventQueue.event(&onPirTimeout), static_cast<float>(ledTimeout));
 }
 ```
 
 When you compile and flash this program, you'll see that when you wave your hand in front of the PIR sensor the color of the LED changes to green, and the LED always goes off after 5 seconds.
 
-When the connection to mbed Device Connector is created, the onboard LED will blink faster. We can now control this device from the cloud.
+When the connection to mbed Cloud is created, the onboard LED will blink faster. We can now control this device from the cloud.
 
-<span class="notes">**Note:** No connection? [Inspect the logs on the device](https://developer.mbed.org/handbook/SerialPC#host-interface-and-terminal-applications).</span>
+<span class="notes">**Note:** No connection? [Inspect the logs on the device](https://docs.mbed.com/docs/mbed-os-handbook/en/latest/debugging/printf/).</span>
 

@@ -120,7 +120,7 @@ Compile the code by clicking the *Compile* button at the top of the screen:
 
 <span class="images">![The compile button](assets/lights7.png)</span>
 
-A successful compilation downloads a `bin` file to your computer. This is the compiled firmware for your development board.
+A successful compilation downloads a `.bin` file to your computer. This is the compiled firmware for your development board.
 
 ### Flashing
 
