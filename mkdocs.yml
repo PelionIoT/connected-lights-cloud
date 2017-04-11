@@ -10,6 +10,7 @@ pages:
 - ['5_controlling-from-cloud.md', 'Controlling the device from mbed Cloud']
 - ['6_cloud-api.md', 'Using the mbed Cloud API']
 - ['7_app.md', 'Bringing it all together']
-- ['8_conclusion.md', 'Conclusion']
+- ['8_updates.md', 'Firmware updates over the air']
+- ['9_conclusion.md', 'Conclusion']
 
 copyright: © ARM Ltd. Copyright 2017 – ARM mbed IoT Device Platform

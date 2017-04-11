@@ -209,27 +209,27 @@ Timeout pirTimeout;
 
 // Permanent statuses (set by led/0/permanent_status)
 enum PermanentStatus {
-  STATUS_NONE = 0,
-  STATUS_ON   = 1,
-  STATUS_OFF  = 2
+    STATUS_NONE = 0,
+    STATUS_ON   = 1,
+    STATUS_OFF  = 2
 };
 
 // clear the lights
 void putLightsOff() {
-  setRgbColor(0.0f, 0.0f, 0.0f);
+    setRgbColor(0.0f, 0.0f, 0.0f);
 }
 
 // Status changes
 void statusChanged(int newStatus) {
-  switch (newStatus) {
-    case STATUS_ON: // Permanently on? OK.
-      putLightsOn();
-      break;
-    case STATUS_NONE: // Otherwise listen to PIR sensor
-    case STATUS_OFF:  // Or be off forever
-      putLightsOff();
-      break;
-  }
+    switch (newStatus) {
+        case STATUS_ON: // Permanently on? OK.
+            putLightsOn();
+            break;
+        case STATUS_NONE: // Otherwise listen to PIR sensor
+        case STATUS_OFF:  // Or be off forever
+            putLightsOff();
+            break;
+    }
 }
 
 // Here are our resources:
@@ -241,51 +241,51 @@ SimpleResourceInt pirCount = client.define_resource("pir/0/count", 0, M2MBase::G
 
 // As said above, color is encoded in three bytes
 void putLightsOn() {
-  // parse the individual channels
-  int redCh   = ledColor >> 16 & 0xff;
-  int greenCh = ledColor >> 8 & 0xff;
-  int blueCh  = ledColor & 0xff;
+    // parse the individual channels
+    int redCh   = ledColor >> 16 & 0xff;
+    int greenCh = ledColor >> 8 & 0xff;
+    int blueCh  = ledColor & 0xff;
 
-  // our color is 0..255, but we need a float between 0..1, cast it.
-  float red = static_cast<float>(redCh) / 255.0f;
-  float green = static_cast<float>(greenCh) / 255.0f;
-  float blue = static_cast<float>(blueCh) / 255.0f;
-  setRgbColor(red, green, blue);
+    // our color is 0..255, but we need a float between 0..1, cast it.
+    float red = static_cast<float>(redCh) / 255.0f;
+    float green = static_cast<float>(greenCh) / 255.0f;
+    float blue = static_cast<float>(blueCh) / 255.0f;
+    setRgbColor(red, green, blue);
 }
 
 // Color updated from the cloud,
 // if the LED is on because of the PIR, or if the LED is on permanently -> Set the color.
 void colorChanged(int newColor) {
-  if (ledOnBecauseOfPir || ledStatus == STATUS_ON) {
-    putLightsOn();
-  }
+    if (ledOnBecauseOfPir || ledStatus == STATUS_ON) {
+        putLightsOn();
+    }
 }
 
 // Timeout (from led/0/timeout) happened after PIR sensor was triggered...
 void onPirTimeout() {
   // if we're not permanent on
-  if (ledStatus != STATUS_ON) {
-    // clear the lights
-    putLightsOff();
+    if (ledStatus != STATUS_ON) {
+        // clear the lights
+        putLightsOff();
 
-    ledOnBecauseOfPir = false;
-  }
+        ledOnBecauseOfPir = false;
+    }
 }
 
 // When the PIR sensor fires...
 void pir_rise() {
-  // Update the resource
-  pirCount = pirCount + 1;
+    // Update the resource
+    pirCount = pirCount + 1;
 
-  // Permanent off? Don't put the lights on...
-  if (ledStatus == STATUS_OFF) return;
+    // Permanent off? Don't put the lights on...
+    if (ledStatus == STATUS_OFF) return;
 
-  // Otherwise do it!
-  ledOnBecauseOfPir = true;
-  putLightsOn();
+    // Otherwise do it!
+    ledOnBecauseOfPir = true;
+    putLightsOn();
 
-  // And attach the timeout
-  pirTimeout.attach(eventQueue.event(&onPirTimeout), static_cast<float>(ledTimeout));
+    // And attach the timeout
+    pirTimeout.attach(eventQueue.event(&onPirTimeout), static_cast<float>(ledTimeout));
 }
 ```
 

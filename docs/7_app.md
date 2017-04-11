@@ -21,8 +21,6 @@ Here is a screenshot of the app running on an Android phone:
 
 *Mobile interface with two lights connected. Tap the color to change it.*
 
-By clicking on the color we can pick a new light color from a color wheel.
-
 <span class="notes">**Note:** To give the lights a more friendly name (like "living room"), change the name of the device in the mbed Cloud Portal.</notes>
 
 ## Installing the application

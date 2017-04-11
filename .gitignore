@@ -6,4 +6,8 @@ tags
 .update-certificates/
 identity_dev_security.c
 .mbed_cloud_config.json
+combined.bin
+.manifest_tool.json
+*.pyc
+*.manifest
 
