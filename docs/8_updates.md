@@ -53,7 +53,7 @@ For development you can use a self-signed certificate, but please note that this
 To create a new self-signed certificate, run:
 
 ```
-$ python simple-cloud-client/tools/manifest-tool/bin/manifest-tool init -d yourdomain.com -m lighting-system-2000 -r
+$ simple-cloud-client/tools/manifest-tool/bin/manifest-tool init -d yourdomain.com -m lighting-system-2000 -r
 ```
 
 When prompted, answer the questions.
@@ -148,7 +148,7 @@ Every firmware update requires an update manifest. This update contains the cryp
 To generate a new update manifest, run:
 
 ```
-# todo: need to get the syntax from Brendan
+$ simple-cloud-client/tools/manifest-tool/bin/manifest-tool create -u http://path-to-your-firmware -o connected-lights.manifest
 ```
 
 ### Uploading the manifest to mbed Cloud
@@ -158,7 +158,7 @@ To upload the manifest to mbed Cloud:
 1. Go to *Firmware management* > *Manifests*.
 1. Click *Upload new manifest*.
 1. Enter a descriptive name.
-1. Select the manifest.
+1. Select the manifest (`connected-lights.manifest`).
 1. Click *Upload*.
 
 ### Creating an update campaign
