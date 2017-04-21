@@ -1,8 +1,8 @@
 # Applying firmware updates to the device
 
-One of the big features of mbed Cloud is the ability to update devices through a firmware update over the air. This is not such a big deal when you're developing, but it is important when you have deployed thousands of devices in the field. Through the firmware update process you can patch bugs or apply security updates.
+One of the big features of mbed Cloud is the ability to update devices through a firmware update over the air. This is not applicable when you're developing, but it is important when you have deployed thousands of devices in the field. Through the firmware update process you can patch bugs or apply security updates.
 
-Right now your application sends a notification to the cloud every time the PIR sensor is triggered. That is kind of wasteful if someone is just standing in front of the sensor. The lights are already on, but the sensor will keep firing, and thus the networking stack needs to wake up all the time. Let's patch the code to not send events when the lights are already on.
+Currently your application sends a notification to the cloud every time the PIR sensor is triggered. That is wasteful if someone is standing in front of the sensor. The lights are already on, but the sensor will keep firing, and thus the networking stack needs to wake up all the time. Let's modify the code so that it does not send events when the lights are already on.
 
 ## Building with mbed CLI
 
@@ -10,7 +10,7 @@ To enable firmware updates the device needs to have the [mbed bootloader](https:
 
 ### Exporting your code
 
-If you're not yet using mbed CLI, and used the Online Compiler for this project:
+If you are not yet using mbed CLI:
 
 1. Install [mbed CLI](https://docs.mbed.com/docs/mbed-os-handbook/en/latest/dev_tools/cli/#installing-mbed-cli) and its dependencies.
 1. Install the [GNU ARM Embedded Toolchain 4.9](https://launchpad.net/gcc-arm-embedded/4.9/4.9-2015-q3-update).
@@ -27,7 +27,7 @@ Then, to export your code from the Online Compiler and into mbed CLI, do the fol
 
     <span class="images">![Publishing the project](assets/lights21.png)</span>
 
-    <span class="notes">**Note:** You want to mark the project as private as it contains your device certificate.</span>
+    <span class="notes">**Note:** Mark the project as private as it contains your device certificate.</span>
 
 1. Click *OK*.
 1. You're presented with a URL to the published project.
@@ -46,7 +46,7 @@ To enable updates you need to embed an update certificate into the firmware of y
 
 For development you can use a self-signed certificate, but please note that this is not secure.
 
-<span class="notes">**Note:** If you're deploying devices in the wild, always use a certificate from a trusted certificate authority (CA). Instructions on how to use your own certificate are [in the manifest-tool documentation]().</span>
+<span class="notes">**Note:** If you're deploying devices in the field, always use a certificate from a trusted certificate authority (CA). Instructions on how to use your own certificate are [in the manifest-tool documentation]().</span>
 
 ### Generating an update certificate
 
@@ -60,7 +60,7 @@ When prompted, answer the questions.
 
 ## Building with the bootloader
 
-Now that the update certificate is in place you can build the application with the bootloader enabled. This procedure differs per development board.
+Now that the update certificate is in place, you can build the application with the bootloader enabled. This procedure differs per development board.
 
 ### FRDM-K64F
 
@@ -72,7 +72,7 @@ $ git apply ../simple-cloud-client/tools/MK64FN1M0xxx12.ld.diff
 $ git apply ../simple-cloud-client/tools/gcc_k64f_ram_patch.diff
 ```
 
-Then build, and add the bootloader to your firmware via:
+Then build, and add the bootloader to your firmware with:
 
 ```
 $ mbed compile -m K64F -t GCC_ARM
@@ -101,7 +101,7 @@ TBD
 
 ## Creating the updated firmware
 
-When your board is back online in mbed Cloud it's time to prepare an update. Open ``main.cpp`` and change the `pir_rise()` function to:
+When your board is back online in mbed Cloud you can then prepare an update. Open ``main.cpp`` and change the `pir_rise()` function to:
 
 ```cpp
 // When the PIR sensor fires...
@@ -201,4 +201,4 @@ Firmware hash (32): 00c3224b10728028ef239d3d283a11669f4235ebfbe9333e790932558d13
 Downloading: 0 %
 ```
 
-When the download completes the firmware is verified, and if everything is OK, the firmware update is applied. Your device is now running the latest version of the application, and when you have the web app - from the previous article - open, you'll see that you won't get PIR notifications when the light is already on.
+When the download completes the firmware is verified. If everything is OK, the firmware update is applied. Your device is now running the latest version of the application, and when you have the web app open, from the previous article,, you'll see that you won't get PIR notifications if the light is already on.
