@@ -30,7 +30,7 @@ To start the application, first download the application, either by:
 1. Downloading the [application as a ZIP archive](https://github.com/ARMmbed/connected-lights-cloud/archive/master.zip).
 1. Or by running `git clone https://github.com/armmbed/connected-lights-cloud` in your terminal.
 
-Then open ``main.js`` and paste in your mbed Cloud API key on the first line. Next, open a terminal or the command prompt and navigate to the location where you extracted the application, and run:
+Then open ``main.js`` and paste in your mbed Cloud API key on the first line. Next, open a terminal or command prompt, navigate to the location where you extracted the application, and run:
 
 ```
 $ cd connected-lights-cloud/webapp
