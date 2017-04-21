@@ -1,10 +1,10 @@
 # Adding connectivity
 
-Now that we've built our basic circuit and wrote the code to control that circuit, we can start adding connectivity to the project. Part of the ARM mbed IoT Device Platform is mbed Cloud, a unified solution to connect devices to the internet and communicate with them regardless of *how* these devices connect to the internet. There are libraries available for a variety of connectivity methods, including Ethernet, Wi-Fi and Cellular. It's also easy to add new connectivity methods with the [unified networking APIs](https://docs.mbed.com/docs/mbed-os-api-reference/en/latest/APIs/communication/network_sockets/) in mbed OS 5.
+Now that we've built our basic circuit and wrote the code to control that circuit, we can start adding connectivity to the project. Part of the ARM mbed IoT Device Platform is mbed Cloud, a unified solution to connect devices to the internet and communicate with them, regardless of *how* these devices connect to the internet. There are libraries available for a variety of connectivity methods, including Ethernet, Wi-Fi and Cellular. It's also easy to add new connectivity methods with the [unified networking APIs](https://docs.mbed.com/docs/mbed-os-api-reference/en/latest/APIs/communication/network_sockets/) in mbed OS 5.
 
 ## Obtaining a device certificate
 
-All data that goes from the device to mbed Cloud (and vice-versa) is end-to-end encrypted by [mbed TLS](https://tls.mbed.org). To set up secure communications we need a security certificate. We can get one from the mbed Cloud Portal:
+All data that goes from the device to mbed Cloud (and vice-versa) is end-to-end encrypted by [mbed TLS](https://tls.mbed.org).  We need a security certificate to set up secure communication, which we can get from the mbed Cloud Portal:
 
 1. Go to the [mbed Cloud Portal](https://portal.mbedcloud.com/login) and sign in.
 1. If prompted for your login credentials, use your mbed Cloud credentials. These are different from your credentials for the online compiler.
@@ -22,13 +22,13 @@ All data that goes from the device to mbed Cloud (and vice-versa) is end-to-end 
 
 ## Adding connectivity to the board
 
-We’re assuming that the network has DHCP enabled and the firewall does not block connections to *https://mbedcloud.com*.
+We will assume that the network has DHCP enabled and the firewall does not block connections to *https://mbedcloud.com*.
 
-If you have a development board that connects over Ethernet, just plug in an Ethernet cable. If you have a board that connects over cellular or Wi-Fi no actions are required.
+If you have a development board that connects over Ethernet, just plug in an Ethernet cable. If you have a board that connects over cellular or Wi-Fi, no actions are required.
 
 ## Adding libraries with the online compiler
 
-For the device and mbed Cloud to talk we need the [mbed Cloud Client library](https://cloud.mbed.com/docs/latest/mbed-cloud-client/index.html). This is a cross-platform library which runs on mbed OS, Linux and can be ported to other RTOS'es. In this example we'll use an additional library built on top of mbed Cloud Client: SimpleCloudClient. This library is designed specifically to be used with mbed OS 5, and makes it easy to expose variables and resources to the cloud.
+For the device and mbed Cloud to talk we need the [mbed Cloud Client library](https://cloud.mbed.com/docs/latest/mbed-cloud-client/index.html). This is a cross-platform library which runs on mbed OS, Linux, and can be ported to other RTOS'es. In this example we will use an additional library built on top of mbed Cloud Client: SimpleCloudClient. This library is designed specifically to be used with mbed OS 5, and makes it easy to expose variables and resources to the cloud.
 
 We will also use [EasyConnect](https://github.com/ARMmbed/easy-connect) to handle connectivity.
 
@@ -87,9 +87,7 @@ We need to tell EasyConnect which connectivity method to use. Open ``mbed_app.js
 /* snip */
 ```
 
-If you:
-
-* Are using Wi-Fi: also set your Wi-Fi SSID and your password.
+If you are using Wi-Fi, you also need to set your Wi-Fi SSID and your password.
 
 ## Writing code
 
@@ -175,7 +173,7 @@ The code sample above does not do much, except for setting up the connection. We
 1. There should be a permanent-on mode for the lights.
 1. We should notify mbed Cloud whenever we detect movement.
 
-We can implement these actions by defining *resources*: pieces of information the device makes available. We can read or write to them from the cloud, and the device can use a resource's value to determine the correct action to perform. We can reach a resource with a URI and access modifier (for example, only write allowed), and we can also subscribe to them, so we'll be notified when a resource changes.
+We can implement these actions by defining *resources*: pieces of information the device makes available. We can read or write to them from the cloud, and the device can use a resource's value to determine the correct action to perform. We can reach a resource with a URI and access modifier (for example, only write allowed), and we can also subscribe to them, so we get notified when a resource changes.
 
 Let's define a resource for each of our actions:
 
