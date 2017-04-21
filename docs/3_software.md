@@ -1,10 +1,10 @@
 # Writing the software
 
-Now we can write some software to verify that the circuit works. We'll enable the LED whenever we see movement. We can either build locally - using mbed CLI - or in the cloud by using the mbed Online Compiler. We'll first show how to use the online compiler, and at the end of this section we'll show the corresponding commands in mbed CLI.
+Now we can write some software to verify that the circuit works. We will enable the LED whenever we see movement. We can either build locally by using mbed CLI, or in the cloud by using the mbed Online Compiler. We will first show how to use the online compiler, and at the end of this section we will show the corresponding commands in mbed CLI.
 
 ## Setting up the online compiler
 
-Part of the ARM mbed IoT Device Platform is an online compiler, which we will use to write and compile software right in the browser. To get started:
+Part of the ARM mbed IoT Device Platform is an online compiler, which we will use to write and compile software in the browser. To get started:
 
 1. Find your development board's [platform page](https://developer.mbed.org/platforms/).
 1. In the right hand panel, choose **Add to your mbed Compiler**.
@@ -24,11 +24,11 @@ Part of the ARM mbed IoT Device Platform is an online compiler, which we will us
 
     <span class="images">![Creating a program in the online compiler](assets/lights6.png)</span>
 
-The program you just imported already contains some boilerplate, including mbed OS and a configuration file. We'll use this configuration file to configure the pins our software uses, then start writing some code.
+This program contains a configuration file, which we will use to configure the pins our software uses. 
 
 ## Adding the code
 
-mbed OS comes with a powerful [configuration system](https://docs.mbed.com/docs/mbedmicro-api/en/latest/api/md_docs_config_system.html) that makes it easy to separate configuration and application code. In this application we'll separate the configuration of the LED (cathode, anode or a Grove LED), pins, and connectivity method (next section).
+mbed OS comes with a powerful [configuration system](https://docs.mbed.com/docs/mbedmicro-api/en/latest/api/md_docs_config_system.html) that makes it easy to separate configuration and application code. In this application we will separate the configuration of the LED (cathode, anode or a Grove LED), pins, and connectivity method (next section).
 
 From the mbed Online Compiler's tree, open ``mbed_app.json``. Edit the file to reflect your LED choice, and the pins you used to connect the LED and the PIR sensor:
 
