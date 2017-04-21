@@ -1,6 +1,6 @@
 # Controlling the device from mbed Cloud
 
-At this moment the device is connected through mbed Cloud. In the code sample that we gave in the previous section, we defined a number of resources using calls to `client.define_resource()`. These resources are automatically exposed to mbed Cloud, from where you can read and write resources. Then, changes are automatically synced back to the device. That means that we already have a remote management interface for this device.
+At this moment the device is connected through mbed Cloud. In the code sample that we gave in the previous section, we defined a number of resources using calls to `client.define_resource()`. These resources are automatically exposed to mbed Cloud, from where you can read and write resources, and changes are automatically synced back to the device. That means that we already have a remote management interface for this device.
 
 ## Seeing the status of a device
 
@@ -26,7 +26,7 @@ These resources can be controlled through the mbed Cloud Portal. For instance, w
 
 ### Turning the lights on
 
-To test this out, in mbed Cloud Portal go to *Developer Tools* > *Connectivity inspector*, and click on your device. This gives you access to a management console where you can quickly test out interactions with resources.
+To test this out, in mbed Cloud Portal go to *Developer Tools* > *Connectivity inspector*, and click on your device. This gives you access to a management console where you can quickly test interactions with resources.
 
 <span class="images">![Viewing resources on the device](assets/lights19.png)<span>Showing the available resources on this device</span></span>
 
