@@ -4,7 +4,7 @@ The mbed Cloud Portal that we used in the previous section is a wrapper around t
 
 ## Obtaining an access key
 
-To talk to the API we need to obtain an API key. This key is used to authenticate with the API. To create a new access key, go to the [Key management](https://portal.mbedcloud.com/access/keys) page in the mbed Cloud Portal.
+To talk to the API we need to get an API key. This key is used to authenticate with the API. To create a new access key, go to the [Key management](https://portal.mbedcloud.com/access/keys) page in the mbed Cloud Portal.
 
 Click *Create API Key* to create a new API key, and give it a descriptive name.
 
@@ -12,7 +12,7 @@ Click *Create API Key* to create a new API key, and give it a descriptive name.
 
 ## Testing the API
 
-We can quickly test out if the access key works by doing a call to the API to query for all our devices. To retrieve a list of all devices, make a GET request to https://api.mbedcloud.com/v2/endpoints. You'll need to send an authorization header with this request:
+We can quickly test if the access key works by doing a call to the API to query for all our devices. To retrieve a list of all devices, make a GET request to https://api.mbedcloud.com/v2/endpoints. You'll need to send an authorization header with this request:
 
 ```
 Authorization: Bearer <your_access_key>
@@ -24,7 +24,7 @@ You can make this request with any request library, but if you're using curl, us
 curl -v -H "Authorization: Bearer <your_access_key>" https://api.mbedcloud.com/v2/endpoints
 ```
 
-This will return something like this:
+It will return something like this:
 
 ```
 *   Trying 52.1.229.179...
@@ -51,11 +51,11 @@ This will return something like this:
 ]
 ```
 
-<span class="notes">**Note:** The official API documentation for the mbed Cloud REST interface is [located here]().</span>
+<span class="notes">**Note:** The official API documentation for the mbed Cloud REST API interface is [located here](/docs/v1.2/api-references/index.html).</span>
 
 ## Using the official libraries
 
-You don't need to write raw HTTP requests to deal with the mbed Cloud API, as there are official SDKs available for node.js, Python and .NET. This is especially nice because the APIs to interact with resources are [asynchronous](), because for many functions it's not guaranteed that an action (such as writing to a device) will happen straight away, as the device might be in deep sleep or otherwise slow to respond. Therefore, you need to listen to callbacks on a [notification channel](). If you're using any of the official libraries, notification channels are abstracted away, making it easier to write applications on top of mbed Cloud.
+There are official mbed Cloud SDKs available for node.js and Python. These APIs are asynchronous, because for many functions it is not guaranteed that an action (such as writing to a device) will happen straight away -  the device might be in deep sleep or otherwise slow to respond. Therefore, you need to listen to callbacks on a notification channel. If you're using any of the official libraries, notification channels are abstracted away, making it easier to write applications on top of mbed Cloud.
 
 An additional feature in the libraries is that they support subscriptions. We can subscribe to resources and get a notification whenever they change. This is useful for our `/pir/0/count` resource, as we can get notified whenever someone moves in front of the sensor.
 
@@ -121,7 +121,7 @@ api.startNotifications(function(err) {
 
 ```
 
-When you run this program, and you wave your hand in front of the PIR sensor, you'll see something like this:
+When you run this program, and you wave your hand in front of the PIR sensor, you will see something like this:
 
 ```
 $ node main.js
