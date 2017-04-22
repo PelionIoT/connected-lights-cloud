@@ -1,8 +1,8 @@
-# Controlling the device from mbed Cloud
+### Controlling the device from mbed Cloud
 
 At this moment the device is connected through mbed Cloud. In the code sample that we gave in the previous section, we defined a number of resources using calls to `client.define_resource()`. These resources are automatically exposed to mbed Cloud, from where you can read and write resources, and changes are automatically synced back to the device. That means that we already have a remote management interface for this device.
 
-## Seeing the status of a device
+#### Seeing the status of a device
 
 Each device that you connect to mbed Cloud has an endpoint name. This is a long string, which is the unique identifier of your device. If you don't know the endpoint name of your device, check the [serial output](https://docs.mbed.com/docs/mbed-os-handbook/en/latest/debugging/printf/) on your device for a line starting with 'Device Identity'.
 
@@ -13,7 +13,7 @@ We need the know the endpoint's name to check the device's status in the mbed Cl
 <span class="images">![Two connected devices](assets/lights11.png)<span>The mbed Cloud Portal connectivity inspector page, showing two connected devices: our light-system and another device.</span></span>
 
 
-## Controlling the device
+#### Controlling the device
 
 We created four resources before (see ``main.cpp``):
 
@@ -24,7 +24,7 @@ We created four resources before (see ``main.cpp``):
 
 These resources can be controlled through the mbed Cloud Portal. For instance, when we write the value `1` to `led/0/permanent_status` the lights will stay on indefinitely.
 
-### Turning the lights on
+##### Turning the lights on
 
 To test this out, in mbed Cloud Portal go to *Developer Tools* > *Connectivity inspector*, and click on your device. This gives you access to a management console where you can quickly test interactions with resources.
 
@@ -44,7 +44,7 @@ To enable the lights:
 
 Now your lights will stay on until you change the status of `permanent_status` to 0 (listen to PIR sensor) or 2 (always off).
 
-### Setting the color
+##### Setting the color
 
 We can control the color of the lights the same way. The color is encoded in an integer where we store three channels: red, green and blue. Each of the channels can have a value between 0 (off) and 255 (completely on).
 
@@ -63,6 +63,6 @@ encoded = (red << 16) + (green << 8) + blue;
 
 Use the API Console to write this value to resource `/led/0/color` and change the color of the LED to turquoise.
 
-### Other variables
+##### Other variables
 
 We can also change the value of the timeout (in a real light system you probably want at least 30 seconds) and read the number of times the PIR sensor triggered (in the GET tab).
