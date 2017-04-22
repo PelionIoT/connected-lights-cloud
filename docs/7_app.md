@@ -1,4 +1,4 @@
-# Bringing it all together
+### Bringing it all together
 
 We’ve already built almost all of the pieces required for our lighting system. We now have:
 
@@ -23,7 +23,7 @@ Here is a screenshot of the app running on an Android phone:
 
 <span class="notes">**Note:** To give the lights a more friendly name (like "living room"), change the name of the device in the mbed Cloud Portal.</notes>
 
-## Installing the application
+#### Installing the application
 
 To start the application, first download the application, either by:
 
@@ -40,6 +40,6 @@ $ node main.js
 
 Open your web browser and go to http://localhost:5265 to see the application running.
 
-## Konekuta
+#### Konekuta
 
 The web application is built on top of [Konekuta](https://github.com/armmbed/konekuta/tree/cloud), a framework for building dynamic web applications on top of mbed Cloud. Konekuta solves a number of common problems with building connected applications, including state syncing, going offline/online, handling errors, and updating the UI when devices connect or disconnect from mbed Cloud. Konekuta is open source and available on [GitHub](https://github.com/armmbed/konekuta/tree/cloud).
