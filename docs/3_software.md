@@ -1,8 +1,8 @@
-# Writing the software
+### Writing the software
 
 Now we can write some software to verify that the circuit works. We will enable the LED whenever we see movement. We can either build locally by using mbed CLI, or in the cloud by using the mbed Online Compiler. We will first show how to use the online compiler, and at the end of this section we will show the corresponding commands in mbed CLI.
 
-## Setting up the online compiler
+#### Setting up the online compiler
 
 Part of the ARM mbed IoT Device Platform is an online compiler, which we will use to write and compile software in the browser. To get started:
 
@@ -26,7 +26,7 @@ Part of the ARM mbed IoT Device Platform is an online compiler, which we will us
 
 This program contains a configuration file, which we will use to configure the pins our software uses. 
 
-## Adding the code
+#### Adding the code
 
 mbed OS comes with a powerful [configuration system](https://docs.mbed.com/docs/mbedmicro-api/en/latest/api/md_docs_config_system.html) that makes it easy to separate configuration and application code. In this application we will separate the configuration of the LED (cathode, anode or a Grove LED), pins, and connectivity method (next section).
 
@@ -112,9 +112,9 @@ int main(int, char**) {
 }
 ```
 
-## Compiling and flashing
+#### Compiling and flashing
 
-### Compiling
+##### Compiling
 
 Compile the code by clicking the *Compile* button at the top of the screen:
 
@@ -122,7 +122,7 @@ Compile the code by clicking the *Compile* button at the top of the screen:
 
 A successful compilation downloads a `.bin` file to your computer. This is the compiled firmware for your development board.
 
-### Flashing
+##### Flashing
 
 When you connect your board to your computer, it mounts as a USB mass storage device, like a USB drive. To flash the new application onto the board, drag and drop the firmware file onto the mass storage device:
 
@@ -130,11 +130,11 @@ When you connect your board to your computer, it mounts as a USB mass storage de
 
 <span class="notes">**Note:** On some boards you might need to press the *Reset* button to load the program.</span>
 
-### Testing the application
+##### Testing the application
 
 After flashing the application, you can test it by waving your hand in front of the PIR sensor; the red LED should light up.
 
-## Developing using mbed CLI
+#### Developing using mbed CLI
 
 You can also develop locally using [mbed CLI](http://github.com/armmbed/mbed-cli), a command line tool for mbed OS. First follow [the installation steps](https://github.com/ARMmbed/mbed-cli#installing-mbed-cli), then use the following commands to recreate the flow above:
 
