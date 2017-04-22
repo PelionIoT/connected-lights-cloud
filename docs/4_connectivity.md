@@ -1,8 +1,8 @@
-# Adding connectivity
+### Adding connectivity
 
 Now that we've built our basic circuit and wrote the code to control that circuit, we can start adding connectivity to the project. Part of the ARM mbed IoT Device Platform is mbed Cloud, a unified solution to connect devices to the internet and communicate with them, regardless of *how* these devices connect to the internet. There are libraries available for a variety of connectivity methods, including Ethernet, Wi-Fi and Cellular. It's also easy to add new connectivity methods with the [unified networking APIs](https://docs.mbed.com/docs/mbed-os-api-reference/en/latest/APIs/communication/network_sockets/) in mbed OS 5.
 
-## Obtaining a device certificate
+#### Obtaining a device certificate
 
 All data that goes from the device to mbed Cloud (and vice-versa) is end-to-end encrypted by [mbed TLS](https://tls.mbed.org).  We need a security certificate to set up secure communication, which we can get from the mbed Cloud Portal:
 
@@ -20,13 +20,13 @@ All data that goes from the device to mbed Cloud (and vice-versa) is end-to-end 
 
 <span class="notes">**Note:** The certificate can only be downloaded once. It's not stored in the mbed Cloud Portal.</span>
 
-## Adding connectivity to the board
+#### Adding connectivity to the board
 
 We will assume that the network has DHCP enabled and the firewall does not block connections to *https://mbedcloud.com*.
 
 If you have a development board that connects over Ethernet, just plug in an Ethernet cable. If you have a board that connects over cellular or Wi-Fi, no actions are required.
 
-## Adding libraries with the online compiler
+#### Adding libraries with the online compiler
 
 For the device and mbed Cloud to talk we need the [mbed Cloud Client library](https://cloud.mbed.com/docs/latest/mbed-cloud-client/index.html). This is a cross-platform library which runs on mbed OS, Linux, and can be ported to other RTOS'es. In this example we will use an additional library built on top of mbed Cloud Client: SimpleCloudClient. This library is designed specifically to be used with mbed OS 5, and makes it easy to expose variables and resources to the cloud.
 
@@ -43,7 +43,7 @@ To add these libraries to your project:
 1. Under *Source URL* enter: ``https://github.com/armmbed/simple-cloud-client/``.
 1. Click *Import*.
 
-## Adding libraries with mbed CLI
+#### Adding libraries with mbed CLI
 
 If you are using mbed CLI, run the following commands to add the libraries:
 
@@ -52,7 +52,7 @@ $ mbed add easy-connect
 $ mbed add simple-cloud-client
 ```
 
-## Updating configuration
+#### Updating configuration
 
 We need to tell EasyConnect which connectivity method to use. Open ``mbed_app.json`` and locate the `network-interface` field. Change the `value` to the connectivity method used:
 
@@ -89,9 +89,9 @@ We need to tell EasyConnect which connectivity method to use. Open ``mbed_app.js
 
 If you are using Wi-Fi, you also need to set your Wi-Fi SSID and your password.
 
-## Writing code
+#### Writing code
 
-### Setting up a connection
+##### Setting up a connection
 
 We need to add some code to the application so it connects to the internet and sets up a connection to mbed Cloud.
 
@@ -164,7 +164,7 @@ int main(int, char**) {
 }
 ```
 
-### Program logic
+##### Program logic
 
 The code sample above does not do much, except for setting up the connection. We can now define some logic for this program:
 
