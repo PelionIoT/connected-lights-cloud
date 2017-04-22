@@ -1,4 +1,4 @@
-# Conclusion
+### Conclusion
 
 The ARM mbed IoT Device Platform is a very diverse set of tools, all aimed at making developing and managing IoT appliances easier. In this article we covered the basics required to build connected devices, and how to address and manage these devices over the internet. There is more to mbed than what is in this article: we have connectivity methods for a variety of other standards, like [LoRa](https://docs.mbed.com/docs/lora-with-mbed/en/latest/intro-to-lora/), [Thread](https://docs.mbed.com/docs/arm-ipv66lowpan-stack/en/latest/thread_overview/) and [Bluetooth](https://docs.mbed.com/docs/ble-intros/en/latest/), and a complete set of security libraries to build more secure IoT applications with [uVisor](https://docs.mbed.com/docs/uvisor-and-uvisor-lib-documentation/en/latest/) and [mbed TLS](https://tls.mbed.org). mbed Cloud also includes services for [device management](https://cloud.mbed.com/product-overview) (like firmware updates over the air) and telemetry services. If you want more information, [let us know](https://cloud.mbed.com/contact).
 
