@@ -1,8 +1,8 @@
-# Using the mbed Cloud API
+### Using the mbed Cloud API
 
 The mbed Cloud Portal that we used in the previous section is a wrapper around the mbed Cloud API. Through this API we can connect any app to any device. We can use this API to build an app that allows us to control any of the lighting systems that we deploy in our house or office.
 
-## Obtaining an access key
+#### Obtaining an access key
 
 To talk to the API we need to get an API key. This key is used to authenticate with the API. To create a new access key, go to the [Key management](https://portal.mbedcloud.com/access/keys) page in the mbed Cloud Portal.
 
@@ -10,7 +10,7 @@ Click *Create API Key* to create a new API key, and give it a descriptive name.
 
 <span class="images">![Creating a new access key in mbed Cloud](assets/lights14.png)</span>
 
-## Testing the API
+#### Testing the API
 
 We can quickly test if the access key works by doing a call to the API to query for all our devices. To retrieve a list of all devices, make a GET request to https://api.mbedcloud.com/v2/endpoints. You'll need to send an authorization header with this request:
 
@@ -53,7 +53,7 @@ It will return something like this:
 
 <span class="notes">**Note:** The official API documentation for the mbed Cloud REST API interface is [located here](/docs/v1.2/api-references/index.html).</span>
 
-## Using the official libraries
+#### Using the official libraries
 
 There are official mbed Cloud SDKs available for node.js and Python. These APIs are asynchronous, because for many functions it is not guaranteed that an action (such as writing to a device) will happen straight away -  the device might be in deep sleep or otherwise slow to respond. Therefore, you need to listen to callbacks on a notification channel. If you're using any of the official libraries, notification channels are abstracted away, making it easier to write applications on top of mbed Cloud.
 
@@ -61,7 +61,7 @@ An additional feature in the libraries is that they support subscriptions. We ca
 
 The following sections show an example of changing the color of the light, and receiving a notification whenever someone waves in front of the PIR sensor, in both node.js and Python.
 
-### node.js
+##### node.js
 
 First, make sure you have installed [node.js](http://nodejs.org). Then create a new folder, and install the mbed Cloud node.js SDK via npm:
 
@@ -134,7 +134,7 @@ Motion detected at 015b58400ce40000000000010010022a new count is 2
 
 See here for the [full docs](https://github.com/ARMmbed/mbed-cloud-sdk-javascript) on how to use the JavaScript SDK.
 
-### Python
+##### Python
 
 First make sure that you have installed [Python 2.7](https://www.python.org/downloads/) and [pip](https://pip.pypa.io/en/stable/installing/). Then create a new folder, and install the mbed Cloud SDK through pip:
 
