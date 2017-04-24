@@ -25,14 +25,14 @@ Then, to export your code from the Online Compiler and into mbed CLI, do the fol
 1. If you're prompted for a commit message, enter one.
 1. Enter a description for the project and mark the project as 'Private'.
 
-    <span class="images">![Publishing the project](assets/lights21.png)</span>
+    <span class="images">![Publishing the project](https://s3-us-west-2.amazonaws.com/cloud-docs-images/lights21.png)</span>
 
     <span class="notes">**Note:** Mark the project as private as it contains your device certificate.</span>
 
 1. Click *OK*.
 1. You're presented with a URL to the published project.
 
-    <span class="images">![Published project](assets/lights22.png)</span>
+    <span class="images">![Published project](https://s3-us-west-2.amazonaws.com/cloud-docs-images/lights22.png)</span>
 
 1. Locally, open a terminal and run:
 
