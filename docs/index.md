@@ -10,8 +10,6 @@ We need the following hardware:
 
 * A [development board](https://developer.mbed.org/platforms/?software=16) capable of connecting to mbed Cloud. Either:
     * [NXP FRDM-K64F](https://developer.mbed.org/platforms/FRDM-K64F/) using Ethernet.
-    * [ST NUCLEO-F429ZI](https://developer.mbed.org/platforms/ST-Nucleo-F429ZI/) with Ethernet.
-    * [Ameba RTL8195]() with Wi-Fi.
     * [u-blox EVK-ODIN-W2](https://developer.mbed.org/platforms/ublox-EVK-ODIN-W2/) with Ethernet and Wi-Fi.
 * A breadboard, to hook up the components.
 * A PIR sensor to detect motion.
