@@ -10,7 +10,7 @@ We need the know the endpoint's name to check the device's status in the mbed Cl
 
 <span class="tips">**Tip:** The mbed Cloud interface lists your devices by type. You can categorize devices by setting the device type in the application running on the device. See the `endpoint-type` property in ``mbed_app.json``.</span>
 
-<span class="images">![Two connected devices](assets/lights11.png)<span>The mbed Cloud Portal connectivity inspector page, showing two connected devices: our light-system and another device.</span></span>
+<span class="images">![Two connected devices](https://s3-us-west-2.amazonaws.com/cloud-docs-images/lights11.png)<span>The mbed Cloud Portal connectivity inspector page, showing two connected devices: our light-system and another device.</span></span>
 
 
 #### Controlling the device
@@ -28,7 +28,7 @@ These resources can be controlled through the mbed Cloud Portal. For instance, w
 
 To test this out, in mbed Cloud Portal go to *Developer Tools* > *Connectivity inspector*, and click on your device. This gives you access to a management console where you can quickly test interactions with resources.
 
-<span class="images">![Viewing resources on the device](assets/lights19.png)<span>Showing the available resources on this device</span></span>
+<span class="images">![Viewing resources on the device](https://s3-us-west-2.amazonaws.com/cloud-docs-images/lights19.png)<span>Showing the available resources on this device</span></span>
 
 To enable the lights:
 
@@ -40,7 +40,7 @@ To enable the lights:
 1. Enter `1`.
 1. Click *Save*.
 
-    <span class="images">![Updating the value of a resource](assets/lights20.png)</span>
+    <span class="images">![Updating the value of a resource](https://s3-us-west-2.amazonaws.com/cloud-docs-images/lights20.png)</span>
 
 Now your lights will stay on until you change the status of `permanent_status` to 0 (listen to PIR sensor) or 2 (always off).
 
