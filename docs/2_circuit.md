@@ -8,7 +8,7 @@ For the circuit we need four digital pins. Three of these need to support pulse 
 
 To find pins that you can use, look at the [platform page](https://developer.mbed.org/platforms/) for your board and find the pinout. The pinout defines the characteristics of the pins. For example, here is the pinout for the FRDM-K64F, where we can use D5, D6 and D7 as our PWM pins:
 
-<span class="images">![FRDM-K64F pinout showing PWM pins](assets/lights3.png)<span>The pinout for the NXP FRDM-K64F, showing that pins D5, D6 and D7 can be used for PWM.</span></span>
+<span class="images">![FRDM-K64F pinout showing PWM pins](https://s3-us-west-2.amazonaws.com/cloud-docs-images/lights3.png)<span>The pinout for the NXP FRDM-K64F, showing that pins D5, D6 and D7 can be used for PWM.</span></span>
 
 We also need a pin for the PIR sensor. This can be any digital pin, as long as it's not marked as UART (D0 and D1 on the pinout above). In this example, we can use pin D2.
 
@@ -18,7 +18,7 @@ We also need a pin for the PIR sensor. This can be any digital pin, as long as i
 
 Here is a diagram of hooking up the PIR sensor and the RGB LED to your board. Replace the pins D2, D5, D6 and D7 with the pins you found for your board. If you have a four-pin RGB LED, the LED has to be positioned so that the longest pin is the second from the left (hold it [like this](http://howtomechatronics.com/wp-content/uploads/2015/09/RGB-LED.png?28ea0f)).
 
-<span class="images">![PIR sensor and RGB LED Fritzing diagram](assets/lights4.png)</span>
+<span class="images">![PIR sensor and RGB LED Fritzing diagram](https://s3-us-west-2.amazonaws.com/cloud-docs-images/lights4.png)</span>
 
 <span class="notes">**Note - common anode or common cathode LED:** Four pin RGB LEDs come in two different flavours: *common anode* and *common cathode*. If you have a common cathode LED, connect the second pin to `GND` instead of `3.3V`. If you are unsure, just try both circuits and see which one works.</span>
 
@@ -26,5 +26,5 @@ Here is a diagram of hooking up the PIR sensor and the RGB LED to your board. Re
 
 When you hook everything up, the circuit looks something like this:
 
-<span class="images">![PIR sensor and RGB LED connected to FRDM-K64F](assets/lights5.png)</span>
+<span class="images">![PIR sensor and RGB LED connected to FRDM-K64F](https://s3-us-west-2.amazonaws.com/cloud-docs-images/lights5.png)</span>
 
