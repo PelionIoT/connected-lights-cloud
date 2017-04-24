@@ -12,17 +12,17 @@ Part of the ARM mbed IoT Device Platform is an online compiler, which we will us
 1. Choose **Open mbed Compiler**. The online compiler opens.
 1. Click the **Import** button.
 
-    <span class="images">![Import button](assets/lights17.png)</span>
+    <span class="images">![Import button](https://s3-us-west-2.amazonaws.com/cloud-docs-images/lights17.png)</span>
 
 1. Click the "Click here to import from URL" link:
 
-    <span class="images">![Import from URL](assets/lights18.png)</span>
+    <span class="images">![Import from URL](https://s3-us-west-2.amazonaws.com/cloud-docs-images/lights18.png)</span>
 
 1. Under **Source URL** enter `https://github.com/armmbed/connected-lights-cloud`.
 
     Do not check the **Update all libraries to the latest revision** box.
 
-    <span class="images">![Creating a program in the online compiler](assets/lights6.png)</span>
+    <span class="images">![Creating a program in the online compiler](https://s3-us-west-2.amazonaws.com/cloud-docs-images/lights6.png)</span>
 
 This program contains a configuration file, which we will use to configure the pins our software uses. 
 
@@ -118,7 +118,7 @@ int main(int, char**) {
 
 Compile the code by clicking the *Compile* button at the top of the screen:
 
-<span class="images">![The compile button](assets/lights7.png)</span>
+<span class="images">![The compile button](https://s3-us-west-2.amazonaws.com/cloud-docs-images/lights7.png)</span>
 
 A successful compilation downloads a `.bin` file to your computer. This is the compiled firmware for your development board.
 
@@ -126,7 +126,7 @@ A successful compilation downloads a `.bin` file to your computer. This is the c
 
 When you connect your board to your computer, it mounts as a USB mass storage device, like a USB drive. To flash the new application onto the board, drag and drop the firmware file onto the mass storage device:
 
-<span class="images">![Flashing the application on Windows](assets/lights8.png)<span>Drag the firmware file onto the mass storage device to flash the application.</span></span>
+<span class="images">![Flashing the application on Windows](https://s3-us-west-2.amazonaws.com/cloud-docs-images/lights8.png)<span>Drag the firmware file onto the mass storage device to flash the application.</span></span>
 
 <span class="notes">**Note:** On some boards you might need to press the *Reset* button to load the program.</span>
 
