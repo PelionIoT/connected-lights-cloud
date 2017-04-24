@@ -12,7 +12,7 @@ All data that goes from the device to mbed Cloud (and vice-versa) is end-to-end 
 1. Click *Get new device security credentials*.
 1. Copy the contents of the white box, by clicking *Copy to clipboard*. This is your certificate.
 
-    <span class="images">![The certificate is located in the white box](assets/lights16.png)</span>
+    <span class="images">![The certificate is located in the white box](https://s3-us-west-2.amazonaws.com/cloud-docs-images/lights16.png)</span>
 
 1. Go back to the online compiler.
 1. Create a new file ``identity_dev_security.c`` in your application's ``source`` directory.
