@@ -8,7 +8,7 @@ To talk to the API we need to get an API key. This key is used to authenticate w
 
 Click *Create API Key* to create a new API key, and give it a descriptive name.
 
-<span class="images">![Creating a new access key in mbed Cloud](assets/lights14.png)</span>
+<span class="images">![Creating a new access key in mbed Cloud](https://s3-us-west-2.amazonaws.com/cloud-docs-images/lights14.png)</span>
 
 #### Testing the API
 
