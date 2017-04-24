@@ -17,7 +17,7 @@ We can now combine everything by building a web app that allows us to control th
 Here is a screenshot of the app running on an Android phone:
 
 
-![Screenshot of the light control interface](assets/lights15.png)
+![Screenshot of the light control interface](https://s3-us-west-2.amazonaws.com/cloud-docs-images/lights15.png)
 
 *Mobile interface with two lights connected. Tap the color to change it.*
 
