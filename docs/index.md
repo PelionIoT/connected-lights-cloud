@@ -22,7 +22,7 @@ We need the following hardware:
 * Resistors: 1x 100 Ohm, 2x 220 Ohm.
 
 
-<span class="images">![Components needed](assets/lights2.png)<span>Components required to build our lighting system. Top row: RGB LED, PIR sensor, Grove Chainable LED. Bottom row: breadboard, NXP FRDM-K64F, jumper wires.</span></span>
+<span class="images">![Components needed](https://s3-us-west-2.amazonaws.com/cloud-docs-images/lights2.png)<span>Components required to build our lighting system. Top row: RGB LED, PIR sensor, Grove Chainable LED. Bottom row: breadboard, NXP FRDM-K64F, jumper wires.</span></span>
 
 We also need:
 
