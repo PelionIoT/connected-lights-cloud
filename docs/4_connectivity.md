@@ -1,46 +1,46 @@
 ### Adding connectivity
 
-Now that we've built our basic circuit and wrote the code to control that circuit, we can start adding connectivity to the project. Part of the ARM mbed IoT Device Platform is mbed Cloud, a unified solution to connect devices to the internet and communicate with them, regardless of *how* these devices connect to the internet. There are libraries available for a variety of connectivity methods, including Ethernet, Wi-Fi and Cellular. It's also easy to add new connectivity methods with the [unified networking APIs](https://docs.mbed.com/docs/mbed-os-api-reference/en/latest/APIs/communication/network_sockets/) in mbed OS 5.
+Now that you've built the basic circuit and written the code to control that circuit, you can add connectivity to the project. Part of the ARM mbed IoT Device Platform is mbed Cloud, a unified solution to connect devices to the internet and communicate with them, regardless of *how* these devices connect to the internet. Libraries are available for a variety of connectivity methods, including Ethernet, Wi-Fi and cellular. You also can add new connectivity methods with the [unified networking APIs](https://docs.mbed.com/docs/mbed-os-api-reference/en/latest/APIs/communication/network_sockets/) in mbed OS 5.
 
 #### Obtaining a device certificate
 
-All data that goes from the device to mbed Cloud (and vice-versa) is end-to-end encrypted by [mbed TLS](https://tls.mbed.org).  We need a security certificate to set up secure communication, which we can get from the mbed Cloud Portal:
+[mbed TLS](https://tls.mbed.org) encrypts all data that goes from the device to mbed Cloud (and from mbed Cloud to the device. You need a security certificate to set up secure communication, which you can get from the mbed Cloud Portal:
 
-1. Go to the [mbed Cloud Portal](https://portal.mbedcloud.com/login) and sign in.
-1. If prompted for your login credentials, use your mbed Cloud credentials. These are different from your credentials for the online compiler.
+1. Go to the [mbed Cloud Portal](https://portal.mbedcloud.com/login), and sign in.
+1. If prompted for your login credentials, use your mbed Cloud credentials. These are different from your credentials for the mbed Online Compiler.
 1. Go to *Developer Tools* > *Certificate*.
 1. Click *Get new device security credentials*.
-1. Copy the contents of the white box, by clicking *Copy to clipboard*. This is your certificate.
+1. Copy the contents of the white box by clicking *Copy to clipboard*. This is your certificate.
 
     <span class="images">![The certificate is located in the white box](https://s3-us-west-2.amazonaws.com/cloud-docs-images/lights16.png)</span>
 
-1. Go back to the online compiler.
-1. Create a new file ``identity_dev_security.c`` in your application's ``source`` directory.
+1. Go back to the mbed Online Compiler.
+1. Create a new file `identity_dev_security.c` in your application's `source` directory.
 1. Paste the certificate into this file.
 
-<span class="notes">**Note:** The certificate can only be downloaded once. It's not stored in the mbed Cloud Portal.</span>
+<span class="notes">**Note:** You can only download the certificate once. It's not stored in the mbed Cloud Portal.</span>
 
 #### Adding connectivity to the board
 
-We will assume that the network has DHCP enabled and the firewall does not block connections to *https://mbedcloud.com*.
+This example assumes that the network has DHCP enabled and the firewall does not block connections to *https://mbedcloud.com*.
 
 If you have a development board that connects over Ethernet, just plug in an Ethernet cable. If you have a board that connects over cellular or Wi-Fi, no actions are required.
 
-#### Adding libraries with the online compiler
+#### Adding libraries with the mbed Online Compiler
 
-For the device and mbed Cloud to talk we need the [mbed Cloud Client library](https://cloud.mbed.com/docs/latest/mbed-cloud-client/index.html). This is a cross-platform library which runs on mbed OS, Linux, and can be ported to other RTOS'es. In this example we will use an additional library built on top of mbed Cloud Client: SimpleCloudClient. This library is designed specifically to be used with mbed OS 5, and makes it easy to expose variables and resources to the cloud.
+For the device and mbed Cloud to talk, you need the [mbed Cloud Client library](https://cloud.mbed.com/docs/latest/mbed-cloud-client/index.html). This is a cross-platform library that runs on mbed OS and Linux, and you can port it to other RTOS. In this example, you will use an additional library built on top of mbed Cloud Client: SimpleCloudClient. This library is designed specifically to be used with mbed OS 5 and makes it easy to expose variables and resources to the cloud.
 
-We will also use [EasyConnect](https://github.com/ARMmbed/easy-connect) to handle connectivity.
+You will also use [EasyConnect](https://github.com/ARMmbed/easy-connect) to handle connectivity.
 
 To add these libraries to your project:
 
-1. Go back to the online compiler.
-1. Right click on your program in the tree and select *Import Library* > *From URL*.
-1. Under *Source URL* enter: ``https://github.com/armmbed/easy-connect``.
+1. Go back to the mbed Online Compiler.
+1. Right click on your program in the tree, and select *Import Library* > *From URL*.
+1. Under *Source URL*, enter: `https://github.com/armmbed/easy-connect`.
 1. Do **not** tick 'Update all sub-libraries to the latest version'.
 1. Click *Import*.
-1. Again, right click on your program and select *Import Library* > *From URL*.
-1. Under *Source URL* enter: ``https://github.com/armmbed/simple-cloud-client/``.
+1. Again, right click on your program, and select *Import Library* > *From URL*.
+1. Under *Source URL* enter: `https://github.com/armmbed/simple-cloud-client/`.
 1. Click *Import*.
 
 #### Adding libraries with mbed CLI
@@ -54,7 +54,7 @@ $ mbed add simple-cloud-client
 
 #### Updating configuration
 
-We need to tell EasyConnect which connectivity method to use. Open ``mbed_app.json`` and locate the `network-interface` field. Change the `value` to the connectivity method used:
+You need to tell EasyConnect which connectivity method to use. Open `mbed_app.json`, and locate the `network-interface` field. Change the `value` to the connectivity method used:
 
 ```json
 /* mbed_app.json */
@@ -93,9 +93,9 @@ If you are using Wi-Fi, you also need to set your Wi-Fi SSID and your password.
 
 ##### Setting up a connection
 
-We need to add some code to the application so it connects to the internet and sets up a connection to mbed Cloud.
+You need to add some code to the application, so it connects to the internet and sets up a connection to mbed Cloud.
 
-Replace ``main.cpp`` with:
+Replace `main.cpp` with:
 
 ```cpp
 #include "mbed.h"
@@ -166,25 +166,25 @@ int main(int, char**) {
 
 ##### Program logic
 
-The code sample above does not do much, except for setting up the connection. We can now define some logic for this program:
+The code sample above sets up the connection. You can now define some logic for this program:
 
 1. The color of the LED should be configurable.
 1. The period between the moment of motion detection to the moment lights go out should be configurable.
 1. There should be a permanent-on mode for the lights.
-1. We should notify mbed Cloud whenever we detect movement.
+1. You should notify mbed Cloud whenever you detect movement.
 
-We can implement these actions by defining *resources*: pieces of information the device makes available. We can read or write to them from the cloud, and the device can use a resource's value to determine the correct action to perform. We can reach a resource with a URI and access modifier (for example, only write allowed), and we can also subscribe to them, so we get notified when a resource changes.
+You can implement these actions by defining *resources*: pieces of information the device makes available. You can read or write to them from the cloud, and the device can use a resource's value to determine the correct action to perform. You can reach a resource with a URI and access modifier (for example, only write allowed), and you can also subscribe to them, so you receive a notification when a resource changes.
 
-Let's define a resource for each of our actions:
+Define a resource for each action:
 
 * `led/0/color` - the color of the LED.
 * `led/0/timeout` - the timeout (in seconds) after detection; lights are disabled when this period ends.
-* `led/0/permanent_status` - whether we should have the lights permanently on (or off).
+* `led/0/permanent_status` - whether you should have the lights permanently on (or off).
 * `pir/0/count` - the number of times the PIR sensor was triggered. Read only, and should allow notifications.
 
-We can use SimpleCloudClient to define these resources and attach actions to each resource.
+You can use SimpleCloudClient to define these resources and attach actions to each resource.
 
-Replace the following section in ``main.cpp``:
+Replace the following section in `main.cpp`:
 
 ```cpp
 // YOUR CODE HERE
@@ -287,9 +287,9 @@ void pir_rise() {
 }
 ```
 
-When you compile and flash this program, you'll see that when you wave your hand in front of the PIR sensor the color of the LED changes to green, and the LED always goes off after 5 seconds.
+When you compile and flash this program, you'll see that when you wave your hand in front of the PIR sensor, the color of the LED changes to green, and the LED always turns off after 5 seconds.
 
-When the connection to mbed Cloud is created, the onboard LED will blink faster. We can now control this device from the cloud.
+When the connection to mbed Cloud is created, the onboard LED blinks faster. You can now control this device from the cloud.
 
 <span class="notes">**Note:** No connection? [Inspect the logs on the device](https://docs.mbed.com/docs/mbed-os-handbook/en/latest/debugging/printf/).</span>
 
