@@ -6,7 +6,7 @@ Currently, your application sends a notification to the cloud every time the PIR
 
 #### Building with mbed CLI
 
-To enable firmware updates, the device needs to have the [mbed bootloader](https://github.com/armmbed/mbed-bootloader-private). The bootloader verifies the firmware on the device and can swap firmware for other firmware. Unfortunately, you cannot add the bootloader to your application via the mbed Online Compiler. You can only do so with mbed CLI.
+To enable firmware updates, the device needs to have the [mbed bootloader](https://docs.mbed.com/docs/mbed-os-handbook/en/latest/advanced/bootloader/). The bootloader verifies the firmware on the device and can swap firmware for other firmware. Unfortunately, you cannot add the bootloader to your application via the mbed Online Compiler. You can only do so with mbed CLI.
 
 ##### Exporting your code
 
@@ -46,7 +46,7 @@ To enable updates, you need to embed an update certificate into the firmware of 
 
 For development, you can use a self-signed certificate, but please note that this is not secure.
 
-<span class="notes">**Note:** If you're deploying devices in the field, always use a certificate from a trusted certificate authority (CA). Instructions on how to use your own certificate are [in the manifest-tool documentation]().</span>
+<span class="notes">**Note:** If you're deploying devices in the field, always use a certificate from a trusted certificate authority (CA). Instructions on how to use your own certificate are [in the manifest-tool documentation](https://cloud.test.mbed.com/docs/v1.2/device-dev/connecting-devices-to-the-cloud-with-mbed-cloud-client.html#bootstrap-mode).</span>
 
 ##### Generating an update certificate
 
@@ -173,7 +173,7 @@ In the mbed Cloud Portal:
 1. Click *Create new filter*.
 1. Click *Add attribute*.
 1. Select 'Device ID'.
-1. Enter your device ID. (Look under *Developer Tools* > *Connectivity inspector* to find your device ID.)
+1. Enter your device ID. (Look under *Developer Tools* > *Connectivity inspector* to find your device ID)
 1. Give the filter a descriptive name, and save the filter.
 
 ###### Starting the campaign
