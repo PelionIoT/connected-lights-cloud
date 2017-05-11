@@ -1,10 +1,10 @@
 ### Using the mbed Cloud API
 
-The mbed Cloud Portal that we used in the previous section is a wrapper around the mbed Cloud API. Through this API we can connect any app to any device. We can use this API to build an app that allows us to control any of the lighting systems that we deploy in our house or office.
+The mbed Cloud Portal that you used in the previous section is a wrapper around the mbed Cloud API. Through this API, you can connect any app to any device. You can use this API to build an app that allows you to control any of the lighting systems that you deploy in your house or office.
 
 #### Obtaining an access key
 
-To talk to the API we need to get an API key. This key is used to authenticate with the API. To create a new access key, go to the [Key management](https://portal.mbedcloud.com/access/keys) page in the mbed Cloud Portal.
+To talk to the API, you need an API key. This key is used to authenticate with the API. To create a new access key, go to the [Key management](https://portal.mbedcloud.com/access/keys) page in the mbed Cloud Portal.
 
 Click *Create API Key* to create a new API key, and give it a descriptive name.
 
@@ -12,7 +12,7 @@ Click *Create API Key* to create a new API key, and give it a descriptive name.
 
 #### Testing the API
 
-We can quickly test if the access key works by doing a call to the API to query for all our devices. To retrieve a list of all devices, make a GET request to https://api.mbedcloud.com/v2/endpoints. You'll need to send an authorization header with this request:
+You can quickly test if the access key works by sending a call to the API to query for all the devices. To retrieve a list of all devices, make a GET request to `https://api.mbedcloud.com/v2/endpoints`. You need to send an authorization header with this request:
 
 ```
 Authorization: Bearer <your_access_key>
@@ -55,21 +55,21 @@ It will return something like this:
 
 #### Using the official libraries
 
-There are official mbed Cloud SDKs available for node.js and Python. These APIs are asynchronous, because for many functions it is not guaranteed that an action (such as writing to a device) will happen straight away -  the device might be in deep sleep or otherwise slow to respond. Therefore, you need to listen to callbacks on a notification channel. If you're using any of the official libraries, notification channels are abstracted away, making it easier to write applications on top of mbed Cloud.
+Official mbed Cloud SDKs are available for Node.js and Python. These APIs are asynchronous because for many functions, an action (such as writing to a device) might not happen immediately - the device might be in deep sleep or otherwise slow to respond. Therefore, you need to listen to callbacks on a notification channel. The official libraries abstract the notification channels and set up the channels for you, which makes it easier for you to write applications on top of mbed Cloud.
 
-An additional feature in the libraries is that they support subscriptions. We can subscribe to resources and get a notification whenever they change. This is useful for our `/pir/0/count` resource, as we can get notified whenever someone moves in front of the sensor.
+An additional feature of the libraries is that they support subscriptions. You can subscribe to resources and get a notification whenever they change. This is useful for the `/pir/0/count` resource because you can receive a notification whenever someone moves in front of the sensor.
 
-The following sections show an example of changing the color of the light, and receiving a notification whenever someone waves in front of the PIR sensor, in both node.js and Python.
+The following sections show an example of changing the color of the light and receiving a notification whenever someone waves in front of the PIR sensor, in both Node.js and Python.
 
-##### node.js
+##### Node.js
 
-First, make sure you have installed [node.js](http://nodejs.org). Then create a new folder, and install the mbed Cloud node.js SDK via npm:
+First, make sure you have installed [Node.js](http://nodejs.org). Then, create a new folder, and install the mbed Cloud Node.js SDK via npm:
 
 ```bash
 $ npm install mbed-cloud-sdk
 ```
 
-Next create a new file ``main.js`` in the same folder where you installed the library, and fill it with the following content (replace `YOUR_ACCESS_KEY` with your access key):
+Next, create a new file `main.js` in the same folder where you installed the library, and fill it with the following content (replace `YOUR_ACCESS_KEY` with your access key):
 
 ```js
 var TOKEN = 'YOUR_ACCESS_TOKEN';
@@ -121,7 +121,7 @@ api.startNotifications(function(err) {
 
 ```
 
-When you run this program, and you wave your hand in front of the PIR sensor, you will see something like this:
+When you run this program and you wave your hand in front of the PIR sensor, you will see something like this:
 
 ```
 $ node main.js
@@ -132,17 +132,17 @@ Motion detected at 015b58400ce40000000000010010022a new count is 1
 Motion detected at 015b58400ce40000000000010010022a new count is 2
 ```
 
-See here for the [full docs](https://github.com/ARMmbed/mbed-cloud-sdk-javascript) on how to use the JavaScript SDK.
+See the [full docs](https://github.com/ARMmbed/mbed-cloud-sdk-javascript) on how to use the JavaScript SDK.
 
 ##### Python
 
-First make sure that you have installed [Python 2.7](https://www.python.org/downloads/) and [pip](https://pip.pypa.io/en/stable/installing/). Then create a new folder, and install the mbed Cloud SDK through pip:
+First, make sure that you have installed [Python 2.7](https://www.python.org/downloads/) and [pip](https://pip.pypa.io/en/stable/installing/). Then, create a new folder, and install the mbed Cloud SDK through pip:
 
 ```bash
 $ pip install -U mbed-cloud-sdk
 ```
 
-Next create a new file - ``lights.py`` - in the same folder where you installed the library, and fill it with the following content (replace `YOUR_ACCESS_KEY` with your access key):
+Next, create a new file - `lights.py` - in the same folder where you installed the library, and fill it with the following content (replace `YOUR_ACCESS_KEY` with your access key):
 
 ```python
 import os
@@ -178,7 +178,7 @@ while True:
     pass
 ```
 
-When we run this program, and you wave your hand in front of the PIR sensor, we'll see something like this:
+When you run this program and you wave your hand in front of the PIR sensor, you see something like this:
 
 ```
 $ python lights.py
@@ -189,4 +189,4 @@ Motion detected at 015b58400ce40000000000010010022a, new count is 7
 Motion detected at 015b58400ce40000000000010010022a, new count is 8
 ```
 
-See here for the [full docs](https://github.com/ARMmbed/mbed-cloud-sdk-python) on how to use the Python library.
+See the [full docs](https://github.com/ARMmbed/mbed-cloud-sdk-python) on how to use the Python library.
