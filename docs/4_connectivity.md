@@ -4,7 +4,7 @@ Now that you've built the basic circuit and written the code to control that cir
 
 #### Obtaining a device certificate
 
-[mbed TLS](https://tls.mbed.org) encrypts all data that goes from the device to mbed Cloud (and from mbed Cloud to the device. You need a security certificate to set up secure communication, which you can get from the mbed Cloud Portal:
+[mbed TLS](https://tls.mbed.org) encrypts all data that goes from the device to mbed Cloud (and from mbed Cloud to the device). You need a security certificate to set up secure communication, which you can get from the mbed Cloud Portal:
 
 1. Go to the [mbed Cloud Portal](https://portal.mbedcloud.com/login), and sign in.
 1. If prompted for your login credentials, use your mbed Cloud credentials. These are different from your credentials for the mbed Online Compiler.
@@ -28,7 +28,7 @@ If you have a development board that connects over Ethernet, just plug in an Eth
 
 #### Adding libraries with the mbed Online Compiler
 
-For the device and mbed Cloud to talk, you need the [mbed Cloud Client library](https://cloud.mbed.com/docs/latest/mbed-cloud-client/index.html). This is a cross-platform library that runs on mbed OS and Linux, and you can port it to other RTOS. In this example, you will use an additional library built on top of mbed Cloud Client: SimpleCloudClient. This library is designed specifically to be used with mbed OS 5 and makes it easy to expose variables and resources to the cloud.
+For the device and mbed Cloud to talk, you need the [mbed Cloud Client library](https://cloud.mbed.com/docs/latest/mbed-cloud-client/index.html). This is a cross-platform library that runs on mbed OS and Linux, and which you can port to other RTOSes. In this example, you will use an additional library built on top of mbed Cloud Client: SimpleCloudClient. This library is designed specifically to be used with mbed OS 5 and makes it easy to expose variables and resources to the cloud.
 
 You will also use [EasyConnect](https://github.com/ARMmbed/easy-connect) to handle connectivity.
 
@@ -166,7 +166,7 @@ int main(int, char**) {
 
 ##### Program logic
 
-The code sample above sets up the connection. You can now define some logic for this program:
+The code sample above only sets up the connection. You can now define some logic for this program:
 
 1. The color of the LED should be configurable.
 1. The period between the moment of motion detection to the moment lights go out should be configurable.
