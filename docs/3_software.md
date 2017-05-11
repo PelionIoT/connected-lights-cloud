@@ -1,6 +1,6 @@
 ### Writing the software
 
-Now you can write some software to verify that the circuit works. In this section, you will learn to enable the LED whenever you see movement. You can either build locally by using mbed CLI, or build in the cloud by using the mbed Online Compiler. This document will first show you how to use the Online Compiler, and at the end of this section, you will learn the corresponding commands in mbed CLI.
+Now you can write some software to verify that the circuit works. The software will enable the LED whenever it sees movement. You can either build locally by using mbed CLI, or build in the cloud by using the mbed Online Compiler. This document will first show you how to use the Online Compiler, and at the end of this section, you will learn the corresponding commands in mbed CLI.
 
 #### Setting up the mbed Online Compiler
 
