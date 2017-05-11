@@ -20,10 +20,10 @@ Here is a diagram of hooking up the PIR sensor and the RGB LED to your board. Re
 
 <span class="images">![PIR sensor and RGB LED Fritzing diagram](https://s3-us-west-2.amazonaws.com/cloud-docs-images/lights4.png)</span>
 
-<span class="notes">**Note - common anode or common cathode LED:** Four pin RGB LEDs come in two different flavors, *common anode* and *common cathode*. If you have a common cathode LED, connect the second pin to `GND` instead of `3.3V`. If you are unsure, try both circuits, and see which one works.</span>
+<span class="notes">**Note - common anode or common cathode LED:** Four pin RGB LEDs come in two different types: *common anode* and *common cathode*. If you have a common cathode LED, connect the second pin to `GND` instead of `3.3V`. If you are unsure, try both circuits and see which one works.</span>
 
 <span class="notes">**Note:** If you're unsure of the pins on the PIR sensor and you have a sensor with a 'dome' on it, remove the dome. The PCB describes the pins.</span>
 
-When you hook everything up, the circuit looks something like this:
+When you have connected everything, the circuit looks something like this:
 
 <span class="images">![PIR sensor and RGB LED connected to FRDM-K64F](https://s3-us-west-2.amazonaws.com/cloud-docs-images/lights5.png)</span>
