@@ -14,7 +14,7 @@ You also need a pin for the PIR sensor. This can be any digital pin, as long as 
 
 <span class="notes">**Note:** In general, it's a good idea not to use any of the I2C and SPI pins for LEDs and basic sensors because connectivity shields (such as Wi-Fi) might need them.</span>
 
-#### Hooking up the peripherals on a breadboard
+#### Connecting the peripherals on a breadboard
 
 Here is a diagram of hooking up the PIR sensor and the RGB LED to your board. Replace the pins D2, D5, D6 and D7 with the pins you found for your board. If you have a four-pin RGB LED, you must position the LED so that the longest pin is the second from the left. (Hold it [like this](http://howtomechatronics.com/wp-content/uploads/2015/09/RGB-LED.png?28ea0f).)
 
