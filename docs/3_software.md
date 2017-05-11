@@ -1,15 +1,15 @@
 ### Writing the software
 
-Now we can write some software to verify that the circuit works. We will enable the LED whenever we see movement. We can either build locally by using mbed CLI, or in the cloud by using the mbed Online Compiler. We will first show how to use the online compiler, and at the end of this section we will show the corresponding commands in mbed CLI.
+Now you can write some software to verify that the circuit works. The software will enable the LED whenever it sees movement. You can either build locally by using mbed CLI, or build in the cloud by using the mbed Online Compiler. This document will first show you how to use the Online Compiler, and at the end of this section, you will learn the corresponding commands in mbed CLI.
 
-#### Setting up the online compiler
+#### Setting up the mbed Online Compiler
 
-Part of the ARM mbed IoT Device Platform is an online compiler, which we will use to write and compile software in the browser. To get started:
+Part of the ARM mbed IoT Device Platform is the mbed Online Compiler, which you will use to write and compile software in the browser. To get started:
 
 1. Find your development board's [platform page](https://developer.mbed.org/platforms/).
 1. In the right hand panel, choose **Add to your mbed Compiler**.
-1. When prompted sign up (or sign in). You are redirected to the platform page.
-1. Choose **Open mbed Compiler**. The online compiler opens.
+1. When prompted, sign up (or sign in). You are redirected to the platform page.
+1. Choose **Open mbed Compiler**. The mbed Online Compiler opens.
 1. Click the **Import** button.
 
     <span class="images">![Import button](https://s3-us-west-2.amazonaws.com/cloud-docs-images/lights17.png)</span>
@@ -18,24 +18,23 @@ Part of the ARM mbed IoT Device Platform is an online compiler, which we will us
 
     <span class="images">![Import from URL](https://s3-us-west-2.amazonaws.com/cloud-docs-images/lights18.png)</span>
 
-1. Under **Source URL** enter `https://github.com/armmbed/connected-lights-cloud`.
+1. Under **Source URL**, enter `https://github.com/armmbed/connected-lights-cloud`.
 
     Do not check the **Update all libraries to the latest revision** box.
 
     <span class="images">![Creating a program in the online compiler](https://s3-us-west-2.amazonaws.com/cloud-docs-images/lights6.png)</span>
 
-This program contains a configuration file, which we will use to configure the pins our software uses.
+This program contains a configuration file, which you will use to configure the pins the software uses.
 
 #### Adding the code
 
-mbed OS comes with a powerful [configuration system](https://docs.mbed.com/docs/mbedmicro-api/en/latest/api/md_docs_config_system.html) that makes it easy to separate configuration and application code. In this application we will separate the configuration of the LED (cathode, anode or a Grove LED), pins, and connectivity method (next section).
+mbed OS comes with a powerful [configuration system](https://docs.mbed.com/docs/mbedmicro-api/en/latest/api/md_docs_config_system.html) that makes it easy to separate configuration and application code. In this application, you will separate the configuration of the LED (cathode, anode or a Grove LED), pins and connectivity method (next section).
 
-From the mbed Online Compiler's tree, open ``mbed_app.json``. Edit the file to reflect your LED choice, and the pins you used to connect the LED and the PIR sensor:
+From the mbed Online Compiler's tree, open `mbed_app.json`. Edit the file to reflect your LED choice and the pins you used to connect the LED and the PIR sensor:
 
 1. If you have a common cathode LED, set the `value` of `led-type` to `TRICOLOR_CATHODE`.
 1. If you have a Grove Chainable LED, set the `value` of `led-type` to `TRICOLOR_ANODE`.
 1. Replace the pins D2, D5, D6 and D7 with the pins you used when building the circuit.
-
 
 ```js
 /* mbed_app.json */
@@ -78,7 +77,7 @@ From the mbed Online Compiler's tree, open ``mbed_app.json``. Edit the file to r
 /* snip */
 ```
 
-Next, create a file called ``main.cpp`` in the `source` directory:
+Next, create a file called `main.cpp` in the `source` directory:
 
 ```cpp
 /* lighting-system-firmware/source/main.cpp */
@@ -128,15 +127,15 @@ When you connect your board to your computer, it mounts as a USB mass storage de
 
 <span class="images">![Flashing the application on Windows](https://s3-us-west-2.amazonaws.com/cloud-docs-images/lights8.png)</span><span>Drag the firmware file onto the mass storage device to flash the application.</span>
 
-<span class="notes">**Note:** On some boards you might need to press the *Reset* button to load the program.</span>
+<span class="notes">**Note:** On some boards, you might need to press the *Reset* button to load the program.</span>
 
 ##### Testing the application
 
-After flashing the application, you can test it by waving your hand in front of the PIR sensor; the red LED should light up.
+After flashing the application, you can test it by waving your hand in front of the PIR sensor; the red LED lights up.
 
 #### Developing using mbed CLI
 
-You can also develop locally using [mbed CLI](http://github.com/armmbed/mbed-cli), a command line tool for mbed OS. First follow [the installation steps](https://github.com/ARMmbed/mbed-cli#installing-mbed-cli), then use the following commands to recreate the flow above:
+You can also develop locally using [mbed CLI](http://github.com/armmbed/mbed-cli), a command-line tool for mbed OS. First, follow [the installation steps](https://github.com/ARMmbed/mbed-cli#installing-mbed-cli), and then use the following commands to recreate the flow above:
 
 ```bash
 # import the connected-lights-cloud project
@@ -159,4 +158,4 @@ $ mbed compile -t GCC_ARM -m YOUR_BOARD_NAME
 # Image: ./BUILD/K64F/GCC_ARM/connected-lights-cloud.bin
 ```
 
-Copy the binary file that was generated to your board using drag-and-drop programming (as shown under [Compiling and flashing](#compiling-and-flashing)).
+Use drag-and-drop programming (as shown under [Compiling and flashing](#compiling-and-flashing)) to copy the binary file that was generated to your board.
