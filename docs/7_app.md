@@ -20,7 +20,7 @@ Here is a screenshot of the app running on an Android phone:
 
 *This is what the mobile interface looks like with two lights connected. Tap the color to change it.*
 
-<span class="notes">**Note:** To give the lights a more friendly name (such as "living room"), change the name of the device in the mbed Cloud Portal.</notes>
+<span class="notes">**Note:** To give the lights a more friendly name (such as "living room"), change the name of the device in the mbed Cloud Portal.</span>
 
 #### Installing the application
 
@@ -29,7 +29,7 @@ To start the application, first download the application, either by:
 1. Downloading the [application as a ZIP archive](https://github.com/ARMmbed/connected-lights-cloud/archive/master.zip).
 1. Or running `git clone https://github.com/armmbed/connected-lights-cloud` in your terminal.
 
-Then, open `main.js`, and paste your mbed Cloud API key in the first line. Next, open a terminal or command prompt, navigate to the location where you extracted the application and run:
+Then, open `webapp/main.js`, and paste your mbed Cloud API key in the first line. Next, open a terminal or command prompt, navigate to the location where you extracted the application and run:
 
 ```
 $ cd connected-lights-cloud/webapp
@@ -37,7 +37,7 @@ $ npm install
 $ node main.js
 ```
 
-Open your web browser, and go to http://localhost:5265 to see the application running.
+Open your web browser, and go to [http://localhost:5265](http://localhost:5265) to see the application running.
 
 #### Konekuta
 
