@@ -4,7 +4,7 @@ The mbed Cloud Portal that you used in the previous section is a wrapper around 
 
 #### Obtaining an access key
 
-To talk to the API, you need an API key. This key is used to authenticate the API. To create a new access key, go to the [Key management](https://portal.mbedcloud.com/access/keys) page in the mbed Cloud Portal.
+To talk to the API, you need an API key. This key is used to authenticate with the API. To create a new access key, go to the [Key management](https://portal.mbedcloud.com/access/keys) page in the mbed Cloud Portal.
 
 Click *Create API Key* to create a new API key, and give it a descriptive name.
 
@@ -12,7 +12,7 @@ Click *Create API Key* to create a new API key, and give it a descriptive name.
 
 #### Testing the API
 
-You can quickly test if the access key works by sending a call to the API to query for all the devices. To retrieve a list of all devices, make a GET request to https://api.mbedcloud.com/v2/endpoints. You need to send an authorization header with this request:
+You can quickly test if the access key works by sending a call to the API to query for all the devices. To retrieve a list of all devices, make a GET request to `https://api.mbedcloud.com/v2/endpoints`. You need to send an authorization header with this request:
 
 ```
 Authorization: Bearer <your_access_key>
