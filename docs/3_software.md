@@ -24,7 +24,7 @@ Part of the ARM mbed IoT Device Platform is an online compiler, which we will us
 
     <span class="images">![Creating a program in the online compiler](https://s3-us-west-2.amazonaws.com/cloud-docs-images/lights6.png)</span>
 
-This program contains a configuration file, which we will use to configure the pins our software uses. 
+This program contains a configuration file, which we will use to configure the pins our software uses.
 
 #### Adding the code
 
@@ -126,7 +126,7 @@ A successful compilation downloads a `.bin` file to your computer. This is the c
 
 When you connect your board to your computer, it mounts as a USB mass storage device, like a USB drive. To flash the new application onto the board, drag and drop the firmware file onto the mass storage device:
 
-<span class="images">![Flashing the application on Windows](https://s3-us-west-2.amazonaws.com/cloud-docs-images/lights8.png)<span>Drag the firmware file onto the mass storage device to flash the application.</span></span>
+<span class="images">![Flashing the application on Windows](https://s3-us-west-2.amazonaws.com/cloud-docs-images/lights8.png)</span><span>Drag the firmware file onto the mass storage device to flash the application.</span>
 
 <span class="notes">**Note:** On some boards you might need to press the *Reset* button to load the program.</span>
 
@@ -160,4 +160,3 @@ $ mbed compile -t GCC_ARM -m YOUR_BOARD_NAME
 ```
 
 Copy the binary file that was generated to your board using drag-and-drop programming (as shown under [Compiling and flashing](#compiling-and-flashing)).
-
