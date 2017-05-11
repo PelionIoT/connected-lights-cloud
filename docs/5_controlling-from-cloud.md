@@ -10,7 +10,7 @@ You need to know the endpoint's name to check the device's status in the mbed Cl
 
 <span class="tips">**Tip:** The mbed Cloud interface lists your devices by type. You can categorize devices by setting the device type in the application running on the device. See the `endpoint-type` property in `mbed_app.json`.</span>
 
-<span class="images">![Two connected devices](https://s3-us-west-2.amazonaws.com/cloud-docs-images/lights11.png)<span>The mbed Cloud Portal connectivity inspector page shows two connected devices: our light-system and another device.</span></span>
+<span class="images">![Two connected devices](https://s3-us-west-2.amazonaws.com/cloud-docs-images/lights11.png)</span><span>The mbed Cloud Portal connectivity inspector page, showing two connected devices: our light-system and another device.</span>
 
 #### Controlling the device
 
@@ -27,7 +27,7 @@ You can control these resources through the mbed Cloud Portal. For instance, whe
 
 To test this, in mbed Cloud Portal, go to *Developer Tools* > *Connectivity inspector*, and click on your device. This gives you access to a management console where you can quickly test interactions with resources.
 
-<span class="images">![Viewing resources on the device](https://s3-us-west-2.amazonaws.com/cloud-docs-images/lights19.png)<span>These tables show the available resources on this device.</span></span>
+<span class="images">![Viewing resources on the device](https://s3-us-west-2.amazonaws.com/cloud-docs-images/lights19.png)</span><span>These tables show the available resources on this device.</span>
 
 To enable the lights:
 
