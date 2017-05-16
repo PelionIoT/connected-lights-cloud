@@ -33,9 +33,6 @@ To enable the lights:
 
 1. Click on */led/0/permanent_status*.
 1. Click on *Edit*.
-
-    **Todo: add a screenshot here when this UI is added to mbed Cloud Portal**
-
 1. Enter `1`.
 1. Click *Save*.
 
