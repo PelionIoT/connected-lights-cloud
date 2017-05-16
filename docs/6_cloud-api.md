@@ -157,7 +157,6 @@ config['api_key'] = os.environ['TOKEN'] or TOKEN
 api = DeviceAPI(config)
 api.start_long_polling()
 
-# todo, filter by endpoint type, see https://github.com/ARMmbed/mbed-cloud-sdk-python/issues/88
 devices = list(api.list_connected_devices())
 
 print("Found %d lights" % (len(devices)), [ c.id for c in devices ])
