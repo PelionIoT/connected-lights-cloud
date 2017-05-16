@@ -93,11 +93,11 @@ Then flash `BUILD/RTL8195A/GCC_ARM/connected-lights-cloud.bin` to your developme
 
 ##### ST NUCLEO-F429ZI
 
-TBD
+
 
 ##### u-blox EVK-ODIN-W2
 
-TBD
+
 
 #### Creating the updated firmware
 
