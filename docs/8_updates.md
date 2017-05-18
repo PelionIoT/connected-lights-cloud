@@ -46,7 +46,7 @@ To enable updates, you need to embed an update certificate into the firmware of 
 
 For development, you can use a self-signed certificate, but please note that this is not secure.
 
-<span class="notes">**Note:** If you're deploying devices in the field, always use a certificate from a trusted certificate authority (CA). Instructions on how to use your own certificate are [in the manifest-tool documentation](https://cloud.test.mbed.com/docs/v1.2/device-dev/connecting-devices-to-the-cloud-with-mbed-cloud-client.html#bootstrap-mode).</span>
+<span class="notes">**Note:** If you're deploying devices in the field, always use a certificate from a trusted certificate authority (CA). Instructions on how to use your own certificate are [in the manifest-tool documentation](/docs/v1.2/mbed-cloud-management/update-manifest-creation.html#quick-start).</span>
 
 ##### Generating an update certificate
 
