@@ -6,7 +6,7 @@ Now, the device is connected through mbed Cloud. In the code sample in the previ
 
 Each device that you connect to mbed Cloud has an endpoint name. This is a long string, which is the unique identifier of your device. If you don't know the endpoint name of your device, check the [serial output](https://docs.mbed.com/docs/mbed-os-handbook/en/latest/debugging/printf/) on your device for a line starting with 'Device Identity'.
 
-You need to know the endpoint's name to check the device's status in the mbed Cloud Portal. The [Connectivity Inspector](https://portal.mbedcloud.com/developer/connected) page lists all devices associated with your account and their current status.
+You need to know the endpoint's name to check the device's status in the mbed Cloud Portal. The [Connectivity Inspector](https://portal.us-east-1.mbedcloud.com/developer/connected) page lists all devices associated with your account and their current status.
 
 <span class="tips">**Tip:** The mbed Cloud interface lists your devices by type. You can categorize devices by setting the device type in the application running on the device. See the `endpoint-type` property in `mbed_app.json`.</span>
 
@@ -25,16 +25,16 @@ You can control these resources through the mbed Cloud Portal. For instance, whe
 
 ##### Turning the lights on
 
-To test this, in mbed Cloud Portal, go to *Developer Tools* > *Connectivity inspector*, and click on your device. This gives you access to a management console where you can quickly test interactions with resources.
+To test this, select **Developer Tools** > **Connectivity inspector** in mbed Cloud Portal and click on your device. This gives you access to a management console where you can quickly test interactions with resources.
 
 <span class="images">![Viewing resources on the device](https://s3-us-west-2.amazonaws.com/cloud-docs-images/lights19.png)<span>These tables show the available resources on this device.</span></span>
 
 To enable the lights:
 
-1. Click on */led/0/permanent_status*.
-1. Click on *Edit*.
+1. Click **/led/0/permanent_status**.
+1. Click **Edit**.
 1. Enter `1`.
-1. Click *Save*.
+1. Click **Save**.
 
     <span class="images">![Updating the value of a resource](https://s3-us-west-2.amazonaws.com/cloud-docs-images/lights20.png)</span>
 
