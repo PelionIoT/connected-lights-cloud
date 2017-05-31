@@ -7,14 +7,14 @@ Now you can write some software to verify that the circuit works. The software w
 Part of the ARM mbed IoT Device Platform is the mbed Online Compiler, which you will use to write and compile software in the browser. To get started:
 
 1. Find your development board's [platform page](https://developer.mbed.org/platforms/).
-1. In the right hand panel, choose **Add to your mbed Compiler**.
+1. In the right hand panel, select **Add to your mbed Compiler**.
 1. When prompted, sign up (or sign in). You are redirected to the platform page.
-1. Choose **Open mbed Compiler**. The mbed Online Compiler opens.
+1. Select **Open mbed Compiler**. The mbed Online Compiler opens.
 1. Click the **Import** button.
 
     <span class="images">![Import button](https://s3-us-west-2.amazonaws.com/cloud-docs-images/lights17.png)</span>
 
-1. Click the "Click here to import from URL" link:
+1. Click the **Click here to import from URL** link:
 
     <span class="images">![Import from URL](https://s3-us-west-2.amazonaws.com/cloud-docs-images/lights18.png)</span>
 
@@ -115,7 +115,7 @@ int main(int, char**) {
 
 ##### Compiling
 
-Compile the code by clicking the *Compile* button at the top of the screen:
+To compile the code, click the **Compile** button at the top of the screen:
 
 <span class="images">![The compile button](https://s3-us-west-2.amazonaws.com/cloud-docs-images/lights7.png)</span>
 
