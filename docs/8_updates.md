@@ -19,17 +19,17 @@ If you are not yet using mbed CLI:
 
 Then, to export your code from the mbed Online Compiler and into mbed CLI:
 
-1. Right click on your project in the Online Compiler.
-1. Click *Publish*.
-1. Click *Fork*.
+1. Right-click on your project in the Online Compiler.
+1. Click **Publish**.
+1. Click **Fork**.
 1. If you're prompted for a commit message, enter one.
-1. Enter a description for the project, and mark the project as 'Private'.
+1. Enter a description for the project, and mark the project as **Private**.
 
     <span class="images">![Publishing the project](https://s3-us-west-2.amazonaws.com/cloud-docs-images/lights21.png)</span>
 
     <span class="notes">**Note:** Mark the project because private as it contains your device certificate.</span>
 
-1. Click *OK*.
+1. Click **OK**.
 1. You're presented with a URL to the published project.
 
     <span class="images">![Published project](https://s3-us-west-2.amazonaws.com/cloud-docs-images/lights22.png)</span>
@@ -129,15 +129,15 @@ Then rebuild the application, but do not flash the binary to your development bo
 
 To schedule an update, you need to upload the firmware to mbed Cloud.
 
-1. Log in to [mbed Cloud Portal](https://portal.mbedcloud.com/login).
-1. Go to *Firmware management* > *Images*.
-1. Click *Upload new images*.
+1. Log in to [mbed Cloud Portal](https://portal.us-east-1.mbedcloud.com).
+1. Select **Firmware management** > **Images**.
+1. Click **Upload new images**.
 1. Enter a descriptive name.
 1. Select the firmware:
     * On FRDM-K64F, select `BUILD/K64F/GCC_ARM/connected-lights-cloud.bin`.
     * On RTL8195A, select `BUILD/RTL8195A/GCC_ARM/connected-lights-cloud-ota.bin`.
     * Other platforms: TBD.
-1. Click *Upload*.
+1. Click **Upload**.
 
 After the upload succeeds, find the URL to your firmware file on the overview page.
 
@@ -155,11 +155,11 @@ $ simple-cloud-client/tools/manifest-tool/bin/manifest-tool create -u http://pat
 
 To upload the manifest to mbed Cloud:
 
-1. Go to *Firmware management* > *Manifests*.
-1. Click *Upload new manifest*.
+1. Select **Firmware management** > **Manifests**.
+1. Click **Upload new manifest**.
 1. Enter a descriptive name.
 1. Select the manifest (`connected-lights.manifest`).
-1. Click *Upload*.
+1. Click **Upload**.
 
 ##### Creating an update campaign
 
@@ -169,25 +169,25 @@ To apply the firmware update, you need to start an update campaign. The campaign
 
 In the mbed Cloud Portal:
 
-1. Go to *Device management*.
-1. Click *Create new filter*.
-1. Click *Add attribute*.
-1. Select 'Device ID'.
-1. Enter your device ID. (Look under *Developer Tools* > *Connectivity inspector* to find your device ID)
+1. Select **Device management**.
+1. Click **Create new filter**.
+1. Click **Add attribute**.
+1. Select **Device ID**.
+1. Enter your device ID. (Look under **Developer Tools** > **Connectivity inspector** to find your device ID)
 1. Give the filter a descriptive name, and save the filter.
 
 ###### Starting the campaign
 
 With the firmware, the manifest and the device filter in place, you can start the firmware update campaign.
 
-1. Go to *Firmware management* > *Update campaigns*.
-1. Click *Create campaign*.
+1. Select **Firmware management** > **Update campaigns**.
+1. Click **Create campaign**.
 1. Give the campaign a descriptive name.
 1. Select the manifest you uploaded.
 1. Select the filter you created.
-1. Click *Save*.
+1. Click **Save**.
 
-To start the campaign, click *Start*.
+To start the campaign, click **Start**.
 
 Inspect the logs on the device (via a serial monitor) to see the firmware update progress. It looks similar to:
 
