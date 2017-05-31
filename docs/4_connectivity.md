@@ -6,11 +6,11 @@ Now that you've built the basic circuit and written the code to control that cir
 
 [mbed TLS](https://tls.mbed.org) encrypts all data that goes from the device to mbed Cloud (and from mbed Cloud to the device). You need a security certificate to set up secure communication, which you can get from the mbed Cloud Portal:
 
-1. Go to the [mbed Cloud Portal](https://portal.mbedcloud.com/login), and sign in.
+1. Go to the [mbed Cloud Portal](https://portal.us-east-1.mbedcloud.com), and sign in.
 1. If prompted for your login credentials, use your mbed Cloud credentials. These are different from your credentials for the mbed Online Compiler.
-1. Go to *Developer Tools* > *Certificate*.
-1. Click *Get new device security credentials*.
-1. Copy the contents of the white box by clicking *Copy to clipboard*. This is your certificate.
+1. Select **Developer Tools** > **Certificate**.
+1. Click **Get new device security credentials**.
+1. To copy the contents of the white box, click **Copy to clipboard**. This is your certificate.
 
     <span class="images">![The certificate is located in the white box](https://s3-us-west-2.amazonaws.com/cloud-docs-images/lights16.png)</span>
 
@@ -35,13 +35,13 @@ You will also use [EasyConnect](https://github.com/ARMmbed/easy-connect) to hand
 To add these libraries to your project:
 
 1. Go back to the mbed Online Compiler.
-1. Right click on your program in the tree, and select *Import Library* > *From URL*.
-1. Under *Source URL*, enter: `https://github.com/armmbed/easy-connect`.
-1. Do **not** tick 'Update all sub-libraries to the latest version'.
-1. Click *Import*.
-1. Again, right click on your program, and select *Import Library* > *From URL*.
-1. Under *Source URL* enter: `https://github.com/armmbed/simple-cloud-client/`.
-1. Click *Import*.
+1. Right-click on your program in the tree, and select **Import Library** > **From URL**.
+1. Under **Source URL**, enter: `https://github.com/armmbed/easy-connect`.
+1. Do **not** tick **Update all sub-libraries to the latest version**.
+1. Click **Import**.
+1. Again, right-click on your program, and select **Import Library** > **From URL**.
+1. Under **Source URL** enter: `https://github.com/armmbed/simple-cloud-client/`.
+1. Click **Import**.
 
 #### Adding libraries with mbed CLI
 
@@ -54,7 +54,7 @@ $ mbed add simple-cloud-client
 
 #### Updating configuration
 
-You need to tell EasyConnect which connectivity method to use. Open `mbed_app.json`, and locate the `network-interface` field. Change the `value` to the connectivity method used:
+You need to tell **EasyConnect** which connectivity method to use. Open `mbed_app.json`, and locate the `network-interface` field. Change the `value` to the connectivity method used:
 
 ```json
 /* mbed_app.json */
