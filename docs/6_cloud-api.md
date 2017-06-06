@@ -12,7 +12,7 @@ Click **Create API Key** to create a new API key, and give it a descriptive name
 
 #### Testing the API
 
-You can quickly test if the access key works by sending a call to the API to query for all the devices. To retrieve a list of all devices, make a GET request to `https://api.mbedcloud.com/v2/endpoints`. You need to send an authorization header with this request:
+You can quickly test if the access key works by sending a call to the API to query for all the devices. To retrieve a list of all devices, make a GET request to `https://api.us-east-1.mbedcloud.com/v2/endpoints`. You need to send an authorization header with this request:
 
 ```
 Authorization: Bearer <your_access_key>
@@ -21,17 +21,17 @@ Authorization: Bearer <your_access_key>
 You can make this request with any request library, but if you're using curl, use the following command:
 
 ```
-curl -v -H "Authorization: Bearer <your_access_key>" https://api.mbedcloud.com/v2/endpoints
+curl -v -H "Authorization: Bearer <your_access_key>" 	https://api.us-east-1.mbedcloud.com/v2/endpoints
 ```
 
 It will return something like this:
 
 ```
 *   Trying 52.1.229.179...
-* Connected to api.mbedcloud.com (52.1.229.179) port 443 (#0)
+* Connected to api.us-east-1.mbedcloud.com (52.1.229.179) port 443 (#0)
 * TLS 1.2 connection using TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
 > GET /v2/endpoints HTTP/1.1
-> Host: api.mbedcloud.com
+> Host: api.us-east-1.mbedcloud.com
 > User-Agent: curl/7.43.0
 > Accept: */*
 > Authorization: Bearer ak_...
