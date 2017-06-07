@@ -24,4 +24,4 @@ You need the following hardware:
 You also need:
 
 * An account on [developer.mbed.org](https://developer.mbed.org/) to access the Online Compiler.
-* An account on [portal.mbedcloud.com](https://portal.mbedcloud.com) to access to the mbed Cloud Portal.
+* [An account](https://portal.us-east-1.mbedcloud.com) to access to the mbed Cloud Portal.
