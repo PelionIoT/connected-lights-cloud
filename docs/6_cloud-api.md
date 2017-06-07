@@ -4,7 +4,7 @@ The mbed Cloud Portal that you used in the previous section is a wrapper around 
 
 #### Obtaining an access key
 
-To talk to the API, you need an API key. This key is used to authenticate with the API. To create a new access key, go to the [Key management](https://portal.us-east-1.mbedcloud.com/access/keys) page in the mbed Cloud Portal.
+To talk to the API, you need an API key. This key is used to authenticate with the API. To create a new access key, go to the [Manage access](https://portal.us-east-1.mbedcloud.com/access/keys) page in the mbed Cloud Portal.
 
 Click **Create API Key** to create a new API key, and give it a descriptive name.
 
