@@ -1,4 +1,4 @@
-## Building an internet connected lighting system
+## Tutorial: Building an internet connected lighting system
 
 In this tutorial, you'll use the ARM mbed IoT Device Platform to build a complete connected lighting system that you can deploy in your house or office. The system consists of one (or more) extra-bright RGB LEDs hooked up to an mbed OS development board. A motion sensor can turn the lights on and off. The lights are also connected to the internet, so you can change their color. The system uses mbed Cloud to connect to the internet. It is secured end-to-end, and you can update it through over-the-air firmware updates.
 
