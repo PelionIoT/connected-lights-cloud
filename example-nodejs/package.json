@@ -9,6 +9,6 @@
   "author": "Jan Jongboom <jan.jongboom@arm.com>",
   "license": "Apache-2.0",
   "dependencies": {
-    "mbed-cloud-sdk": "github:janjongboom/mbed-cloud-sdk-javascript#jan"
+    "mbed-cloud-sdk": "git+ssh://git@github.com/ARMmbed/mbed-cloud-sdk-javascript.git#build"
   }
 }

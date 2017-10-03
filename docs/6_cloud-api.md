@@ -66,7 +66,7 @@ The following sections show an example of changing the color of the light and re
 First, make sure you have installed [Node.js](http://nodejs.org). Then, create a new folder, and install the mbed Cloud Node.js SDK via npm:
 
 ```bash
-$ npm install mbed-cloud-sdk
+$ npm install git+ssh://git@github.com:ARMmbed/mbed-cloud-sdk-javascript.git#build --save
 ```
 
 Next, create a new file `main.js` in the same folder where you installed the library, and fill it with the following content (replace `YOUR_ACCESS_KEY` with your access key):
@@ -75,7 +75,7 @@ Next, create a new file `main.js` in the same folder where you installed the lib
 var TOKEN = 'YOUR_ACCESS_TOKEN';
 
 var mbed = require('mbed-cloud-sdk');
-var api = new mbed.DevicesApi({
+var api = new mbed.ConnectApi({
     apiKey: process.env.TOKEN || TOKEN,
     host: 'https://api.us-east-1.mbedcloud.com'
 });
@@ -85,7 +85,7 @@ api.startNotifications(function(err) {
     if (err) return console.error(err);
 
     // Find all the lights
-    api.listConnectedDevices({ type: 'light-system' }, function(err, resp) {
+    api.listConnectedDevices({ deviceType: 'light-system' }, function(err, resp) {
         if (err) return console.error(err);
 
         var devices = resp.data;
@@ -96,30 +96,25 @@ api.startNotifications(function(err) {
         devices.forEach(function(d) {
 
             // Subscribe to the PIR sensor
-            api.addResourceSubscription({
-                id: d.id,
-                path: '/pir/0/count',
-                fn: function(count) {
+            api.addResourceSubscription(
+                d.id,
+                '/pir/0/count',
+                function(count) {
                     console.log('Motion detected at', d.id, 'new count is', count);
-                }
-            }, function(err) {
-                console.log('subscribed to resource', err || 'OK');
-            });
+                },
+                function(err) {
+                    console.log('subscribed to resource', err || 'OK');
+                });
 
             // Set the color of the light
             var orange = 0xff6400;
-            api.setResourceValue({
-                id: d.id,
-                path: '/led/0/color',
-                value: orange
-            }, function(err) {
+            api.setResourceValue(d.id, '/led/0/color', orange, function(err) {
                 console.log('set color to orange', err || 'OK');
             });
 
         });
     });
 });
-
 ```
 
 When you run this program and you wave your hand in front of the PIR sensor, you will see something like this:
@@ -140,7 +135,7 @@ See the [full docs](https://github.com/ARMmbed/mbed-cloud-sdk-javascript) on how
 First, make sure that you have installed [Python 2.7](https://www.python.org/downloads/) and [pip](https://pip.pypa.io/en/stable/installing/). Then, create a new folder, and install the mbed Cloud SDK through pip:
 
 ```bash
-$ pip install -U mbed-cloud-sdk
+$ pip install git+ssh://git@github.com/ARMmbed/mbed-cloud-sdk-python.git
 ```
 
 Next, create a new file - `lights.py` - in the same folder where you installed the library, and fill it with the following content (replace `YOUR_ACCESS_KEY` with your access key):
@@ -148,7 +143,7 @@ Next, create a new file - `lights.py` - in the same folder where you installed t
 ```python
 import os
 import pprint
-from mbed_cloud.devices import DeviceAPI
+from mbed_cloud.connect import ConnectAPI
 
 TOKEN = "YOUR_ACCESS_TOKEN"
 
@@ -156,18 +151,19 @@ TOKEN = "YOUR_ACCESS_TOKEN"
 config = {}
 config['api_key'] = os.environ['TOKEN'] or TOKEN
 config['host'] = 'https://api.us-east-1.mbedcloud.com'
-api = DeviceAPI(config)
-api.start_long_polling()
+api = ConnectAPI(config)
+api.start_notifications()
 
+# todo, filter by endpoint type, see https://github.com/ARMmbed/mbed-cloud-sdk-python/issues/88
 devices = list(api.list_connected_devices())
 
 print("Found %d lights" % (len(devices)), [ c.id for c in devices ])
 
 for device in devices:
-    def pir_callback(count):
-        print("Motion detected at %s, new count is %s" % (device.id, count))
+    def pir_callback(device_id, path, count):
+        print("Motion detected at %s, new count is %s" % (device_id, count))
 
-    api.add_subscription_with_callback(device.id, '/pir/0/count', pir_callback)
+    api.add_resource_subscription_async(device.id, '/pir/0/count', pir_callback)
     print("subscribed to resource")
 
     pink = 0xff69b4
