@@ -7,6 +7,7 @@ TOKEN = "YOUR_ACCESS_TOKEN"
 # set up the Python SDK
 config = {}
 config['api_key'] = os.environ['TOKEN'] or TOKEN
+config['host'] = 'https://api.us-east-1.mbedcloud.com'
 api = DeviceAPI(config)
 api.start_long_polling()
 

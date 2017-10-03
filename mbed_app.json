@@ -47,14 +47,14 @@
             "help": "Pin used as RX (connects to ESP8266 TX)",
             "value": "D0"
         },
-        "esp8266-ssid": {
-            "value": "\"SSID\""
-        },
-        "esp8266-password": {
-            "value": "\"Password\""
-        },
         "esp8266-debug": {
             "value": true
+        },
+        "wifi-ssid": {
+            "value": "\"SSID\""
+        },
+        "wifi-password": {
+            "value": "\"Password\""
         },
         "mesh_radio_type": {
             "help": "options are ATMEL, MCR20",
@@ -82,7 +82,6 @@
             "target.features_add": ["NANOSTACK", "LOWPAN_ROUTER", "COMMON_PAL"],
             "platform.stdio-baud-rate": 115200,
             "platform.stdio-convert-newlines": true,
-            "mbed-client.sn-coap-max-blockwise-payload-size": 1024,
             "nanostack-hal.event_loop_thread_stack_size": 8192,
             "mbed-trace.enable": 0
         },

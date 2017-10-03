@@ -8,9 +8,10 @@ Now that you've built the basic circuit and written the code to control that cir
 
 1. Go to the [mbed Cloud Portal](https://portal.us-east-1.mbedcloud.com), and sign in.
 1. If prompted for your login credentials, use your mbed Cloud credentials. These are different from your credentials for the mbed Online Compiler.
-1. Select **Developer Tools** > **Certificate**.
-1. Click **Get new device security credentials**.
-1. To copy the contents of the white box, click **Copy to clipboard**. This is your certificate.
+1. Select **Device Identity** > **Certificates**.
+1. Click **Actions** > **Create a developer certificate**.
+1. Enter a name for the certificate and click **Create certificate**.
+1. Click **Download Developer C file**. Your certificate file downloads.
 
     <span class="images">![The certificate is located in the white box](https://s3-us-west-2.amazonaws.com/cloud-docs-images/lights16.png)</span>
 
@@ -18,13 +19,19 @@ Now that you've built the basic circuit and written the code to control that cir
 1. Create a new file `identity_dev_security.c` in your application's `source` directory.
 1. Paste the certificate into this file.
 
-<span class="notes">**Note:** You can only download the certificate once. It's not stored in the mbed Cloud Portal.</span>
-
 #### Adding connectivity to the board
+
+**Built-in Ethernet, Wi-Fi or Cellular**
 
 This example assumes that the network has DHCP enabled and the firewall does not block connections to *https://mbedcloud.com*.
 
 If you have a development board that connects over Ethernet, just plug in an Ethernet cable. If you have a board that connects over cellular or Wi-Fi, no actions are required.
+
+**ESP8266 Wi-Fi module**
+
+To wire the ESP8266 module to your development board, look at the [ESP8266 Cookbook page](https://developer.mbed.org/users/4180_1/notebook/using-the-esp8266-with-the-mbed-lpc1768/). In general, this means hooking up the ESP8266's TX pin to `D0` and RX pin to `D1`.
+
+<span class="notes">**Note about ESP8266 on NUCLEO boards:** On the NUCLEO boards, pins `D0` and `D1` are used for serial communication with the computer. Use pins `D8` ( to ESP8266 TX) and `D2` (to ESP8266 RX) instead.</span>
 
 #### Adding libraries with the mbed Online Compiler
 
@@ -32,25 +39,7 @@ For the device and mbed Cloud to talk, you need the [mbed Cloud Client library](
 
 You will also use [EasyConnect](https://github.com/ARMmbed/easy-connect) to handle connectivity.
 
-To add these libraries to your project:
-
-1. Go back to the mbed Online Compiler.
-1. Right-click on your program in the tree, and select **Import Library** > **From URL**.
-1. Under **Source URL**, enter: `https://github.com/armmbed/easy-connect`.
-1. Do **not** tick **Update all sub-libraries to the latest version**.
-1. Click **Import**.
-1. Again, right-click on your program, and select **Import Library** > **From URL**.
-1. Under **Source URL** enter: `https://github.com/armmbed/simple-cloud-client/`.
-1. Click **Import**.
-
-#### Adding libraries with mbed CLI
-
-If you are using mbed CLI, run the following commands to add the libraries:
-
-```bash
-$ mbed add easy-connect
-$ mbed add simple-cloud-client
-```
+These libraries are already added to the project (see the `.lib` files in the project directory).
 
 #### Updating configuration
 
@@ -73,10 +62,10 @@ You need to tell **EasyConnect** which connectivity method to use. Open `mbed_ap
             "help": "Pin used as RX (connects to ESP8266 TX)",
             "value": "D0"
         },
-        "esp8266-ssid": {
+        "wifi-ssid": {
             "value": "\"SSID\""
         },
-        "esp8266-password": {
+        "wifi-password": {
             "value": "\"Password\""
         },
         "esp8266-debug": {

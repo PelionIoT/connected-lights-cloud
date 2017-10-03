@@ -6,7 +6,7 @@ The mbed Cloud Portal that you used in the previous section is a wrapper around 
 
 To talk to the API, you need an API key. This key is used to authenticate with the API. To create a new access key, go to the [Manage access](https://portal.us-east-1.mbedcloud.com/access/keys) page in the mbed Cloud Portal.
 
-Click **Create API Key** to create a new API key, and give it a descriptive name.
+Click **Create new API Key** to create a new API key, and give it a descriptive name.
 
 <span class="images">![Creating a new access key in mbed Cloud](https://s3-us-west-2.amazonaws.com/cloud-docs-images/lights14.png)</span>
 
@@ -76,7 +76,8 @@ var TOKEN = 'YOUR_ACCESS_TOKEN';
 
 var mbed = require('mbed-cloud-sdk');
 var api = new mbed.DevicesApi({
-    apiKey: process.env.TOKEN || TOKEN
+    apiKey: process.env.TOKEN || TOKEN,
+    host: 'https://api.us-east-1.mbedcloud.com'
 });
 
 // Start notification channel (to receive data back from the device)
@@ -154,6 +155,7 @@ TOKEN = "YOUR_ACCESS_TOKEN"
 # set up the Python SDK
 config = {}
 config['api_key'] = os.environ['TOKEN'] or TOKEN
+config['host'] = 'https://api.us-east-1.mbedcloud.com'
 api = DeviceAPI(config)
 api.start_long_polling()
 

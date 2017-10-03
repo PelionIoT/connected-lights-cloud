@@ -48,15 +48,21 @@ For development, you can use a self-signed certificate, but please note that thi
 
 <span class="notes">**Note:** If you're deploying devices in the field, always use a certificate from a trusted certificate authority (CA). Instructions on how to use your own certificate are [in the manifest-tool documentation](/docs/v1.2/mbed-cloud-management/update-manifest-creation.html#quick-start).</span>
 
+##### Installing the manifest tool
+
+To generate update certificates, you need the manifest tool. Install via:
+
+```
+$ pip install git+https://github.com/ARMmbed/manifest-tool.git
+```
+
 ##### Generating an update certificate
 
 To create a new self-signed certificate, run:
 
 ```
-$ simple-cloud-client/tools/manifest-tool/bin/manifest-tool init -d yourdomain.com -m lighting-system-2000 -r
+$ manifest-tool init -d yourdomain.com -m lighting-system-2000 -q --force
 ```
-
-When prompted, answer the questions.
 
 #### Building with the bootloader
 
@@ -76,7 +82,7 @@ Then build, and add the bootloader to your firmware with:
 
 ```
 $ mbed compile -m K64F -t GCC_ARM
-$ simple-cloud-client/tools/combine_bootloader_with_app.py -b simple-cloud-client/tools/mbed-bootloader.bin -a  BUILD/K64F/GCC_ARM/*.bin --app-offset 0x14100 --header-offset 0x14000 -o combined.bin
+$ simple-cloud-client/tools/combine_bootloader_with_app.py -b simple-cloud-client/tools/mbed-bootloader-k64f.bin -a  BUILD/K64F/GCC_ARM/*.bin --app-offset 0x20400 --header-offset 0x20000 -o combined.bin
 ```
 
 Flash `combined.bin` to your development board.
@@ -93,11 +99,39 @@ Then flash `BUILD/RTL8195A/GCC_ARM/connected-lights-cloud.bin` to your developme
 
 ##### ST NUCLEO-F429ZI
 
+First, apply a linker patch:
 
+```
+$ cd mbed-os
+$ git apply ../simple-cloud-client/tools/nucleo-f429zi-gcc.diff
+```
+
+Then build, and add the bootloader to your firmware with:
+
+```
+$ mbed compile -m NUCLEO_F429ZI -t GCC_ARM
+$ simple-cloud-client/tools/combine_bootloader_with_app.py -b simple-cloud-client/tools/mbed-bootloader-nucleo-f429zi.bin -a  BUILD/NUCLEO_F429ZI/GCC_ARM/*.bin --app-offset 0x20400 --header-offset 0x20000 -o combined.bin
+```
+
+Flash `combined.bin` to your development board.
 
 ##### u-blox EVK-ODIN-W2
 
+First, apply a linker patch:
 
+```
+$ cd mbed-os
+$ git apply ../simple-cloud-client/tools/ublox-evk-odin-w2-gcc.diff
+```
+
+Then build, and add the bootloader to your firmware with:
+
+```
+$ mbed compile -m ublox_evk_odin_w2 -t GCC_ARM
+$ simple-cloud-client/tools/combine_bootloader_with_app.py -b simple-cloud-client/tools/mbed-bootloader-ublox-evk-odin-w2.bin -a  BUILD/ublox_evk_odin_w2/GCC_ARM/*.bin --app-offset 0x20400 --header-offset 0x20000 -o combined.bin
+```
+
+Flash `combined.bin` to your development board.
 
 #### Creating the updated firmware
 
@@ -130,13 +164,14 @@ Then rebuild the application, but do not flash the binary to your development bo
 To schedule an update, you need to upload the firmware to mbed Cloud.
 
 1. Log in to [mbed Cloud Portal](https://portal.us-east-1.mbedcloud.com).
-1. Select **Firmware management** > **Images**.
+1. Select **Update firmware** > **Images**.
 1. Click **Upload new images**.
 1. Enter a descriptive name.
 1. Select the firmware:
     * On FRDM-K64F, select `BUILD/K64F/GCC_ARM/connected-lights-cloud.bin`.
     * On RTL8195A, select `BUILD/RTL8195A/GCC_ARM/connected-lights-cloud-ota.bin`.
-    * Other platforms: TBD.
+    * On NUCLEO-F429ZI, select `BUILD/NUCLEO_F429ZI/GCC_ARM/connected-lights-cloud.bin`.
+    * On ODIN-W2, select `BUILD/ublox_evk_odin_w2/GCC_ARM/connected-lights-cloud.bin`.
 1. Click **Upload**.
 
 After the upload succeeds, find the URL to your firmware file on the overview page.
@@ -148,18 +183,18 @@ Every firmware update requires an update manifest. This update contains the cryp
 To generate a new update manifest, run:
 
 ```
-$ simple-cloud-client/tools/manifest-tool/bin/manifest-tool create -u http://path-to-your-firmware -o connected-lights.manifest
+$ manifest-tool create -u http://path-to-your-firmware -o connected-lights.manifest
 ```
 
 ##### Uploading the manifest to mbed Cloud
 
 To upload the manifest to mbed Cloud:
 
-1. Select **Firmware management** > **Manifests**.
+1. Select **Update firmware** > **Manifests**.
 1. Click **Upload new manifest**.
 1. Enter a descriptive name.
 1. Select the manifest (`connected-lights.manifest`).
-1. Click **Upload**.
+1. Click **Upload firmware manifest**.
 
 ##### Creating an update campaign
 
@@ -169,18 +204,18 @@ To apply the firmware update, you need to start an update campaign. The campaign
 
 In the mbed Cloud Portal:
 
-1. Select **Device management**.
+1. Select **Device directory**.
 1. Click **Create new filter**.
 1. Click **Add attribute**.
 1. Select **Device ID**.
-1. Enter your device ID. (Look under **Developer Tools** > **Connectivity inspector** to find your device ID)
+1. Enter your device ID. (Look in serial output to find your device ID)
 1. Give the filter a descriptive name, and save the filter.
 
 ###### Starting the campaign
 
 With the firmware, the manifest and the device filter in place, you can start the firmware update campaign.
 
-1. Select **Firmware management** > **Update campaigns**.
+1. Select **Update firmware** > **Update campaigns**.
 1. Click **Create campaign**.
 1. Give the campaign a descriptive name.
 1. Select the manifest you uploaded.

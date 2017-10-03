@@ -6,7 +6,7 @@ Now, the device is connected through mbed Cloud. In the code sample in the previ
 
 Each device that you connect to mbed Cloud has an endpoint name. This is a long string, which is the unique identifier of your device. If you don't know the endpoint name of your device, check the [serial output](https://docs.mbed.com/docs/mbed-os-handbook/en/latest/debugging/printf/) on your device for a line starting with 'Device Identity'.
 
-You need to know the endpoint's name to check the device's status in the mbed Cloud Portal. The [Connectivity Inspector](https://portal.us-east-1.mbedcloud.com/developer/connected) page lists all devices associated with your account and their current status.
+You need to know the endpoint's name to check the device's status in the mbed Cloud Portal. The [Device directory](https://portal.us-east-1.mbedcloud.com/devices) page lists all devices associated with your account and their current status. Click the **Connected only** toggle to only see connected devices.
 
 <span class="tips">**Tip:** The mbed Cloud interface lists your devices by type. You can categorize devices by setting the device type in the application running on the device. See the `endpoint-type` property in `mbed_app.json`.</span>
 
@@ -25,7 +25,7 @@ You can control these resources through the mbed Cloud Portal. For instance, whe
 
 ##### Turning the lights on
 
-To test this, select **Developer Tools** > **Connectivity inspector** in mbed Cloud Portal and click on your device. This gives you access to a management console where you can quickly test interactions with resources.
+To test this, click on your Device ID in the device directory in mbed Cloud Portal. This gives you access to a management console where you can quickly test interactions with resources.
 
 <span class="images">![Viewing resources on the device](https://s3-us-west-2.amazonaws.com/cloud-docs-images/lights19.png)<span>These tables show the available resources on this device.</span></span>
 
@@ -61,4 +61,4 @@ Use the API Console to write this value to resource `/led/0/color` and change th
 
 ##### Other variables
 
-You can also change the value of the timeout (in a real light system you probably want at least 30 seconds) and read the number of times the PIR sensor triggered (in the GET tab).
+You can also change the value of the timeout (in a real light system you probably want at least 30 seconds) and read the number of times the PIR sensor triggered.

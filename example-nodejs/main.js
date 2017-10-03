@@ -2,7 +2,8 @@ var TOKEN = 'YOUR_ACCESS_TOKEN';
 
 var mbed = require('mbed-cloud-sdk');
 var api = new mbed.DevicesApi({
-    apiKey: process.env.TOKEN || TOKEN
+    apiKey: process.env.TOKEN || TOKEN,
+    host: 'https://api.us-east-1.mbedcloud.com'
 });
 
 // Start notification channel (to receive data back from the device)
