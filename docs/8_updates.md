@@ -1,23 +1,23 @@
 ### Applying firmware updates to the device
 
-One of the big features of mbed Cloud is the ability to update devices through a firmware update over the air. This is not applicable when you're developing, but it is important when you have deployed thousands of devices in the field. Through the firmware update process, you can patch bugs and apply security updates.
+One of the big features of Mbed Cloud is the ability to update devices through a firmware update over the air. This is not applicable when you're developing, but it is important when you have deployed thousands of devices in the field. Through the firmware update process, you can patch bugs and apply security updates.
 
 Currently, your application sends a notification to the cloud every time the PIR sensor is triggered. That is wasteful if someone is standing in front of the sensor. The lights are already on, but the sensor keeps firing, so the networking stack needs to wake up all the time. Modify the code, so it does not send events when the lights are already on.
 
-#### Building with mbed CLI
+#### Building with Mbed CLI
 
-To enable firmware updates, the device needs to have the [mbed bootloader](https://docs.mbed.com/docs/mbed-os-handbook/en/latest/advanced/bootloader/). The bootloader verifies the firmware on the device and can swap firmware for other firmware. Unfortunately, you cannot add the bootloader to your application via the mbed Online Compiler. You can only do so with mbed CLI.
+To enable firmware updates, the device needs to have the [Mbed bootloader](https://docs.mbed.com/docs/mbed-os-handbook/en/latest/advanced/bootloader/). The bootloader verifies the firmware on the device and can swap firmware for other firmware. Unfortunately, you cannot add the bootloader to your application via the Mbed Online Compiler. You can only do so with Mbed CLI.
 
 ##### Exporting your code
 
-If you are not yet using mbed CLI:
+If you are not yet using Mbed CLI:
 
-1. Install [mbed CLI](https://docs.mbed.com/docs/mbed-os-handbook/en/latest/dev_tools/cli/#installing-mbed-cli) and its dependencies.
-1. Install the [GNU ARM Embedded Toolchain 4.9](https://launchpad.net/gcc-arm-embedded/4.9/4.9-2015-q3-update).
+1. Install [Mbed CLI](https://docs.mbed.com/docs/mbed-os-handbook/en/latest/dev_tools/cli/#installing-mbed-cli) and its dependencies.
+1. Install the [GNU Arm Embedded Toolchain 4.9](https://launchpad.net/gcc-arm-embedded/4.9/4.9-2015-q3-update).
 
 <span class="tips">**Tip:** There is also a [Windows installer](https://mbed-media.mbed.com/filer_public/2c/88/2c880c48-2059-40fb-882b-3fa52ac172fc/mbed_install_v032.exe).</span>
 
-Then, to export your code from the mbed Online Compiler and into mbed CLI:
+Then, to export your code from the Mbed Online Compiler and into Mbed CLI:
 
 1. Right-click on your project in the Online Compiler.
 1. Click **Publish**.
@@ -50,7 +50,7 @@ For development, you can use a self-signed certificate, but please note that thi
 
 ##### Installing the manifest tool
 
-To generate update certificates, you need the manifest tool. Install via:
+To generate update certificates, you need the manifest tool. Install using:
 
 ```
 $ pip install git+https://github.com/ARMmbed/manifest-tool.git
@@ -135,7 +135,7 @@ Flash `combined.bin` to your development board.
 
 #### Creating the updated firmware
 
-When your board is back online in mbed Cloud, you can then prepare an update. Open `main.cpp`, and change the `pir_rise()` function to:
+When your board is back online in Mbed Cloud, you can then prepare an update. Open `main.cpp`, and change the `pir_rise()` function to:
 
 ```cpp
 // When the PIR sensor fires...
@@ -159,11 +159,11 @@ void pir_rise() {
 
 Then rebuild the application, but do not flash the binary to your development board.
 
-##### Uploading the firmware to mbed Cloud
+##### Uploading the firmware to Mbed Cloud
 
-To schedule an update, you need to upload the firmware to mbed Cloud.
+To schedule an update, you need to upload the firmware to Mbed Cloud.
 
-1. Log in to [mbed Cloud Portal](https://portal.us-east-1.mbedcloud.com).
+1. Log in to [Mbed Cloud Portal](https://portal.us-east-1.mbedcloud.com).
 1. Select **Update firmware** > **Images**.
 1. Click **Upload new images**.
 1. Enter a descriptive name.
@@ -186,9 +186,9 @@ To generate a new update manifest, run:
 $ manifest-tool create -u http://path-to-your-firmware -o connected-lights.manifest
 ```
 
-##### Uploading the manifest to mbed Cloud
+##### Uploading the manifest to Mbed Cloud
 
-To upload the manifest to mbed Cloud:
+To upload the manifest to Mbed Cloud:
 
 1. Select **Update firmware** > **Manifests**.
 1. Click **Upload new manifest**.
@@ -202,13 +202,13 @@ To apply the firmware update, you need to start an update campaign. The campaign
 
 ###### Creating a device filter
 
-In the mbed Cloud Portal:
+In the Mbed Cloud Portal:
 
 1. Select **Device directory**.
 1. Click **Create new filter**.
 1. Click **Add attribute**.
 1. Select **Device ID**.
-1. Enter your device ID. (Look in serial output to find your device ID)
+1. Enter your device ID. (Look in serial output to find your device ID.)
 1. Give the filter a descriptive name, and save the filter.
 
 ###### Starting the campaign
