@@ -1,16 +1,16 @@
-### Controlling the device from mbed Cloud
+### Controlling the device from Mbed Cloud
 
-Now, the device is connected through mbed Cloud. In the code sample in the previous section, you defined resources using calls to `client.define_resource()`. These resources are automatically exposed to mbed Cloud, from where you can read and write resources, and changes automatically sync with the device. That means that you already have a remote management interface for this device.
+Now, the device is connected through Mbed Cloud. In the code sample in the previous section, you defined resources using calls to `client.define_resource()`. These resources are automatically exposed to Mbed Cloud, from where you can read and write resources, and changes automatically sync with the device. That means that you already have a remote management interface for this device.
 
 #### Seeing the status of a device
 
-Each device that you connect to mbed Cloud has an endpoint name. This is a long string, which is the unique identifier of your device. If you don't know the endpoint name of your device, check the [serial output](https://docs.mbed.com/docs/mbed-os-handbook/en/latest/debugging/printf/) on your device for a line starting with 'Device Identity'.
+Each device that you connect to Mbed Cloud has an endpoint name. This is a long string, which is the unique identifier of your device. If you don't know the endpoint name of your device, check the [serial output](https://docs.mbed.com/docs/mbed-os-handbook/en/latest/debugging/printf/) on your device for a line starting with 'Device Identity'.
 
-You need to know the endpoint's name to check the device's status in the mbed Cloud Portal. The [Device directory](https://portal.us-east-1.mbedcloud.com/devices) page lists all devices associated with your account and their current status. Click the **Connected only** toggle to only see connected devices.
+You need to know the endpoint's name to check the device's status in the Mbed Cloud Portal. The [Device directory](https://portal.us-east-1.mbedcloud.com/devices) page lists all devices associated with your account and their current status. Click the **Connected only** toggle to only see connected devices.
 
-<span class="tips">**Tip:** The mbed Cloud interface lists your devices by type. You can categorize devices by setting the device type in the application running on the device. See the `endpoint-type` property in `mbed_app.json`.</span>
+<span class="tips">**Tip:** The Mbed Cloud interface lists your devices by type. You can categorize devices by setting the device type in the application running on the device. See the `endpoint-type` property in `mbed_app.json`.</span>
 
-<span class="images">![Two connected devices](https://s3-us-west-2.amazonaws.com/cloud-docs-images/lights11.png)<span>The mbed Cloud Portal connectivity inspector page, showing two connected devices: our light-system and another device.</span></span>
+<span class="images">![Two connected devices](https://s3-us-west-2.amazonaws.com/cloud-docs-images/lights11.png)<span>The Mbed Cloud Portal connectivity inspector page, showing two connected devices: our light-system and another device.</span></span>
 
 #### Controlling the device
 
@@ -21,11 +21,11 @@ You created four resources before (see `main.cpp`):
 * `led/0/permanent_status` - whether we should have the lights permanently on (status 1) or off (status 2), or just let the PIR sensor figure it out (status 0).
 * `pir/0/count` - the number of times the PIR sensor was triggered. This is read only and shows notifications.
 
-You can control these resources through the mbed Cloud Portal. For instance, when you write the value `1` to `led/0/permanent_status`, the lights stay on indefinitely.
+You can control these resources through the Mbed Cloud Portal. For instance, when you write the value `1` to `led/0/permanent_status`, the lights stay on indefinitely.
 
 ##### Turning the lights on
 
-To test this, click on your Device ID in the device directory in mbed Cloud Portal. This gives you access to a management console where you can quickly test interactions with resources.
+To test this, click on your Device ID in the device directory in Mbed Cloud Portal. This gives you access to a management console where you can quickly test interactions with resources.
 
 <span class="images">![Viewing resources on the device](https://s3-us-west-2.amazonaws.com/cloud-docs-images/lights19.png)<span>These tables show the available resources on this device.</span></span>
 
@@ -61,4 +61,4 @@ Use the API Console to write this value to resource `/led/0/color` and change th
 
 ##### Other variables
 
-You can also change the value of the timeout (in a real light system you probably want at least 30 seconds) and read the number of times the PIR sensor triggered.
+You can also change the value of the timeout (in a real light system, you probably want at least 30 seconds) and read the number of times the PIR sensor triggered.
