@@ -1,21 +1,21 @@
 ### Adding connectivity
 
-Now that you've built the basic circuit and written the code to control that circuit, you can add connectivity to the project. Part of the ARM mbed IoT Device Platform is mbed Cloud, a unified solution to connect devices to the internet and communicate with them, regardless of *how* these devices connect to the internet. Libraries are available for a variety of connectivity methods, including Ethernet, Wi-Fi and cellular. You also can add new connectivity methods with the [unified networking APIs](https://docs.mbed.com/docs/mbed-os-api-reference/en/latest/APIs/communication/network_sockets/) in mbed OS 5.
+Now that you've built the basic circuit and written the code to control that circuit, you can add connectivity to the project. Part of the ARM Mbed IoT Device Platform is Mbed Cloud, a unified solution to connect devices to the internet and communicate with them, regardless of *how* these devices connect to the internet. Libraries are available for a variety of connectivity methods, including Ethernet, Wi-Fi and cellular. You also can add new connectivity methods with the [unified networking APIs](https://docs.mbed.com/docs/mbed-os-api-reference/en/latest/APIs/communication/network_sockets/) in Mbed OS 5.
 
 #### Obtaining a device certificate
 
-[mbed TLS](https://tls.mbed.org) encrypts all data that goes from the device to mbed Cloud (and from mbed Cloud to the device). You need a security certificate to set up secure communication, which you can get from the mbed Cloud Portal:
+[Mbed TLS](https://tls.mbed.org) encrypts all data that goes from the device to Mbed Cloud (and from Mbed Cloud to the device). You need a security certificate to set up secure communication, which you can get from the Mbed Cloud Portal:
 
-1. Go to the [mbed Cloud Portal](https://portal.us-east-1.mbedcloud.com), and sign in.
-1. If prompted for your login credentials, use your mbed Cloud credentials. These are different from your credentials for the mbed Online Compiler.
+1. Go to the [Mbed Cloud Portal](https://portal.us-east-1.mbedcloud.com), and sign in.
+1. If prompted for your login credentials, use your Mbed Cloud credentials. These are different from your credentials for the Mbed Online Compiler.
 1. Select **Device Identity** > **Certificates**.
 1. Click **Actions** > **Create a developer certificate**.
-1. Enter a name for the certificate and click **Create certificate**.
+1. Enter a name for the certificate, and click **Create certificate**.
 1. Click **Download Developer C file**. Your certificate file downloads.
 
     <span class="images">![The certificate is located in the white box](https://s3-us-west-2.amazonaws.com/cloud-docs-images/lights16.png)</span>
 
-1. Go back to the mbed Online Compiler.
+1. Go back to the Mbed Online Compiler.
 1. Create a new file `identity_dev_security.c` in your application's `source` directory.
 1. Paste the certificate into this file.
 
@@ -29,17 +29,17 @@ If you have a development board that connects over Ethernet, just plug in an Eth
 
 **ESP8266 Wi-Fi module**
 
-To wire the ESP8266 module to your development board, look at the [ESP8266 Cookbook page](https://developer.mbed.org/users/4180_1/notebook/using-the-esp8266-with-the-mbed-lpc1768/). In general, this means hooking up the ESP8266's TX pin to `D0` and RX pin to `D1`.
+To wire the ESP8266 module to your development board, look at the [ESP8266 Cookbook page](https://os.mbed.com/users/4180_1/notebook/using-the-esp8266-with-the-mbed-lpc1768/). This means hooking up the ESP8266's TX pin to `D0` and RX pin to `D1`.
 
-<span class="notes">**Note about ESP8266 on NUCLEO boards:** On the NUCLEO boards, pins `D0` and `D1` are used for serial communication with the computer. Use pins `D8` ( to ESP8266 TX) and `D2` (to ESP8266 RX) instead.</span>
+<span class="notes">**Note about ESP8266 on NUCLEO boards:** On the NUCLEO boards, pins `D0` and `D1` are used for serial communication with the computer. Use pins `D8` (to ESP8266 TX) and `D2` (to ESP8266 RX) instead.</span>
 
-#### Adding libraries with the mbed Online Compiler
+#### Adding libraries with the Mbed Online Compiler
 
-For the device and mbed Cloud to talk, you need the [mbed Cloud Client library](https://cloud.mbed.com/docs/latest/mbed-cloud-client/index.html). This is a cross-platform library that runs on mbed OS and Linux, and which you can port to other RTOSes. In this example, you will use an additional library built on top of mbed Cloud Client: SimpleCloudClient. This library is designed specifically to be used with mbed OS 5 and makes it easy to expose variables and resources to the cloud.
+For the device and Mbed Cloud to talk, you need the [Mbed Cloud Client library](https://cloud.mbed.com/docs/latest/mbed-cloud-client/index.html). This is a cross-platform library that runs on Mbed OS and Linux and that you can port to other RTOSes. This example uses an additional library built on top of Mbed Cloud Client: SimpleCloudClient. We created this library specifically to use Mbed OS 5, so you can expose variables and resources to the cloud.
 
 You will also use [EasyConnect](https://github.com/ARMmbed/easy-connect) to handle connectivity.
 
-These libraries are already added to the project (see the `.lib` files in the project directory).
+These libraries are already in the project (see the `.lib` files in the project directory).
 
 #### Updating configuration
 
@@ -82,7 +82,7 @@ If you are using Wi-Fi, you also need to set your Wi-Fi SSID and your password.
 
 ##### Setting up a connection
 
-You need to add some code to the application, so it connects to the internet and sets up a connection to mbed Cloud.
+You need to add some code to the application, so it connects to the internet and sets up a connection to Mbed Cloud.
 
 Replace `main.cpp` with:
 
@@ -114,7 +114,7 @@ void blink_builtin_led() {
 }
 
 void registered() {
-    // When we registered with mbed Cloud, blink faster
+    // When we registered with Mbed Cloud, blink faster
     eventQueue.cancel(statusLedBlinkId);
 
     statusLedBlinkId = eventQueue.call_every(300, &blink_builtin_led);
@@ -160,7 +160,7 @@ The code sample above only sets up the connection. You can now define some logic
 1. The color of the LED should be configurable.
 1. The period between the moment of motion detection to the moment lights go out should be configurable.
 1. There should be a permanent-on mode for the lights.
-1. You should notify mbed Cloud whenever you detect movement.
+1. You should notify Mbed Cloud whenever you detect movement.
 
 You can implement these actions by defining *resources*: pieces of information the device makes available. You can read or write to them from the cloud, and the device can use a resource's value to determine the correct action to perform. You can reach a resource with a URI and access modifier (for example, only write allowed), and you can also subscribe to them, so you receive a notification when a resource changes.
 
@@ -278,7 +278,7 @@ void pir_rise() {
 
 When you compile and flash this program, you'll see that when you wave your hand in front of the PIR sensor, the color of the LED changes to green, and the LED always turns off after 5 seconds.
 
-When the connection to mbed Cloud is created, the onboard LED blinks faster. You can now control this device from the cloud.
+When the connection to Mbed Cloud is created, the onboard LED blinks faster. You can now control this device from the cloud.
 
 <span class="notes">**Note:** No connection? [Inspect the logs on the device](https://docs.mbed.com/docs/mbed-os-handbook/en/latest/debugging/printf/).</span>
 
