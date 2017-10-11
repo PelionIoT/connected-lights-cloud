@@ -31,7 +31,7 @@ If you have a development board that connects over Ethernet, just plug in an Eth
 
 To wire the ESP8266 module to your development board, look at the [ESP8266 Cookbook page](https://os.mbed.com/users/4180_1/notebook/using-the-esp8266-with-the-mbed-lpc1768/). This means hooking up the ESP8266's TX pin to `D0` and RX pin to `D1`.
 
-<span class="notes">**Note about ESP8266 on NUCLEO boards:** On the NUCLEO boards, pins `D0` and `D1` are used for serial communication with the computer. Use pins `D8` (to ESP8266 TX) and `D2` (to ESP8266 RX) instead.</span>
+<span class="notes">**Note about ESP8266 on NUCLEO boards:** The NUCLEO boards reserve pins D0 and D1 for serial communication with the computer. Use pins `D8` (to ESP8266 TX) and `D2` (to ESP8266 RX) instead.</span>
 
 #### Adding libraries with the Mbed Online Compiler
 
