@@ -11,7 +11,9 @@ You need the following hardware:
 * A [development board](https://developer.mbed.org/platforms/?software=16) capable of connecting to mbed Cloud. Either:
     * [NXP FRDM-K64F](https://developer.mbed.org/platforms/FRDM-K64F/) using Ethernet.
     * [u-blox EVK-ODIN-W2](https://developer.mbed.org/platforms/ublox-EVK-ODIN-W2/) with Ethernet and Wi-Fi.
+    * [ST NUCLEO-F429ZI](https://developer.mbed.org/platforms/ST-NUCLEO-F429ZI) using Ethernet.
 * A breadboard to hook up the components.
+* A micro-SD card - FAT formatted.
 * A PIR sensor to detect motion.
 * An RGB LED - preferably an extra-bright one.
     * For a better effect, you can also use a [Grove Chainable LED](http://wiki.seeed.cc/Grove-Chainable_RGB_LED/).

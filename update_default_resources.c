@@ -18,7 +18,6 @@
 
 #include <stdint.h>
 
-#ifdef MBED_CLOUD_CLIENT_UPDATE_ID
 const uint8_t arm_uc_vendor_id[16] = { 0 };
 const uint16_t arm_uc_vendor_id_size = sizeof(arm_uc_vendor_id);
 
@@ -27,13 +26,10 @@ const uint16_t arm_uc_class_id_size = sizeof(arm_uc_class_id);
 
 const uint8_t arm_uc_device_id[16] = { 0 };
 const uint16_t arm_uc_device_id_size = sizeof(arm_uc_device_id);
-#endif
 
-#ifdef MBED_CLOUD_CLIENT_UPDATE_CERT
 const uint8_t arm_uc_default_fingerprint[32] =  { 0 };
 const uint16_t arm_uc_default_fingerprint_size =
     sizeof(arm_uc_default_fingerprint);
 
 const uint8_t arm_uc_default_certificate[1] = { 0 };
 const uint16_t arm_uc_default_certificate_size = sizeof(arm_uc_default_certificate);
-#endif

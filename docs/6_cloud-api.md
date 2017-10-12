@@ -1,14 +1,14 @@
-### Using the mbed Cloud API
+### Using the Mbed Cloud API
 
-The mbed Cloud Portal that you used in the previous section is a wrapper around the mbed Cloud API. Through this API, you can connect any app to any device. You can use this API to build an app that allows you to control any of the lighting systems that you deploy in your house or office.
+The Mbed Cloud Portal that you used in the previous section is a wrapper around the Mbed Cloud API. Through this API, you can connect any app to any device. You can use this API to build an app that allows you to control any of the lighting systems that you deploy in your house or office.
 
 #### Obtaining an access key
 
-To talk to the API, you need an API key. This key is used to authenticate with the API. To create a new access key, go to the [Manage access](https://portal.us-east-1.mbedcloud.com/access/keys) page in the mbed Cloud Portal.
+To talk to the API, you need an API key. This key is used to authenticate with the API. To create a new access key, go to the [Manage access](https://portal.us-east-1.mbedcloud.com/access/keys) page in the Mbed Cloud Portal.
 
-Click **Create API Key** to create a new API key, and give it a descriptive name.
+Click **Create new API Key** to create a new API key, and give it a descriptive name.
 
-<span class="images">![Creating a new access key in mbed Cloud](https://s3-us-west-2.amazonaws.com/cloud-docs-images/lights14.png)</span>
+<span class="images">![Creating a new access key in Mbed Cloud](https://s3-us-west-2.amazonaws.com/cloud-docs-images/lights14.png)</span>
 
 #### Testing the API
 
@@ -51,11 +51,11 @@ It will return something like this:
 ]
 ```
 
-<span class="notes">**Note:** The official API documentation for the mbed Cloud REST API interface is [located here](/docs/v1.2/api-references/index.html).</span>
+<span class="notes">**Note:** The official API documentation for the Mbed Cloud REST API interface is [located here](/docs/v1.2/api-references/index.html).</span>
 
 #### Using the official libraries
 
-Official mbed Cloud SDKs are available for Node.js and Python. These APIs are asynchronous because for many functions, an action (such as writing to a device) might not happen immediately - the device might be in deep sleep or otherwise slow to respond. Therefore, you need to listen to callbacks on a notification channel. The official libraries abstract the notification channels and set up the channels for you, which makes it easier for you to write applications on top of mbed Cloud.
+Official Mbed Cloud SDKs are available for Node.js and Python. These APIs are asynchronous because for many functions, an action (such as writing to a device) might not happen immediately - the device might be in deep sleep or otherwise slow to respond. Therefore, you need to listen to callbacks on a notification channel. The official libraries abstract the notification channels and set up the channels for you, which makes it easier for you to write applications on top of Mbed Cloud.
 
 An additional feature of the libraries is that they support subscriptions. You can subscribe to resources and get a notification whenever they change. This is useful for the `/pir/0/count` resource because you can receive a notification whenever someone moves in front of the sensor.
 
@@ -63,10 +63,10 @@ The following sections show an example of changing the color of the light and re
 
 ##### Node.js
 
-First, make sure you have installed [Node.js](http://nodejs.org). Then, create a new folder, and install the mbed Cloud Node.js SDK via npm:
+First, make sure you have installed [Node.js](http://nodejs.org). Then, create a new folder, and install the Mbed Cloud Node.js SDK via npm:
 
 ```bash
-$ npm install mbed-cloud-sdk
+$ npm install git+ssh://git@github.com:ARMmbed/mbed-cloud-sdk-javascript.git#build --save
 ```
 
 Next, create a new file `main.js` in the same folder where you installed the library, and fill it with the following content (replace `YOUR_ACCESS_KEY` with your access key):
@@ -75,8 +75,9 @@ Next, create a new file `main.js` in the same folder where you installed the lib
 var TOKEN = 'YOUR_ACCESS_TOKEN';
 
 var mbed = require('mbed-cloud-sdk');
-var api = new mbed.DevicesApi({
-    apiKey: process.env.TOKEN || TOKEN
+var api = new mbed.ConnectApi({
+    apiKey: process.env.TOKEN || TOKEN,
+    host: 'https://api.us-east-1.mbedcloud.com'
 });
 
 // Start notification channel (to receive data back from the device)
@@ -84,7 +85,7 @@ api.startNotifications(function(err) {
     if (err) return console.error(err);
 
     // Find all the lights
-    api.listConnectedDevices({ type: 'light-system' }, function(err, resp) {
+    api.listConnectedDevices({ deviceType: 'light-system' }, function(err, resp) {
         if (err) return console.error(err);
 
         var devices = resp.data;
@@ -95,30 +96,25 @@ api.startNotifications(function(err) {
         devices.forEach(function(d) {
 
             // Subscribe to the PIR sensor
-            api.addResourceSubscription({
-                id: d.id,
-                path: '/pir/0/count',
-                fn: function(count) {
+            api.addResourceSubscription(
+                d.id,
+                '/pir/0/count',
+                function(count) {
                     console.log('Motion detected at', d.id, 'new count is', count);
-                }
-            }, function(err) {
-                console.log('subscribed to resource', err || 'OK');
-            });
+                },
+                function(err) {
+                    console.log('subscribed to resource', err || 'OK');
+                });
 
             // Set the color of the light
             var orange = 0xff6400;
-            api.setResourceValue({
-                id: d.id,
-                path: '/led/0/color',
-                value: orange
-            }, function(err) {
+            api.setResourceValue(d.id, '/led/0/color', orange, function(err) {
                 console.log('set color to orange', err || 'OK');
             });
 
         });
     });
 });
-
 ```
 
 When you run this program and you wave your hand in front of the PIR sensor, you will see something like this:
@@ -136,10 +132,10 @@ See the [full docs](https://github.com/ARMmbed/mbed-cloud-sdk-javascript) on how
 
 ##### Python
 
-First, make sure that you have installed [Python 2.7](https://www.python.org/downloads/) and [pip](https://pip.pypa.io/en/stable/installing/). Then, create a new folder, and install the mbed Cloud SDK through pip:
+First, make sure that you have installed [Python 2.7](https://www.python.org/downloads/) and [pip](https://pip.pypa.io/en/stable/installing/). Then, create a new folder, and install the Mbed Cloud SDK through pip:
 
 ```bash
-$ pip install -U mbed-cloud-sdk
+$ pip install git+ssh://git@github.com/ARMmbed/mbed-cloud-sdk-python.git
 ```
 
 Next, create a new file - `lights.py` - in the same folder where you installed the library, and fill it with the following content (replace `YOUR_ACCESS_KEY` with your access key):
@@ -147,25 +143,27 @@ Next, create a new file - `lights.py` - in the same folder where you installed t
 ```python
 import os
 import pprint
-from mbed_cloud.devices import DeviceAPI
+from mbed_cloud.connect import ConnectAPI
 
 TOKEN = "YOUR_ACCESS_TOKEN"
 
 # set up the Python SDK
 config = {}
 config['api_key'] = os.environ['TOKEN'] or TOKEN
-api = DeviceAPI(config)
-api.start_long_polling()
+config['host'] = 'https://api.us-east-1.mbedcloud.com'
+api = ConnectAPI(config)
+api.start_notifications()
 
+# todo, filter by endpoint type, see https://github.com/ARMmbed/mbed-cloud-sdk-python/issues/88
 devices = list(api.list_connected_devices())
 
 print("Found %d lights" % (len(devices)), [ c.id for c in devices ])
 
 for device in devices:
-    def pir_callback(count):
-        print("Motion detected at %s, new count is %s" % (device.id, count))
+    def pir_callback(device_id, path, count):
+        print("Motion detected at %s, new count is %s" % (device_id, count))
 
-    api.add_subscription_with_callback(device.id, '/pir/0/count', pir_callback)
+    api.add_resource_subscription_async(device.id, '/pir/0/count', pir_callback)
     print("subscribed to resource")
 
     pink = 0xff69b4

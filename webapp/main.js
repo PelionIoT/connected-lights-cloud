@@ -44,6 +44,7 @@ function mapToView(d) {
 
 var options = {
     endpointType: 'light-system',     // what endpoint types to look for
+    host: 'https://api.us-east-1.mbedcloud.com',
     token: TOKEN,
     io: io,
     deviceModel: {                    // building the initial device model (w/ 4 properties)
