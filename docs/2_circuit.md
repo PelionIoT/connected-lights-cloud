@@ -4,7 +4,9 @@ First, build a basic circuit by connecting the RGB LED and the PIR sensor to the
 
 #### SD card
 
-**Before you start, put the SD card in the SD card reader on your development board.** Mbed Cloud requires external storage to store the identity of the device, and to store firmware updates. This external storage is not required to be an SD card (which is too expensive to put in a production device), but can also use internal flash or external SPI flash. To modify the storage layer, you'll need to modify the bootloader (see 'Section 8 - Firmware updates') and the application (see `SDBlockDevice sd;` in simple-cloud-client.h); which is not covered in this tutorial. More information is in the [Mbed Cloud docs](https://cloud.mbed.com/docs/).
+<span class="notes">**Note:** Before you start, put the SD card in the SD card reader on your development board.</span>
+
+Mbed Cloud requires an external storage to store the identity of the device, and to store firmware updates. This external storage does not necessarily have to be an SD card (which is too expensive to put in a production device), you can also use internal flash or external SPI flash. To modify the storage layer, you'll need to modify the [bootloader](see 'Section 8 - Firmware updates') and the application (see `SDBlockDevice sd;` in `simple-cloud-client.h`); which is not covered in this tutorial. More information is in the [Mbed Cloud docs](https://cloud.mbed.com/docs/).
 
 #### Finding suitable pins
 
