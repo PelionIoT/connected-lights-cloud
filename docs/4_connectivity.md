@@ -15,7 +15,7 @@ Now that you've built the basic circuit and written the code to control that cir
 
     <span class="images">![The certificate is located in the white box](https://s3-us-west-2.amazonaws.com/cloud-docs-images/lights16.png)</span>
 
-1. Go back to the Mbed Online Compiler.
+1. Go to the 'connected-lights-cloud' folder on your computer.
 1. Create a new file `identity_dev_security.c` in your application's `source` directory.
 1. Paste the certificate into this file.
 
@@ -33,7 +33,7 @@ To wire the ESP8266 module to your development board, look at the [ESP8266 Cookb
 
 <span class="notes">**Note about ESP8266 on NUCLEO boards:** The NUCLEO boards reserve pins D0 and D1 for serial communication with the computer. Use pins `D8` (to ESP8266 TX) and `D2` (to ESP8266 RX) instead.</span>
 
-#### Adding libraries with the Mbed Online Compiler
+#### Adding libraries with Mbed CLI
 
 For the device and Mbed Cloud to talk, you need the [Mbed Cloud Client library](https://cloud.mbed.com/docs/latest/mbed-cloud-client/index.html). This is a cross-platform library that runs on Mbed OS and Linux and that you can port to other RTOSes. This example uses an additional library built on top of Mbed Cloud Client: SimpleCloudClient. We created this library specifically to use Mbed OS 5, so you can expose variables and resources to the cloud.
 
@@ -51,7 +51,7 @@ You need to tell **EasyConnect** which connectivity method to use. Open `mbed_ap
 /* snip */
 
         "network-interface":{
-            "help": "options are ETHERNET,WIFI_ESP8266,MESH_LOWPAN_ND,MESH_THREAD",
+            "help": "options are ETHERNET, WIFI_ESP8266, WIFI_ODIN, MESH_LOWPAN_ND, MESH_THREAD",
             "value": "ETHERNET"
         },
         "esp8266-tx": {
@@ -84,7 +84,7 @@ If you are using Wi-Fi, you also need to set your Wi-Fi SSID and your password.
 
 You need to add some code to the application, so it connects to the internet and sets up a connection to Mbed Cloud.
 
-Replace `main.cpp` with:
+Replace `connected-lights-cloud/source/main.cpp` with:
 
 ```cpp
 #include "mbed.h"
@@ -281,4 +281,6 @@ When you compile and flash this program, you'll see that when you wave your hand
 When the connection to Mbed Cloud is created, the onboard LED blinks faster. You can now control this device from the cloud.
 
 <span class="notes">**Note:** No connection? [Inspect the logs on the device](https://docs.mbed.com/docs/mbed-os-handbook/en/latest/debugging/printf/).</span>
+
+<span class="notes">**Note:** If you receive an `fcc_init` error, re-format the SD card (FAT).</span>
 

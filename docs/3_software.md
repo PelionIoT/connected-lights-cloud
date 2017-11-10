@@ -1,36 +1,26 @@
 ### Writing the software
 
-Now you can write some software to verify that the circuit works. The software will enable the LED whenever it sees movement. You can either build locally by using mbed CLI, or build in the cloud by using the mbed Online Compiler. This document will first show you how to use the Online Compiler, and at the end of this section, you will learn the corresponding commands in mbed CLI.
+Now you can write some software to verify that the circuit works. The software will enable the LED whenever it sees movement. You can either build locally by using Mbed CLI, or build in the cloud by using the Mbed Online Compiler. This document will first show you how to build the application using Mbed CLI.
 
-#### Setting up the mbed Online Compiler
+#### Setting up Mbed CLI
 
-Part of the ARM mbed IoT Device Platform is the mbed Online Compiler, which you will use to write and compile software in the browser. To get started:
+Part of the ARM Mbed IoT Device Platform is Mbed CLI, an offline compilation tool, which you will use to write and compile software. To get started:
 
-1. Find your development board's [platform page](https://developer.mbed.org/platforms/).
-1. In the right hand panel, select **Add to your mbed Compiler**.
-1. When prompted, sign up (or sign in). You are redirected to the platform page.
-1. Select **Open mbed Compiler**. The mbed Online Compiler opens.
-1. Click the **Import** button.
+1. [Install Mbed CLI](https://github.com/armmbed/mbed-cli#installation).
+1. Open a terminal or command prompt.
+1. Import the `connected-lights-cloud` project via:
 
-    <span class="images">![Import button](https://s3-us-west-2.amazonaws.com/cloud-docs-images/lights17.png)</span>
+    ```
+    $ mbed import git@github.com:armmbed/connected-lights-cloud.git connected-lights-cloud
+    ```
 
-1. Click the **Click here to import from URL** link:
-
-    <span class="images">![Import from URL](https://s3-us-west-2.amazonaws.com/cloud-docs-images/lights18.png)</span>
-
-1. Under **Source URL**, enter `https://github.com/armmbed/connected-lights-cloud`.
-
-    Do not check the **Update all libraries to the latest revision** box.
-
-    <span class="images">![Creating a program in the online compiler](https://s3-us-west-2.amazonaws.com/cloud-docs-images/lights6.png)</span>
-
-This program contains a configuration file, which you will use to configure the pins the software uses.
+This program contains a configuration file and all the source code, which you will use to configure the pins the software uses.
 
 #### Adding the code
 
-mbed OS comes with a powerful [configuration system](https://docs.mbed.com/docs/mbedmicro-api/en/latest/api/md_docs_config_system.html) that makes it easy to separate configuration and application code. In this application, you will separate the configuration of the LED (cathode, anode or a Grove LED), pins and connectivity method (next section).
+Mbed OS comes with a powerful [configuration system](https://docs.mbed.com/docs/mbedmicro-api/en/latest/api/md_docs_config_system.html) that makes it easy to separate configuration and application code. In this application, you will separate the configuration of the LED (cathode, anode or a Grove LED), pins and connectivity method (next section).
 
-From the mbed Online Compiler's tree, open `mbed_app.json`. Edit the file to reflect your LED choice and the pins you used to connect the LED and the PIR sensor:
+In the 'connected-lights-cloud' folder, open `mbed_app.json`. Edit the file to reflect your LED choice and the pins you used to connect the LED and the PIR sensor:
 
 1. If you have a common cathode LED, set the `value` of `led-type` to `TRICOLOR_CATHODE`.
 1. If you have a Grove Chainable LED, set the `value` of `led-type` to `TRICOLOR_ANODE`.
@@ -115,11 +105,21 @@ int main(int, char**) {
 
 ##### Compiling
 
-To compile the code, click the **Compile** button at the top of the screen:
+To compile the code, go back to your terminal, and run:
 
-<span class="images">![The compile button](https://s3-us-west-2.amazonaws.com/cloud-docs-images/lights7.png)</span>
+```
+# go into the connected-lights-cloud folder
+cd connected-lights-cloud
 
-A successful compilation downloads a `.bin` file to your computer. This is the compiled firmware for your development board.
+# detect which board you are using
+$ mbed detect
+
+# build the project, you'll need the GCC ARM cross-compilation toolchain installed
+# optionally, you can also build with ARMCC or IAR
+$ mbed compile -t GCC_ARM -m YOUR_BOARD_NAME
+```
+
+After compilation a `connected-lights-cloud.bin` file was generated in the `BUILD\YOUR_BOARD_NAME\GCC_ARM` folder.
 
 ##### Flashing
 
@@ -132,30 +132,3 @@ When you connect your board to your computer, it mounts as a USB mass storage de
 ##### Testing the application
 
 After flashing the application, you can test it by waving your hand in front of the PIR sensor; the red LED lights up.
-
-#### Developing using mbed CLI
-
-You can also develop locally using [mbed CLI](http://github.com/armmbed/mbed-cli), a command-line tool for mbed OS. First, follow [the installation steps](https://github.com/ARMmbed/mbed-cli#installing-mbed-cli), and then use the following commands to recreate the flow above:
-
-```bash
-# import the connected-lights-cloud project
-$ mbed import connected-lights-cloud
-
-# go into the folder
-cd connected-lights-cloud/
-
-# now edit the mbed_app.json file, and create the main.cpp file
-
-# detect which board you are using
-$ mbed detect
-
-# build the project, you'll need the GCC ARM cross-compilation toolchain installed
-# optionally, you can also build with ARMCC or IAR
-$ mbed compile -t GCC_ARM -m YOUR_BOARD_NAME
-
-# … building …
-# ends with something like:
-# Image: ./BUILD/K64F/GCC_ARM/connected-lights-cloud.bin
-```
-
-Use drag-and-drop programming (as shown under [Compiling and flashing](#compiling-and-flashing)) to copy the binary file that was generated to your board.

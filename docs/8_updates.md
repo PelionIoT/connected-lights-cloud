@@ -6,39 +6,47 @@ Currently, your application sends a notification to the cloud every time the PIR
 
 #### Building with Mbed CLI
 
-To enable firmware updates, the device needs to have the [Mbed bootloader](https://docs.mbed.com/docs/mbed-os-handbook/en/latest/advanced/bootloader/). The bootloader verifies the firmware on the device and can swap firmware for other firmware. Unfortunately, you cannot add the bootloader to your application via the Mbed Online Compiler. You can only do so with Mbed CLI.
+To enable firmware updates, the device needs to have the [Mbed bootloader](https://docs.mbed.com/docs/mbed-os-handbook/en/latest/advanced/bootloader/). The bootloader verifies the firmware on the device and can swap firmware for other firmware. To enable the bootloader you need to configure the linker to put your application in a separate part of flash. The bootloader can then run first.
 
-##### Exporting your code
+Open `connected-lights-cloud/mbed_app.json` and replace `target_overrides` by:
 
-If you are not yet using Mbed CLI:
+```
+    "target_overrides": {
+        "*": {
+            "target.features_add": ["NANOSTACK", "LOWPAN_ROUTER", "COMMON_PAL"],
+            "platform.stdio-baud-rate": 115200,
+            "platform.stdio-convert-newlines": true,
+            "nanostack-hal.event_loop_thread_stack_size": 8192,
+            "mbed-trace.enable": 0
+        },
+        "NUCLEO_F401RE": {
+            "esp8266-tx": "D8",
+            "esp8266-rx": "D2"
+        },
+        "NUCLEO_F411RE": {
+            "esp8266-tx": "D8",
+            "esp8266-rx": "D2"
+        },
+        "K64F": {
+            "target.mbed_app_start": "0x00020400",
+            "update-client.application-details": "0x00020000",
+            "update-client.bootloader-details": "0x172d4"
+        },
+        "NUCLEO_F429ZI": {
+            "target.mbed_app_start": "0x08020400",
+            "update-client.application-details": "0x08020000",
+            "update-client.bootloader-details": "0x8018630"
+        },
+        "UBLOX_EVK_ODIN_W2": {
+            "target.device_has_remove": ["EMAC"],
+            "target.mbed_app_start": "0x08020400",
+            "update-client.application-details": "0x08020000",
+            "update-client.bootloader-details": "0x801ae38"
+        }
+    }
+```
 
-1. Install [Mbed CLI](https://docs.mbed.com/docs/mbed-os-handbook/en/latest/dev_tools/cli/#installing-mbed-cli) and its dependencies.
-1. Install the [GNU Arm Embedded Toolchain 4.9](https://launchpad.net/gcc-arm-embedded/4.9/4.9-2015-q3-update).
-
-<span class="tips">**Tip:** There is also a [Windows installer](https://mbed-media.mbed.com/filer_public/2c/88/2c880c48-2059-40fb-882b-3fa52ac172fc/mbed_install_v032.exe).</span>
-
-Then, to export your code from the Mbed Online Compiler and into Mbed CLI:
-
-1. Right-click on your project in the Online Compiler.
-1. Click **Publish**.
-1. Click **Fork**.
-1. If you're prompted for a commit message, enter one.
-1. Enter a description for the project, and mark the project as **Private**.
-
-    <span class="images">![Publishing the project](https://s3-us-west-2.amazonaws.com/cloud-docs-images/lights21.png)</span>
-
-    <span class="notes">**Note:** Mark the project because private as it contains your device certificate.</span>
-
-1. Click **OK**.
-1. You're presented with a URL to the published project.
-
-    <span class="images">![Published project](https://s3-us-west-2.amazonaws.com/cloud-docs-images/lights22.png)</span>
-
-1. Locally, open a terminal and run:
-
-    ```
-    $ mbed import https://path-to-your-project
-    ```
+There already is an entry for the ODIN-W2 board. Remove this first.
 
 #### Update certificates
 
@@ -70,65 +78,33 @@ Now that the update certificate is in place, you can build the application with 
 
 ##### FRDM-K64F
 
-First, apply some linker patches:
-
-```
-$ cd mbed-os
-$ git apply ../simple-cloud-client/tools/MK64FN1M0xxx12.ld.diff
-$ git apply ../simple-cloud-client/tools/gcc_k64f_ram_patch.diff
-```
-
-Then build, and add the bootloader to your firmware with:
+Build and add the bootloader to your firmware with:
 
 ```
 $ mbed compile -m K64F -t GCC_ARM
-$ simple-cloud-client/tools/combine_bootloader_with_app.py -b simple-cloud-client/tools/mbed-bootloader-k64f.bin -a  BUILD/K64F/GCC_ARM/*.bin --app-offset 0x20400 --header-offset 0x20000 -o combined.bin
+$ simple-cloud-client/tools/combine_bootloader_with_app.py -b simple-cloud-client/tools/mbed-bootloader-k64f.bin -a  BUILD/K64F/GCC_ARM/connected-lights-cloud_application.bin --app-offset 0x20400 --header-offset 0x20000 -o combined.bin
 ```
 
 Flash `combined.bin` to your development board.
 
-##### Ameba RTL8195A
-
-The bootloader is already included when you build for this board. Run:
-
-```
-$ mbed compile -m RTL8195A -t GCC_ARM
-```
-
-Then flash `BUILD/RTL8195A/GCC_ARM/connected-lights-cloud.bin` to your development board.
-
 ##### ST NUCLEO-F429ZI
 
-First, apply a linker patch:
-
-```
-$ cd mbed-os
-$ git apply ../simple-cloud-client/tools/nucleo-f429zi-gcc.diff
-```
-
-Then build, and add the bootloader to your firmware with:
+Build and add the bootloader to your firmware with:
 
 ```
 $ mbed compile -m NUCLEO_F429ZI -t GCC_ARM
-$ simple-cloud-client/tools/combine_bootloader_with_app.py -b simple-cloud-client/tools/mbed-bootloader-nucleo-f429zi.bin -a  BUILD/NUCLEO_F429ZI/GCC_ARM/*.bin --app-offset 0x20400 --header-offset 0x20000 -o combined.bin
+$ simple-cloud-client/tools/combine_bootloader_with_app.py -b simple-cloud-client/tools/mbed-bootloader-nucleo-f429zi.bin -a  BUILD/NUCLEO_F429ZI/GCC_ARM/connected-lights-cloud_application.bin --app-offset 0x20400 --header-offset 0x20000 -o combined.bin
 ```
 
 Flash `combined.bin` to your development board.
 
 ##### u-blox EVK-ODIN-W2
 
-First, apply a linker patch:
-
-```
-$ cd mbed-os
-$ git apply ../simple-cloud-client/tools/ublox-evk-odin-w2-gcc.diff
-```
-
-Then build, and add the bootloader to your firmware with:
+Build and add the bootloader to your firmware with:
 
 ```
 $ mbed compile -m ublox_evk_odin_w2 -t GCC_ARM
-$ simple-cloud-client/tools/combine_bootloader_with_app.py -b simple-cloud-client/tools/mbed-bootloader-ublox-evk-odin-w2.bin -a  BUILD/ublox_evk_odin_w2/GCC_ARM/*.bin --app-offset 0x20400 --header-offset 0x20000 -o combined.bin
+$ simple-cloud-client/tools/combine_bootloader_with_app.py -b simple-cloud-client/tools/mbed-bootloader-ublox-evk-odin-w2.bin -a  BUILD/ublox_evk_odin_w2/GCC_ARM/connected-lights-cloud_application.bin --app-offset 0x20400 --header-offset 0x20000 -o combined.bin
 ```
 
 Flash `combined.bin` to your development board.
@@ -168,10 +144,9 @@ To schedule an update, you need to upload the firmware to Mbed Cloud.
 1. Click **Upload new images**.
 1. Enter a descriptive name.
 1. Select the firmware:
-    * On FRDM-K64F, select `BUILD/K64F/GCC_ARM/connected-lights-cloud.bin`.
-    * On RTL8195A, select `BUILD/RTL8195A/GCC_ARM/connected-lights-cloud-ota.bin`.
-    * On NUCLEO-F429ZI, select `BUILD/NUCLEO_F429ZI/GCC_ARM/connected-lights-cloud.bin`.
-    * On ODIN-W2, select `BUILD/ublox_evk_odin_w2/GCC_ARM/connected-lights-cloud.bin`.
+    * On FRDM-K64F, select `BUILD/K64F/GCC_ARM/connected-lights-cloud_application.bin`.
+    * On NUCLEO-F429ZI, select `BUILD/NUCLEO_F429ZI/GCC_ARM/connected-lights-cloud_application.bin`.
+    * On ODIN-W2, select `BUILD/ublox_evk_odin_w2/GCC_ARM/connected-lights-cloud_application.bin`.
 1. Click **Upload**.
 
 After the upload succeeds, find the URL to your firmware file on the overview page.
@@ -183,8 +158,10 @@ Every firmware update requires an update manifest. This update contains the cryp
 To generate a new update manifest, run:
 
 ```
-$ manifest-tool create -u http://path-to-your-firmware -o connected-lights.manifest
+$ manifest-tool create -p BUILD/YOUR_BOARD_NAME/GCC_ARM/connected-lights-cloud_application.bin -u http://path-to-your-firmware -o connected-lights.manifest
 ```
+
+Replace `YOUR_BOARD_NAME` with the name of your development board, and replace `http://path-to-your-firmware` with the location of the firmware.
 
 ##### Uploading the manifest to Mbed Cloud
 
