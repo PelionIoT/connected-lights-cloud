@@ -38,7 +38,6 @@ Open `connected-lights-cloud/mbed_app.json` and replace `target_overrides` by:
             "update-client.bootloader-details": "0x8018630"
         },
         "UBLOX_EVK_ODIN_W2": {
-            "target.device_has_remove": ["EMAC"],
             "target.mbed_app_start": "0x08020400",
             "update-client.application-details": "0x08020000",
             "update-client.bootloader-details": "0x801ae38"
