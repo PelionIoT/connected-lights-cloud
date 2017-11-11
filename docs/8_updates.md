@@ -46,8 +46,6 @@ Open `connected-lights-cloud/mbed_app.json` and replace `target_overrides` by:
     }
 ```
 
-There already is an entry for the ODIN-W2 board. Remove this first.
-
 #### Update certificates
 
 To enable updates, you need to embed an update certificate into the firmware of your application. This verifies that the update came from a trusted source because all firmware images are signed with a private key. The update certificate also prevents incompatible firmware to be flashed on the device because the certificate contains information about the manufacturer, device class and device ID.
