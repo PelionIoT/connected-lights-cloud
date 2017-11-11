@@ -157,12 +157,12 @@ int main(int, char**) {
 
 The code sample above only sets up the connection. You can now define some logic for this program:
 
-1. The color of the LED should be configurable.
-1. The period between the moment of motion detection to the moment lights go out should be configurable.
-1. There should be a permanent-on mode for the lights.
-1. You should notify Mbed Cloud whenever you detect movement.
+- The color of the LED should be configurable.
+- The period between the moment of motion detection to the moment lights go out should be configurable.
+- There should be a permanent-on mode for the lights.
+- You should notify Mbed Cloud whenever you detect movement.
 
-You can implement these actions by defining *resources*: pieces of information the device makes available. You can read or write to them from the cloud, and the device can use a resource's value to determine the correct action to perform. You can reach a resource with a URI and access modifier (for example, only write allowed), and you can also subscribe to them, so you receive a notification when a resource changes.
+To implement these actions, you need to define *resources*: pieces of information the device makes available. You can read or write to them from the cloud, and the device can use a resource's value to determine the correct action to perform. You can reach a resource with a URI and access modifier (for example, only write allowed), and you can also subscribe to them, so you receive a notification when a resource changes.
 
 Define a resource for each action:
 
@@ -171,7 +171,7 @@ Define a resource for each action:
 * `led/0/permanent_status` - whether you should have the lights permanently on (or off).
 * `pir/0/count` - the number of times the PIR sensor was triggered. Read only, and should allow notifications.
 
-You can use SimpleCloudClient to define these resources and attach actions to each resource.
+You can use **SimpleCloudClient** to define these resources and attach actions to each resource.
 
 Replace the following section in `main.cpp`:
 

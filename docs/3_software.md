@@ -1,6 +1,6 @@
 ### Writing the software
 
-Now you can write some software to verify that the circuit works. The software will enable the LED whenever it sees movement. You can either build locally by using Mbed CLI, or build in the cloud by using the Mbed Online Compiler. This document will first show you how to build the application using Mbed CLI.
+Now you can write some software to verify that the circuit works. The software will enable the LED whenever it sees movement. You can either build locally by using Mbed CLI, or build in the cloud by using the Mbed Online Compiler. This document first shows you how to build the application using Mbed CLI.
 
 #### Setting up Mbed CLI
 
@@ -119,7 +119,7 @@ $ mbed detect
 $ mbed compile -t GCC_ARM -m YOUR_BOARD_NAME
 ```
 
-After compilation a `connected-lights-cloud.bin` file was generated in the `BUILD\YOUR_BOARD_NAME\GCC_ARM` folder.
+When the compilation has completed a `connected-lights-cloud.bin` file appears in the `BUILD\YOUR_BOARD_NAME\GCC_ARM` folder.
 
 ##### Flashing
 

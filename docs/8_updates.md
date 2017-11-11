@@ -173,7 +173,7 @@ To upload the manifest to Mbed Cloud:
 
 ##### Creating an update campaign
 
-To apply the firmware update, you need to start an update campaign. The campaign holds information on the devices that you need to updated, and what manifest you need to used. To create a campaign, you first need to create a device filter, which holds the list of devices that you need to update.
+To apply the firmware update, you need to start an update campaign. The campaign holds information on the devices that you need to update, and which manifest you need to use. To create a campaign, you first need to create a device filter, which holds the list of devices that you need to update.
 
 ###### Creating a device filter
 
