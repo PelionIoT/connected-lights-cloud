@@ -11,8 +11,7 @@ config['host'] = 'https://api.us-east-1.mbedcloud.com'
 api = ConnectAPI(config)
 api.start_notifications()
 
-# todo, filter by endpoint type, see https://github.com/ARMmbed/mbed-cloud-sdk-python/issues/88
-devices = list(api.list_connected_devices())
+devices = list(api.list_connected_devices(filters={'device_type': 'light-system'}))
 
 print("Found %d lights" % (len(devices)), [ c.id for c in devices ])
 

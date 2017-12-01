@@ -21,7 +21,7 @@ Authorization: Bearer <your_access_key>
 You can make this request with any request library, but if you're using curl, use the following command:
 
 ```
-curl -v -H "Authorization: Bearer <your_access_key>" 	https://api.us-east-1.mbedcloud.com/v2/endpoints
+curl -v -H "Authorization: Bearer <your_access_key>" https://api.us-east-1.mbedcloud.com/v2/endpoints
 ```
 
 It will return something like this:
@@ -85,7 +85,8 @@ api.startNotifications(function(err) {
     if (err) return console.error(err);
 
     // Find all the lights
-    api.listConnectedDevices({ deviceType: 'light-system' }, function(err, resp) {
+    var filter = { device_type: { $eq: 'light-system' } };
+    api.listConnectedDevices({ filter: filter }, function(err, resp) {
         if (err) return console.error(err);
 
         var devices = resp.data;
@@ -154,8 +155,7 @@ config['host'] = 'https://api.us-east-1.mbedcloud.com'
 api = ConnectAPI(config)
 api.start_notifications()
 
-# todo, filter by endpoint type, see https://github.com/ARMmbed/mbed-cloud-sdk-python/issues/88
-devices = list(api.list_connected_devices())
+devices = list(api.list_connected_devices(filters={'device_type': 'light-system'}))
 
 print("Found %d lights" % (len(devices)), [ c.id for c in devices ])
 
