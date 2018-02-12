@@ -88,12 +88,14 @@ Replace `connected-lights-cloud/source/main.cpp` with:
 
 ```cpp
 #include "mbed.h"
-#include "led.h"        // Abstracts away the differens between the LED types
 #include "easy-connect.h"
+#include "led.h"        // Abstracts away the differens between the LED types
 #include "simple-cloud-client.h"
+#include "storage-selector.h"
 
-EventQueue eventQueue;  // An event queue
-Thread eventThread;     // An RTOS thread to process events in
+EventQueue eventQueue;                  // An event queue
+Thread eventThread;                     // An RTOS thread to process events in
+FileSystem* fs = filesystem_selector(); // Mbed Cloud requires a filesystem, mount it (based on parameters in mbed_app.json)
 
 SimpleMbedClient client;
 
