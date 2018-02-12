@@ -85,7 +85,7 @@ api.startNotifications(function(err) {
     if (err) return console.error(err);
 
     // Find all the lights
-    var filter = { device_type: { $eq: 'light-system' } };
+    var filter = { deviceType: { $eq: 'light-system' } };
     api.listConnectedDevices({ filter: filter }, function(err, resp) {
         if (err) return console.error(err);
 
