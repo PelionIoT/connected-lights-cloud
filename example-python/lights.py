@@ -19,11 +19,11 @@ for device in devices:
     def pir_callback(device_id, path, count):
         print("Motion detected at %s, new count is %s" % (device_id, count))
 
-    api.add_resource_subscription_async(device.id, '/pir/0/count', pir_callback)
+    api.add_resource_subscription_async(device.id, '/3201/0/5700', pir_callback)
     print("subscribed to resource")
 
     pink = 0xff69b4
-    api.set_resource_value(device.id, '/led/0/color', pink)
+    api.set_resource_value(device.id, '/3311/0/5706', pink)
     print("set color to pink")
 
 # Run forever

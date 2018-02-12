@@ -115,18 +115,18 @@ When your board is back online in Mbed Cloud, you can then prepare an update. Op
 void pir_rise() {
     // Update the resource if the light is not on yet (because of the PIR sensor)
     if (!ledOnBecauseOfPir) {
-        pirCount = pirCount + 1;
+        pirCount->set_value(pirCount->get_value_int() + 1);
     }
 
     // Permanent off? Don't put the lights on...
-    if (ledStatus == STATUS_OFF) return;
+    if (ledStatus->get_value_int() == STATUS_OFF) return;
 
     // Otherwise do it!
     ledOnBecauseOfPir = true;
     putLightsOn();
 
     // And attach the timeout
-    pirTimeout.attach(eventQueue.event(&onPirTimeout), static_cast<float>(ledTimeout));
+    pirTimeout.attach(eventQueue.event(&onPirTimeout), static_cast<float>(ledTimeout->get_value_int()));
 }
 ```
 

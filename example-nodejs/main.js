@@ -25,7 +25,7 @@ api.startNotifications(function(err) {
             // Subscribe to the PIR sensor
             api.addResourceSubscription(
                 d.id,
-                '/pir/0/count',
+                '/3201/0/5700',
                 function(count) {
                     console.log('Motion detected at', d.id, 'new count is', count);
                 },
@@ -35,7 +35,7 @@ api.startNotifications(function(err) {
 
             // Set the color of the light
             var orange = 0xff6400;
-            api.setResourceValue(d.id, '/led/0/color', orange, function(err) {
+            api.setResourceValue(d.id, '/3311/0/5706', orange, function(err) {
                 console.log('set color to orange', err || 'OK');
             });
 
