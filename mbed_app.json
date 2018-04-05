@@ -83,6 +83,9 @@
             "platform.stdio-baud-rate": 115200,
             "platform.stdio-convert-newlines": true,
             "nanostack-hal.event_loop_thread_stack_size": 8192,
+            "storage-selector.storage": "SD_CARD",
+            "storage-selector.filesystem": "FAT",
+            "storage-selector.mount-point": "\"sd\"",
             "mbed-trace.enable": 0
         },
         "NUCLEO_F401RE": {

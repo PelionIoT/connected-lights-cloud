@@ -49,28 +49,28 @@ var options = {
     io: io,
     deviceModel: {                    // building the initial device model (w/ 4 properties)
         status: {
-            retrieve: '/led/0/permanent_status',    // when device registers, retrieve value
+            retrieve: '/3311/0/5850',    // when device registers, retrieve value
             update: {
                 method: 'put',                      // update actions
-                path: '/led/0/permanent_status',
+                path: '/3311/0/5850',
             },
         },
         timeout: {
-            retrieve: '/led/0/timeout',
+            retrieve: '/3311/0/5853',
             update: {
                 method: 'put',
-                path: '/led/0/timeout',
+                path: '/3311/0/5853',
             },
         },
         color: {
-            retrieve: '/led/0/color',
+            retrieve: '/3311/0/5706',
             update: {
                 method: 'put',
-                path: '/led/0/color',
+                path: '/3311/0/5706',
             },
         },
         count: {
-            subscribe: '/pir/0/count',   // subscribe to updates
+            subscribe: '/3201/0/5700',   // subscribe to updates
         },
     },
     timeout: 20000,

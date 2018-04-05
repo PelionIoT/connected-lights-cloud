@@ -57,7 +57,7 @@ It will return something like this:
 
 Official Mbed Cloud SDKs are available for Node.js and Python. These APIs are asynchronous because for many functions, an action (such as writing to a device) might not happen immediately - the device might be in deep sleep or otherwise slow to respond. Therefore, you need to listen to callbacks on a notification channel. The official libraries abstract the notification channels and set up the channels for you, which makes it easier for you to write applications on top of Mbed Cloud.
 
-An additional feature of the libraries is that they support subscriptions. You can subscribe to resources and get a notification whenever they change. This is useful for the `/pir/0/count` resource because you can receive a notification whenever someone moves in front of the sensor.
+An additional feature of the libraries is that they support subscriptions. You can subscribe to resources and get a notification whenever they change. This is useful for the `3201/0/5700` (PIR count) resource because you can receive a notification whenever someone moves in front of the sensor.
 
 The following sections show an example of changing the color of the light and receiving a notification whenever someone waves in front of the PIR sensor, in both Node.js and Python.
 
@@ -85,7 +85,7 @@ api.startNotifications(function(err) {
     if (err) return console.error(err);
 
     // Find all the lights
-    var filter = { device_type: { $eq: 'light-system' } };
+    var filter = { deviceType: { $eq: 'light-system' } };
     api.listConnectedDevices({ filter: filter }, function(err, resp) {
         if (err) return console.error(err);
 
@@ -99,7 +99,7 @@ api.startNotifications(function(err) {
             // Subscribe to the PIR sensor
             api.addResourceSubscription(
                 d.id,
-                '/pir/0/count',
+                '/3201/0/5700',
                 function(count) {
                     console.log('Motion detected at', d.id, 'new count is', count);
                 },
@@ -109,7 +109,7 @@ api.startNotifications(function(err) {
 
             // Set the color of the light
             var orange = 0xff6400;
-            api.setResourceValue(d.id, '/led/0/color', orange, function(err) {
+            api.setResourceValue(d.id, '/3311/0/5706', orange, function(err) {
                 console.log('set color to orange', err || 'OK');
             });
 
@@ -135,8 +135,16 @@ See the [full docs](https://github.com/ARMmbed/mbed-cloud-sdk-javascript) on how
 
 First, make sure that you have installed [Python 2.7](https://www.python.org/downloads/) and [pip](https://pip.pypa.io/en/stable/installing/). Then, create a new folder, and install the Mbed Cloud SDK through pip:
 
+**Windows, Linux**
+
 ```bash
 $ pip install git+ssh://git@github.com/ARMmbed/mbed-cloud-sdk-python.git
+```
+
+**MacOS**
+
+```bash
+$ pip install git+ssh://git@github.com/ARMmbed/mbed-cloud-sdk-python.git --user python
 ```
 
 Next, create a new file - `lights.py` - in the same folder where you installed the library, and fill it with the following content (replace `YOUR_ACCESS_KEY` with your access key):
@@ -163,11 +171,11 @@ for device in devices:
     def pir_callback(device_id, path, count):
         print("Motion detected at %s, new count is %s" % (device_id, count))
 
-    api.add_resource_subscription_async(device.id, '/pir/0/count', pir_callback)
+    api.add_resource_subscription_async(device.id, '/3201/0/5700', pir_callback)
     print("subscribed to resource")
 
     pink = 0xff69b4
-    api.set_resource_value(device.id, '/led/0/color', pink)
+    api.set_resource_value(device.id, '/3311/0/5706', pink)
     print("set color to pink")
 
 # Run forever

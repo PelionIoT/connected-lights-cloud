@@ -35,7 +35,7 @@ To wire the ESP8266 module to your development board, look at the [ESP8266 Cookb
 
 #### Adding libraries with Mbed CLI
 
-For the device and Mbed Cloud to talk, you need the [Mbed Cloud Client library](https://cloud.mbed.com/docs/latest/mbed-cloud-client/index.html). This is a cross-platform library that runs on Mbed OS and Linux and that you can port to other RTOSes. This example uses an additional library built on top of Mbed Cloud Client: SimpleCloudClient. We created this library specifically to use Mbed OS 5, so you can expose variables and resources to the cloud.
+For the device and Mbed Cloud to talk, you need the [Mbed Cloud Client library](https://cloud.mbed.com/docs/latest/mbed-cloud-client/index.html). This is a cross-platform library that runs on Mbed OS and Linux and that you can port to other RTOSes. This example uses an additional library built on top of Mbed Cloud Client: SimpleM2MClient. We created this library specifically to use Mbed OS 5, so you can expose variables and resources to the cloud.
 
 You will also use [EasyConnect](https://github.com/ARMmbed/easy-connect) to handle connectivity.
 
@@ -88,21 +88,24 @@ Replace `connected-lights-cloud/source/main.cpp` with:
 
 ```cpp
 #include "mbed.h"
-#include "led.h"        // Abstracts away the differens between the LED types
 #include "easy-connect.h"
-#include "simple-cloud-client.h"
+#include "led.h"        // Abstracts away the differens between the LED types
+#include "simplem2mclient.h"
+#include "storage-selector.h"
 
-EventQueue eventQueue;  // An event queue
-Thread eventThread;     // An RTOS thread to process events in
+EventQueue eventQueue;                  // An event queue
+Thread eventThread;                     // An RTOS thread to process events in
+FileSystem* fs = filesystem_selector(); // Mbed Cloud requires a filesystem, mount it (based on parameters in mbed_app.json)
 
-SimpleMbedClient client;
+SimpleM2MClient *client;
+M2MObjectList obj_list;
 
 // PIR sensor acts as an interrupt - signals us whenever it goes high (or low)
-InterruptIn pir(PIR_PIN);   // This pin value comes out mbed_app.json
+InterruptIn pir(SW2);   // This pin value comes out mbed_app.json
 
 
 // YOUR CODE HERE
-void pir_rise() {}
+void pir_rise() { }
 // END OF YOUR CODE HERE
 
 
@@ -113,13 +116,13 @@ void blink_builtin_led() {
     statusLed = !statusLed;
 }
 
-void registered() {
+void registered(const ConnectorClientEndpointInfo *endpoint) {
     // When we registered with Mbed Cloud, blink faster
     eventQueue.cancel(statusLedBlinkId);
 
     statusLedBlinkId = eventQueue.call_every(300, &blink_builtin_led);
 
-    printf("Registered\n");
+    printf("Connected to Mbed Cloud. Endpoint Name: %s\n", endpoint->internal_endpoint_name.c_str());
 }
 
 int main(int, char**) {
@@ -138,16 +141,26 @@ int main(int, char**) {
 
     NetworkInterface* network = easy_connect(true);
     if (!network) {
-        printf("Connect to internet failed... See serial output.\r\n");
+        printf("Connect to internet failed... See serial output.\n");
         return 1;
     }
 
-    if (!client.setup(network)) {
-      printf("Setting up mbed_client failed...\r\n");
-      return 1;
+    client = new SimpleM2MClient(network);
+    client->on_registered(&registered);
+
+    int init_rt = client->init();
+    if (init_rt != 0) {
+        printf("Failed to initialize Mbed Cloud Client (%d)", init_rt);
+        return 1;
     }
 
-    client.on_registered(&registered);
+    printf("Connecting to Mbed Cloud...\n");
+
+    // Add resources, they will register after call_register() is called.
+    client->add_objects(obj_list);
+
+    // Start registering to the cloud.
+    client->call_register();
 
     wait(osWaitForever);
 }
@@ -166,12 +179,12 @@ To implement these actions, you need to define *resources*: pieces of informatio
 
 Define a resource for each action:
 
-* `led/0/color` - the color of the LED.
-* `led/0/timeout` - the timeout (in seconds) after detection; lights are disabled when this period ends.
-* `led/0/permanent_status` - whether you should have the lights permanently on (or off).
-* `pir/0/count` - the number of times the PIR sensor was triggered. Read only, and should allow notifications.
+* `3311/0/5706` - the color of the LED.
+* `3311/0/5853` - the timeout (in seconds) after detection; lights are disabled when this period ends.
+* `3311/0/5850` - whether you should have the lights permanently on (or off).
+* `3201/0/5700` - the number of times the PIR sensor was triggered. Read only, and should allow notifications.
 
-You can use **SimpleCloudClient** to define these resources and attach actions to each resource.
+You can use the `add_resource` function to define these resources and attach actions to each resource.
 
 Replace the following section in `main.cpp`:
 
@@ -186,7 +199,8 @@ with (comments inline):
 ```cpp
 // Fwd declaration
 void putLightsOn();
-void colorChanged(int newColor);
+void colorChanged(const char*);
+void statusChanged(const char*);
 
 // Variable that holds whether the light is on because the PIR sensor triggered (and timeout didn't happen yet)
 bool ledOnBecauseOfPir = false;
@@ -206,8 +220,43 @@ void putLightsOff() {
     setRgbColor(0.0f, 0.0f, 0.0f);
 }
 
-// Status changes
-void statusChanged(int newStatus) {
+// Here are our resources:
+// We encode color in 3 bytes [R, G, B] and put it in an integer by providing the color as an hex value (default color: green)
+M2MResource *ledColor = add_resource(&obj_list, 3311, 0, 5706, "LED_Color", M2MResourceInstance::INTEGER, M2MBase::GET_PUT_ALLOWED, 0x00ff00, false, &colorChanged);
+M2MResource *ledTimeout = add_resource(&obj_list, 3311, 0, 5853, "LED_Timeout", M2MResourceInstance::INTEGER, M2MBase::GET_PUT_ALLOWED, 5, false);
+M2MResource *ledStatus = add_resource(&obj_list, 3311, 0, 5850, "LED_Permanent_status", M2MResourceInstance::INTEGER, M2MBase::GET_PUT_ALLOWED, STATUS_NONE, false, &statusChanged);
+M2MResource *pirCount = add_resource(&obj_list, 3201, 0, 5700, "PIR_Count", M2MResourceInstance::INTEGER, M2MBase::GET_ALLOWED, 0, true);
+
+// As said above, color is encoded in three bytes
+void putLightsOn() {
+    int color = ledColor->get_value_int();
+
+    // parse the individual channels
+    int redCh   = color >> 16 & 0xff;
+    int greenCh = color >> 8 & 0xff;
+    int blueCh  = color & 0xff;
+
+    // our color is 0..255, but we need a float between 0..1, cast it.
+    float red = static_cast<float>(redCh) / 255.0f;
+    float green = static_cast<float>(greenCh) / 255.0f;
+    float blue = static_cast<float>(blueCh) / 255.0f;
+    setRgbColor(red, green, blue);
+}
+
+// Color updated from the cloud,
+// if the LED is on because of the PIR, or if the LED is on permanently -> Set the color.
+void colorChanged(const char*) {
+    int status = ledStatus->get_value_int();
+
+    if (ledOnBecauseOfPir || status == STATUS_ON) {
+        putLightsOn();
+    }
+}
+
+// Status changes from the cloud
+void statusChanged(const char*) {
+    int newStatus = ledStatus->get_value_int();
+
     switch (newStatus) {
         case STATUS_ON: // Permanently on? OK.
             putLightsOn();
@@ -219,39 +268,10 @@ void statusChanged(int newStatus) {
     }
 }
 
-// Here are our resources:
-// We encode color in 3 bytes [R, G, B] and put it in an integer by providing the color as an hex value (default color: green)
-SimpleResourceInt ledColor = client.define_resource("led/0/color", 0x00ff00, &colorChanged);
-SimpleResourceInt ledTimeout = client.define_resource("led/0/timeout", 5);
-SimpleResourceInt ledStatus = client.define_resource("led/0/permanent_status", STATUS_NONE, &statusChanged);
-SimpleResourceInt pirCount = client.define_resource("pir/0/count", 0, M2MBase::GET_ALLOWED);
-
-// As said above, color is encoded in three bytes
-void putLightsOn() {
-    // parse the individual channels
-    int redCh   = ledColor >> 16 & 0xff;
-    int greenCh = ledColor >> 8 & 0xff;
-    int blueCh  = ledColor & 0xff;
-
-    // our color is 0..255, but we need a float between 0..1, cast it.
-    float red = static_cast<float>(redCh) / 255.0f;
-    float green = static_cast<float>(greenCh) / 255.0f;
-    float blue = static_cast<float>(blueCh) / 255.0f;
-    setRgbColor(red, green, blue);
-}
-
-// Color updated from the cloud,
-// if the LED is on because of the PIR, or if the LED is on permanently -> Set the color.
-void colorChanged(int newColor) {
-    if (ledOnBecauseOfPir || ledStatus == STATUS_ON) {
-        putLightsOn();
-    }
-}
-
 // Timeout (from led/0/timeout) happened after PIR sensor was triggered...
 void onPirTimeout() {
   // if we're not permanent on
-    if (ledStatus != STATUS_ON) {
+    if (ledStatus->get_value_int() != STATUS_ON) {
         // clear the lights
         putLightsOff();
 
@@ -262,17 +282,17 @@ void onPirTimeout() {
 // When the PIR sensor fires...
 void pir_rise() {
     // Update the resource
-    pirCount = pirCount + 1;
+    pirCount->set_value(pirCount->get_value_int() + 1);
 
     // Permanent off? Don't put the lights on...
-    if (ledStatus == STATUS_OFF) return;
+    if (ledStatus->get_value_int() == STATUS_OFF) return;
 
     // Otherwise do it!
     ledOnBecauseOfPir = true;
     putLightsOn();
 
     // And attach the timeout
-    pirTimeout.attach(eventQueue.event(&onPirTimeout), static_cast<float>(ledTimeout));
+    pirTimeout.attach(eventQueue.event(&onPirTimeout), static_cast<float>(ledTimeout->get_value_int()));
 }
 ```
 
@@ -280,7 +300,7 @@ When you compile and flash this program, you'll see that when you wave your hand
 
 When the connection to Mbed Cloud is created, the onboard LED blinks faster. You can now control this device from the cloud.
 
-<span class="notes">**Note:** No connection? [Inspect the logs on the device](https://docs.mbed.com/docs/mbed-os-handbook/en/latest/debugging/printf/).</span>
+<span class="notes">**Note:** No connection? [Inspect the logs on the device](https://docs.mbed.com/docs/mbed-os-handbook/en/latest/debugging/printf/). Use baud rate 115,200 to communicate with your device.</span>
 
-<span class="notes">**Note:** If you receive an `fcc_init` error, re-format the SD card (FAT).</span>
+<span class="notes">**Note:** If you receive an `fcc_init` error, re-format the SD card (FAT). If your computer does not have an SD-card slot, see the [format-sd-card](https://os.mbed.com/users/janjongboom/code/format-sd-card/) Mbed program.</span>
 
