@@ -91,9 +91,10 @@ Replace `connected-lights-cloud/source/main.cpp` with:
 #include "simplem2mclient.h"
 #include "storage-selector.h"
 
-EventQueue eventQueue;                  // An event queue
-Thread eventThread;                     // An RTOS thread to process events in
-FileSystem* fs = filesystem_selector(); // Mbed Cloud requires a filesystem, mount it (based on parameters in mbed_app.json)
+EventQueue eventQueue;                                // An event queue
+Thread eventThread;                                   // An RTOS thread to process events in
+FileSystem* fs = filesystem_selector();               // Mbed Cloud requires a filesystem, mount it (based on parameters in mbed_app.json)
+BlockDevice* arm_uc_blockdevice = storage_selector(); // This is where the update client stores new firmware images
 
 SimpleM2MClient *client;
 M2MObjectList obj_list;

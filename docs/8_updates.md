@@ -8,7 +8,7 @@ Currently, your application sends a notification to the cloud every time the PIR
 
 To enable firmware updates, the device needs to have the [Mbed bootloader](https://github.com/armmbed/mbed-bootloader). The bootloader verifies the firmware on the device and can swap firmware for other firmware. To enable the bootloader you need to configure the linker to put your application in a separate part of flash. The bootloader can then run first.
 
-Open `connected-lights-cloud/mbed_app.json` and replace `target_overrides` by:
+Open `connected-lights-cloud/mbed_app.json` and replace the `target_overrides` section by:
 
 ```
     "target_overrides": {
@@ -16,31 +16,43 @@ Open `connected-lights-cloud/mbed_app.json` and replace `target_overrides` by:
             "target.features_add": ["NANOSTACK", "LOWPAN_ROUTER", "COMMON_PAL"],
             "platform.stdio-baud-rate": 115200,
             "platform.stdio-convert-newlines": true,
+            "mbed-client.event-loop-size": 1024,
             "nanostack-hal.event_loop_thread_stack_size": 8192,
+            "storage-selector.storage": "SD_CARD",
+            "storage-selector.filesystem": "FAT",
+            "storage-selector.mount-point": "\"sd\"",
+            "update-client.storage-address"  : "(1024*1024*64)",
+            "update-client.storage-size"     : "(1024*1024*2)",
+            "update-client.storage-locations": "1",
             "mbed-trace.enable": 0
         },
-        "NUCLEO_F401RE": {
-            "esp8266-tx": "D8",
-            "esp8266-rx": "D2"
-        },
-        "NUCLEO_F411RE": {
-            "esp8266-tx": "D8",
-            "esp8266-rx": "D2"
-        },
         "K64F": {
-            "target.mbed_app_start": "0x00020400",
-            "update-client.application-details": "0x00020000",
-            "update-client.bootloader-details": "0x172d4"
+            "target.mbed_app_start"            : "0x0000a400",
+            "update-client.bootloader-details" : "0x00007188",
+            "sotp-section-1-address"           : "(32*1024)",
+            "sotp-section-1-size"              : "( 4*1024)",
+            "sotp-section-2-address"           : "(36*1024)",
+            "sotp-section-2-size"              : "( 4*1024)",
+            "update-client.application-details": "(40*1024)"
         },
         "NUCLEO_F429ZI": {
-            "target.mbed_app_start": "0x08020400",
-            "update-client.application-details": "0x08020000",
-            "update-client.bootloader-details": "0x8018630"
+            "target.mbed_app_start"            : "0x08010400",
+            "update-client.bootloader-details" : "0x080078CC",
+            "sotp-section-1-address"           : "(0x08000000+32*1024)",
+            "sotp-section-1-size"              : "(16*1024)",
+            "sotp-section-2-address"           : "(0x08000000+48*1024)",
+            "sotp-section-2-size"              : "(16*1024)",
+            "update-client.application-details": "(0x08000000+64*1024)"
         },
         "UBLOX_EVK_ODIN_W2": {
-            "target.mbed_app_start": "0x08020400",
-            "update-client.application-details": "0x08020000",
-            "update-client.bootloader-details": "0x801ae38"
+            "target.device_has_remove": ["EMAC"],
+            "target.mbed_app_start"            : "0x08010400",
+            "update-client.bootloader-details" : "0x08007300",
+            "sotp-section-1-address"           : "(0x08000000+32*1024)",
+            "sotp-section-1-size"              : "(16*1024)",
+            "sotp-section-2-address"           : "(0x08000000+48*1024)",
+            "sotp-section-2-size"              : "(16*1024)",
+            "update-client.application-details": "(0x08000000+64*1024)"
         }
     }
 ```
@@ -57,8 +69,16 @@ For development, you can use a self-signed certificate, but please note that thi
 
 To generate update certificates, you need the manifest tool. Install using:
 
-```
+**Windows, Linux**
+
+```bash
 $ pip install git+https://github.com/ARMmbed/manifest-tool.git
+```
+
+**MacOS**
+
+```bash
+$ pip install git+https://github.com/ARMmbed/manifest-tool.git --user python
 ```
 
 #### Generating an update certificate
@@ -66,8 +86,10 @@ $ pip install git+https://github.com/ARMmbed/manifest-tool.git
 To create a new self-signed certificate, run:
 
 ```
-$ manifest-tool init -d yourdomain.com -m lighting-system-2000 -q --force
+$ manifest-tool init -a YOUR_MBED_CLOUD_API_KEY -d yourdomain.com -m lighting-system-2000 -q --force
 ```
+
+**Note:** Make sure to replace `YOUR_MBED_CLOUD_API_KEY` with the API key you created earlier.
 
 ### Building with the bootloader
 
@@ -79,7 +101,7 @@ Build and add the bootloader to your firmware with:
 
 ```
 $ mbed compile -m K64F -t GCC_ARM
-$ simple-cloud-client/tools/combine_bootloader_with_app.py -b simple-cloud-client/tools/mbed-bootloader-k64f.bin -a  BUILD/K64F/GCC_ARM/connected-lights-cloud_application.bin --app-offset 0x20400 --header-offset 0x20000 -o combined.bin
+$ tools/combine_bootloader_with_app.py -m K64F -a BUILD/K64F/GCC_ARM/connected-lights-cloud_application.bin -o combined.bin
 ```
 
 Flash `combined.bin` to your development board.
@@ -90,7 +112,7 @@ Build and add the bootloader to your firmware with:
 
 ```
 $ mbed compile -m NUCLEO_F429ZI -t GCC_ARM
-$ simple-cloud-client/tools/combine_bootloader_with_app.py -b simple-cloud-client/tools/mbed-bootloader-nucleo-f429zi.bin -a  BUILD/NUCLEO_F429ZI/GCC_ARM/connected-lights-cloud_application.bin --app-offset 0x20400 --header-offset 0x20000 -o combined.bin
+$ tools/combine_bootloader_with_app.py -m NUCLEO_F429ZI -a BUILD/NUCLEO_F429ZI/GCC_ARM/connected-lights-cloud_application.bin -o combined.bin
 ```
 
 Flash `combined.bin` to your development board.
@@ -101,7 +123,7 @@ Build and add the bootloader to your firmware with:
 
 ```
 $ mbed compile -m ublox_evk_odin_w2 -t GCC_ARM
-$ simple-cloud-client/tools/combine_bootloader_with_app.py -b simple-cloud-client/tools/mbed-bootloader-ublox-evk-odin-w2.bin -a  BUILD/ublox_evk_odin_w2/GCC_ARM/connected-lights-cloud_application.bin --app-offset 0x20400 --header-offset 0x20000 -o combined.bin
+$ tools/combine_bootloader_with_app.py -m ublox_evk_odin_w2 -a BUILD/ublox_evk_odin_w2/GCC_ARM/connected-lights-cloud_application.bin -o combined.bin
 ```
 
 Flash `combined.bin` to your development board.
@@ -132,82 +154,24 @@ void pir_rise() {
 
 Then rebuild the application, but do not flash the binary to your development board.
 
-#### Uploading the firmware to Mbed Cloud
+### Updating the device
 
-To schedule an update, you need to upload the firmware to Mbed Cloud.
+Now we can push this new application to your development through Mbed Cloud. The manifest tool can both sign the update - using the private key generated earlier - and upload it to Mbed Cloud in a single command.
 
-1. Log in to [Mbed Cloud Portal](https://portal.us-east-1.mbedcloud.com).
-1. Select **Update firmware** > **Images**.
-1. Click **Upload new images**.
-1. Enter a descriptive name.
-1. Select the firmware:
-    * On FRDM-K64F, select `BUILD/K64F/GCC_ARM/connected-lights-cloud_application.bin`.
-    * On NUCLEO-F429ZI, select `BUILD/NUCLEO_F429ZI/GCC_ARM/connected-lights-cloud_application.bin`.
-    * On ODIN-W2, select `BUILD/ublox_evk_odin_w2/GCC_ARM/connected-lights-cloud_application.bin`.
-1. Click **Upload**.
-
-After the upload succeeds, find the URL to your firmware file on the overview page.
-
-#### Creating an update manifest
-
-Every firmware update requires an update manifest. This update contains the cryptographic hash of the firmware, signed with your certificate. It also contains information about which devices this update applies to, so you don't accidentally update devices with incompatible firmware.
-
-To generate a new update manifest, run:
+Run:
 
 ```
-$ manifest-tool create -p BUILD/YOUR_BOARD_NAME/GCC_ARM/connected-lights-cloud_application.bin -u http://path-to-your-firmware -o connected-lights.manifest
+$ manifest-tool update device -p BUILD/YOUR_BOARD_NAME/GCC_ARM/connected-lights-cloud_application.bin -D YOUR_ENDPOINT_NAME
 ```
 
-Replace `YOUR_BOARD_NAME` with the name of your development board, and replace `http://path-to-your-firmware` with the location of the firmware.
-
-#### Uploading the manifest to Mbed Cloud
-
-To upload the manifest to Mbed Cloud:
-
-1. Select **Update firmware** > **Manifests**.
-1. Click **Upload new manifest**.
-1. Enter a descriptive name.
-1. Select the manifest (`connected-lights.manifest`).
-1. Click **Upload firmware manifest**.
-
-#### Creating an update campaign
-
-To apply the firmware update, you need to start an update campaign. The campaign holds information on the devices that you need to update, and which manifest you need to use. To create a campaign, you first need to create a device filter, which holds the list of devices that you need to update.
-
-#### Creating a device filter
-
-In the Mbed Cloud Portal:
-
-1. Select **Device directory**.
-1. Click **Create new filter**.
-1. Click **Add attribute**.
-1. Select **Device ID**.
-1. Enter your device ID. (Look in serial output to find your device ID.)
-1. Give the filter a descriptive name, and save the filter.
-
-##### Starting the campaign
-
-With the firmware, the manifest and the device filter in place, you can start the firmware update campaign.
-
-1. Select **Update firmware** > **Update campaigns**.
-1. Click **Create campaign**.
-1. Give the campaign a descriptive name.
-1. Select the manifest you uploaded.
-1. Select the filter you created.
-1. Click **Save**.
-
-To start the campaign, click **Start**.
+Replace `YOUR_BOARD_NAME` with the name of your development board, and replace `YOUR_ENDPOINT_NAME` with the endpoint name in Mbed Cloud.
 
 Inspect the logs on the device (via a serial monitor) to see the firmware update progress. It looks similar to:
 
 ```
 Firmware download requested
 Authorization granted
-Manifest timestamp: 1491912366
-Firmware URL http://firmware-catalog-media-98...
-Firmware size: 392384
-Firmware hash (32): 00c3224b10728028ef239d3d283a11669f4235ebfbe9333e790932558d13c000
-Downloading: 0 %
+Downloading: [+++-                                              ] 6 %
 ```
 
 When the download completes, the firmware is verified. If everything is OK, the firmware update is applied. Your device is now running the latest version of the application, and when you have the web app open, you see that you don't get PIR notifications if the light is already on.
