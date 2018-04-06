@@ -66,7 +66,7 @@ The following sections show an example of changing the color of the light and re
 First, make sure you have installed [Node.js](http://nodejs.org). Then, create a new folder, and install the Mbed Cloud Node.js SDK via npm:
 
 ```bash
-$ npm install git+ssh://git@github.com:ARMmbed/mbed-cloud-sdk-javascript.git#build --save
+$ npm install mbed-cloud-sdk --save
 ```
 
 Next, create a new file `main.js` in the same folder where you installed the library, and fill it with the following content (replace `YOUR_ACCESS_KEY` with your access key):
@@ -129,7 +129,7 @@ Motion detected at 015b58400ce40000000000010010022a new count is 1
 Motion detected at 015b58400ce40000000000010010022a new count is 2
 ```
 
-See the [full docs](https://github.com/ARMmbed/mbed-cloud-sdk-javascript) on how to use the JavaScript SDK.
+See the [full docs](https://cloud.mbed.com/docs/v1.2/mbed-cloud-sdk-javascript/) on how to use the JavaScript SDK.
 
 #### Python
 
@@ -138,13 +138,13 @@ First, make sure that you have installed [Python 2.7](https://www.python.org/dow
 **Windows, Linux**
 
 ```bash
-$ pip install git+ssh://git@github.com/ARMmbed/mbed-cloud-sdk-python.git
+$ pip install mbed-cloud-sdk
 ```
 
 **MacOS**
 
 ```bash
-$ pip install git+ssh://git@github.com/ARMmbed/mbed-cloud-sdk-python.git --user python
+$ pip install mbed-cloud-sdk --user python
 ```
 
 Next, create a new file - `lights.py` - in the same folder where you installed the library, and fill it with the following content (replace `YOUR_ACCESS_KEY` with your access key):
@@ -194,4 +194,4 @@ Motion detected at 015b58400ce40000000000010010022a, new count is 7
 Motion detected at 015b58400ce40000000000010010022a, new count is 8
 ```
 
-See the [full docs](https://github.com/ARMmbed/mbed-cloud-sdk-python) on how to use the Python library.
+See the [full docs](https://cloud.mbed.com/docs/v1.2/mbed-cloud-sdk-python/index.html) on how to use the Python library.

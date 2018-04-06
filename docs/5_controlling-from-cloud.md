@@ -1,10 +1,10 @@
 ## Controlling the device from Mbed Cloud
 
-Now, the device is connected through Mbed Cloud. In the code sample in the previous section, you defined resources using calls to `client.define_resource()`. These resources are automatically exposed to Mbed Cloud, from where you can read and write resources, and changes automatically sync with the device. That means that you already have a remote management interface for this device.
+Now, the device is connected through Mbed Cloud. In the code sample in the previous section, you defined resources using calls to `add_resource()`. These resources are automatically exposed to Mbed Cloud, from where you can read and write resources, and changes automatically sync with the device. That means that you already have a remote management interface for this device.
 
 ### Seeing the status of a device
 
-Each device that you connect to Mbed Cloud has an endpoint name. This is a long string, which is the unique identifier of your device. If you don't know the endpoint name of your device, check the [serial output](https://docs.mbed.com/docs/mbed-os-handbook/en/latest/debugging/printf/) on your device for a line starting with 'Device Identity'.
+Each device that you connect to Mbed Cloud has an endpoint name. This is a long string, which is the unique identifier of your device. If you don't know the endpoint name of your device, check the [serial output](https://os.mbed.com/docs/latest/tutorials/serial-comm.html) on your device for a line starting with 'Device Identity'.
 
 You need to know the endpoint's name to check the device's status in the Mbed Cloud Portal. The [Device directory](https://portal.us-east-1.mbedcloud.com/devices) page lists all devices associated with your account and their current status. Click the **Connected only** toggle to only see connected devices.
 

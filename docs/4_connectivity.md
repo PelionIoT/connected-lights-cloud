@@ -298,7 +298,7 @@ When you compile and flash this program, you'll see that when you wave your hand
 
 When the connection to Mbed Cloud is created, the onboard LED blinks faster. You can now control this device from the cloud.
 
-<span class="notes">**Note:** No connection? [Inspect the logs on the device](https://docs.mbed.com/docs/mbed-os-handbook/en/latest/debugging/printf/). Use baud rate 115,200 to communicate with your device.</span>
+<span class="notes">**Note:** No connection? [Inspect the logs on the device](https://os.mbed.com/docs/v5.7/tutorials/serial-comm.html). Use baud rate 115,200 to communicate with your device.</span>
 
 <span class="notes">**Note:** If you receive an `fcc_init` error, re-format the SD card (FAT). If your computer does not have an SD-card slot, see the [format-sd-card](https://os.mbed.com/users/janjongboom/code/format-sd-card/) Mbed program.</span>
 
