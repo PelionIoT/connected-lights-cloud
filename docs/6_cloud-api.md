@@ -109,7 +109,7 @@ api.startNotifications(function(err) {
 
             // Set the color of the light
             var orange = 0xff6400;
-            api.setResourceValue(d.id, '/3311/0/5706', orange, function(err) {
+            api.setResourceValue(d.id, '/3311/0/5706', orange.toString(), function(err) {
                 console.log('set color to orange', err || 'OK');
             });
 
