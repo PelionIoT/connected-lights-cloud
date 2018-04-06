@@ -1,4 +1,4 @@
-### Bringing it all together
+## Bringing it all together
 
 You’ve already built almost all of the pieces required for the lighting system. You now have:
 
@@ -22,7 +22,7 @@ Here is a screenshot of the app running on an Android phone:
 
 <span class="notes">**Note:** To give the lights a more friendly name (such as "living room"), change the name of the device in the Mbed Cloud Portal.</span>
 
-#### Running the application
+### Running the application
 
 To start the application, first open `connected-lights-cloud/webapp/main.js`, and paste your mbed Cloud API key in the first line.:
 
@@ -42,6 +42,6 @@ To start the application, first open `connected-lights-cloud/webapp/main.js`, an
 
 Open your web browser, and go to [http://localhost:5265](http://localhost:5265) to see the application running.
 
-#### Konekuta
+### Konekuta
 
 The web application is built on top of [Konekuta](https://github.com/armmbed/konekuta/tree/cloud), a framework for building dynamic web applications on top of Mbed Cloud. Konekuta solves a number of common problems with building connected applications, including state syncing, going offline/online, handling errors and updating the UI when devices connect or disconnect from Mbed Cloud. Konekuta is open source and available on [GitHub](https://github.com/armmbed/konekuta/tree/cloud).

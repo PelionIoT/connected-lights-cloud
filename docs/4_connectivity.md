@@ -1,8 +1,8 @@
-### Adding connectivity
+## Adding connectivity
 
 Now that you've built the basic circuit and written the code to control that circuit, you can add connectivity to the project. Part of the ARM Mbed IoT Device Platform is Mbed Cloud, a unified solution to connect devices to the internet and communicate with them, regardless of *how* these devices connect to the internet. Libraries are available for a variety of connectivity methods, including Ethernet, Wi-Fi and cellular. You also can add new connectivity methods with the [unified networking APIs](https://docs.mbed.com/docs/mbed-os-api-reference/en/latest/APIs/communication/network_sockets/) in Mbed OS 5.
 
-#### Obtaining a device certificate
+### Obtaining a device certificate
 
 [Mbed TLS](https://tls.mbed.org) encrypts all data that goes from the device to Mbed Cloud (and from Mbed Cloud to the device). You need a security certificate to set up secure communication, which you can get from the Mbed Cloud Portal:
 
@@ -19,7 +19,7 @@ Now that you've built the basic circuit and written the code to control that cir
 1. Create a new file `identity_dev_security.c` in your application's `source` directory.
 1. Paste the certificate into this file.
 
-#### Adding connectivity to the board
+### Adding connectivity to the board
 
 **Built-in Ethernet, Wi-Fi or Cellular**
 
@@ -33,7 +33,7 @@ To wire the ESP8266 module to your development board, look at the [ESP8266 Cookb
 
 <span class="notes">**Note about ESP8266 on NUCLEO boards:** The NUCLEO boards reserve pins D0 and D1 for serial communication with the computer. Use pins `D8` (to ESP8266 TX) and `D2` (to ESP8266 RX) instead.</span>
 
-#### Adding libraries with Mbed CLI
+### Adding libraries with Mbed CLI
 
 For the device and Mbed Cloud to talk, you need the [Mbed Cloud Client library](https://cloud.mbed.com/docs/latest/mbed-cloud-client/index.html). This is a cross-platform library that runs on Mbed OS and Linux and that you can port to other RTOSes. This example uses an additional library built on top of Mbed Cloud Client: SimpleM2MClient. We created this library specifically to use Mbed OS 5, so you can expose variables and resources to the cloud.
 
@@ -41,7 +41,7 @@ You will also use [EasyConnect](https://github.com/ARMmbed/easy-connect) to hand
 
 These libraries are already in the project (see the `.lib` files in the project directory).
 
-#### Updating configuration
+### Updating configuration
 
 You need to tell **EasyConnect** which connectivity method to use. Open `mbed_app.json`, and locate the `network-interface` field. Change the `value` to the connectivity method used:
 
@@ -78,9 +78,9 @@ You need to tell **EasyConnect** which connectivity method to use. Open `mbed_ap
 
 If you are using Wi-Fi, you also need to set your Wi-Fi SSID and your password.
 
-#### Writing code
+### Writing code
 
-##### Setting up a connection
+#### Setting up a connection
 
 You need to add some code to the application, so it connects to the internet and sets up a connection to Mbed Cloud.
 
@@ -166,7 +166,7 @@ int main(int, char**) {
 }
 ```
 
-##### Program logic
+#### Program logic
 
 The code sample above only sets up the connection. You can now define some logic for this program:
 
