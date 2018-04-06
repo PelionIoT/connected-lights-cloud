@@ -15,9 +15,7 @@ Now that you've built the basic circuit and written the code to control that cir
 
     <span class="images">![The certificate is located in the white box](https://s3-us-west-2.amazonaws.com/cloud-docs-images/lights16.png)</span>
 
-1. Go to the 'connected-lights-cloud' folder on your computer.
-1. Create a new file `identity_dev_security.c` in your application's `source` directory.
-1. Paste the certificate into this file.
+1. Copy the file (named `mbed_cloud_dev_credentials.c`) into your application's `source` directory.
 
 ### Adding connectivity to the board
 
@@ -51,7 +49,7 @@ You need to tell **EasyConnect** which connectivity method to use. Open `mbed_ap
 /* snip */
 
         "network-interface":{
-            "help": "options are ETHERNET, WIFI_ESP8266, WIFI_ODIN, MESH_LOWPAN_ND, MESH_THREAD",
+            "help": "options are ETHERNET, WIFI_ESP8266, WIFI_IDW0XX1, WIFI_ODIN, WIFI_RTW, WIFI_WIZFI310, WIFI_ISM43362, MESH_LOWPAN_ND, MESH_THREAD, CELLULAR_ONBOARD",
             "value": "ETHERNET"
         },
         "esp8266-tx": {

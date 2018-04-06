@@ -11,7 +11,7 @@ Part of the ARM Mbed IoT Device Platform is Mbed CLI, an offline compilation too
 1. Import the `connected-lights-cloud` project via:
 
     ```
-    $ mbed import git@github.com:armmbed/connected-lights-cloud.git connected-lights-cloud
+    $ mbed import https://github.com/armmbed/connected-lights-cloud
     ```
 
 This program contains a configuration file and all the source code, which you will use to configure the pins the software uses.
