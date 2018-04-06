@@ -1,8 +1,8 @@
-### Using the Mbed Cloud API
+## Using the Mbed Cloud API
 
 The Mbed Cloud Portal that you used in the previous section is a wrapper around the Mbed Cloud API. Through this API, you can connect any app to any device. You can use this API to build an app that allows you to control any of the lighting systems that you deploy in your house or office.
 
-#### Obtaining an access key
+### Obtaining an access key
 
 To talk to the API, you need an API key. This key is used to authenticate with the API. To create a new access key, go to the [Manage access](https://portal.us-east-1.mbedcloud.com/access/keys) page in the Mbed Cloud Portal.
 
@@ -10,7 +10,7 @@ Click **Create new API Key** to create a new API key, and give it a descriptive 
 
 <span class="images">![Creating a new access key in Mbed Cloud](https://s3-us-west-2.amazonaws.com/cloud-docs-images/lights14.png)</span>
 
-#### Testing the API
+### Testing the API
 
 You can quickly test if the access key works by sending a call to the API to query for all the devices. To retrieve a list of all devices, make a GET request to `https://api.us-east-1.mbedcloud.com/v2/endpoints`. You need to send an authorization header with this request:
 
@@ -53,7 +53,7 @@ It will return something like this:
 
 <span class="notes">**Note:** The official API documentation for the Mbed Cloud REST API interface is [located here](/docs/v1.2/api-references/index.html).</span>
 
-#### Using the official libraries
+### Using the official libraries
 
 Official Mbed Cloud SDKs are available for Node.js and Python. These APIs are asynchronous because for many functions, an action (such as writing to a device) might not happen immediately - the device might be in deep sleep or otherwise slow to respond. Therefore, you need to listen to callbacks on a notification channel. The official libraries abstract the notification channels and set up the channels for you, which makes it easier for you to write applications on top of Mbed Cloud.
 
@@ -61,12 +61,12 @@ An additional feature of the libraries is that they support subscriptions. You c
 
 The following sections show an example of changing the color of the light and receiving a notification whenever someone waves in front of the PIR sensor, in both Node.js and Python.
 
-##### Node.js
+#### Node.js
 
 First, make sure you have installed [Node.js](http://nodejs.org). Then, create a new folder, and install the Mbed Cloud Node.js SDK via npm:
 
 ```bash
-$ npm install git+ssh://git@github.com:ARMmbed/mbed-cloud-sdk-javascript.git#build --save
+$ npm install mbed-cloud-sdk --save
 ```
 
 Next, create a new file `main.js` in the same folder where you installed the library, and fill it with the following content (replace `YOUR_ACCESS_KEY` with your access key):
@@ -109,7 +109,7 @@ api.startNotifications(function(err) {
 
             // Set the color of the light
             var orange = 0xff6400;
-            api.setResourceValue(d.id, '/3311/0/5706', orange, function(err) {
+            api.setResourceValue(d.id, '/3311/0/5706', orange.toString(), function(err) {
                 console.log('set color to orange', err || 'OK');
             });
 
@@ -129,22 +129,22 @@ Motion detected at 015b58400ce40000000000010010022a new count is 1
 Motion detected at 015b58400ce40000000000010010022a new count is 2
 ```
 
-See the [full docs](https://github.com/ARMmbed/mbed-cloud-sdk-javascript) on how to use the JavaScript SDK.
+See the [full docs](https://cloud.mbed.com/docs/v1.2/mbed-cloud-sdk-javascript/) on how to use the JavaScript SDK.
 
-##### Python
+#### Python
 
 First, make sure that you have installed [Python 2.7](https://www.python.org/downloads/) and [pip](https://pip.pypa.io/en/stable/installing/). Then, create a new folder, and install the Mbed Cloud SDK through pip:
 
 **Windows, Linux**
 
 ```bash
-$ pip install git+ssh://git@github.com/ARMmbed/mbed-cloud-sdk-python.git
+$ pip install mbed-cloud-sdk
 ```
 
 **MacOS**
 
 ```bash
-$ pip install git+ssh://git@github.com/ARMmbed/mbed-cloud-sdk-python.git --user python
+$ pip install mbed-cloud-sdk --user python
 ```
 
 Next, create a new file - `lights.py` - in the same folder where you installed the library, and fill it with the following content (replace `YOUR_ACCESS_KEY` with your access key):
@@ -194,4 +194,4 @@ Motion detected at 015b58400ce40000000000010010022a, new count is 7
 Motion detected at 015b58400ce40000000000010010022a, new count is 8
 ```
 
-See the [full docs](https://github.com/ARMmbed/mbed-cloud-sdk-python) on how to use the Python library.
+See the [full docs](https://cloud.mbed.com/docs/v1.2/mbed-cloud-sdk-python/index.html) on how to use the Python library.
