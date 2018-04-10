@@ -4,7 +4,7 @@
         "pir-pin": {
             "help": "Pin to which the PIR sensor is connected",
             "macro_name": "PIR_PIN",
-            "value": "D2"
+            "value": "SW2"
         },
 
         "led-type": {
@@ -68,6 +68,11 @@
 
         "developer-mode": {
             "help": "Enable Developer mode to skip Factory enrollment",
+            "value": 1
+        },
+
+        "format-storage-layer-on-error": {
+            "help": "Whether to format the storage layer when it cannot be read - always disable for production devices!",
             "value": 1
         },
 
