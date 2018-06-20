@@ -115,7 +115,7 @@
             "platform.stdio-convert-newlines": true,
             "mbed-client.event-loop-size": 1024,
             "nanostack-hal.event_loop_thread_stack_size": 8192,
-            "storage-selector.storage": "HEAP",
+            "storage-selector.storage": "SD_CARD",
             "storage-selector.filesystem": "FAT",
             "storage-selector.mount-point": "\"sd\"",
             "update-client.storage-address"  : "(1024*1024*64)",
