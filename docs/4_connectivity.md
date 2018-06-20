@@ -87,119 +87,23 @@ Replace `connected-lights-cloud/source/main.cpp` with:
 ```cpp
 #include "mbed.h"
 #include "easy-connect.h"
-#include "led.h"        // Abstracts away the differens between the LED types
-#include "simplem2mclient.h"
+#include "led.h"                                      // Abstracts away the differens between the LED types
+#include "simple-mbed-cloud-client.h"
 #include "storage-selector.h"
 
 EventQueue eventQueue;                                // An event queue
-Thread eventThread;                                   // An RTOS thread to process events in
-FileSystem* fs = filesystem_selector();               // Mbed Cloud requires a filesystem, mount it (based on parameters in mbed_app.json)
-BlockDevice* arm_uc_blockdevice = storage_selector(); // This is where the update client stores new firmware images
+FileSystem *fs = filesystem_selector();               // Mbed Cloud requires a filesystem, mount it (based on parameters in mbed_app.json)
 
-SimpleM2MClient *client;
-M2MObjectList obj_list;
+SimpleMbedCloudClient *client;
 
 // PIR sensor acts as an interrupt - signals us whenever it goes high (or low)
 InterruptIn pir(SW2);   // This pin value comes out mbed_app.json
 
-
-// YOUR CODE HERE
-void pir_rise() { }
-// END OF YOUR CODE HERE
-
-
-// Use the built-in LED as a status LED
-DigitalOut statusLed(LED1);
-int        statusLedBlinkId;    // Callback ID
-void blink_builtin_led() {
-    statusLed = !statusLed;
-}
-
-void registered(const ConnectorClientEndpointInfo *endpoint) {
-    // When we registered with Mbed Cloud, blink faster
-    eventQueue.cancel(statusLedBlinkId);
-
-    statusLedBlinkId = eventQueue.call_every(300, &blink_builtin_led);
-
-    printf("Connected to Mbed Cloud. Endpoint Name: %s\n", endpoint->internal_endpoint_name.c_str());
-}
-
-int main(int, char**) {
-    // Using an event queue is a very useful abstraction around many microcontroller 'problems', like dealing with ISRs
-    // see https://developer.mbed.org/blog/entry/Simplify-your-code-with-mbed-events/
-    eventThread.start(callback(&eventQueue, &EventQueue::dispatch_forever));
-
-    // Blink the built-in LED every 1000ms. After registering we'll blink every 300ms.
-    statusLedBlinkId = eventQueue.call_every(1000, &blink_builtin_led);
-
-    // Disable the LED
-    setRgbColor(0.0f, 0.0f, 0.0f);
-
-    // The PIR sensor uses interrupts, no need to poll
-    pir.rise(eventQueue.event(&pir_rise));
-
-    NetworkInterface* network = easy_connect(true);
-    if (!network) {
-        printf("Connect to internet failed... See serial output.\n");
-        return 1;
-    }
-
-    client = new SimpleM2MClient(network);
-    client->on_registered(&registered);
-
-    int init_rt = client->init();
-    if (init_rt != 0) {
-        printf("Failed to initialize Mbed Cloud Client (%d)", init_rt);
-        return 1;
-    }
-
-    printf("Connecting to Mbed Cloud...\n");
-
-    // Add resources, they will register after call_register() is called.
-    client->add_objects(obj_list);
-
-    // Start registering to the cloud.
-    client->call_register();
-
-    wait(osWaitForever);
-}
-```
-
-#### Program logic
-
-The code sample above only sets up the connection. You can now define some logic for this program:
-
-- The color of the LED should be configurable.
-- The period between the moment of motion detection to the moment lights go out should be configurable.
-- There should be a permanent-on mode for the lights.
-- You should notify Mbed Cloud whenever you detect movement.
-
-To implement these actions, you need to define *resources*: pieces of information the device makes available. You can read or write to them from the cloud, and the device can use a resource's value to determine the correct action to perform. You can reach a resource with a URI and access modifier (for example, only write allowed), and you can also subscribe to them, so you receive a notification when a resource changes.
-
-Define a resource for each action:
-
-* `3311/0/5706` - the color of the LED.
-* `3311/0/5853` - the timeout (in seconds) after detection; lights are disabled when this period ends.
-* `3311/0/5850` - whether you should have the lights permanently on (or off).
-* `3201/0/5700` - the number of times the PIR sensor was triggered. Read only, and should allow notifications.
-
-You can use the `add_resource` function to define these resources and attach actions to each resource.
-
-Replace the following section in `main.cpp`:
-
-```cpp
-// YOUR CODE HERE
-void pir_rise() { }
-// END OF YOUR CODE HERE
-```
-
-with (comments inline):
-
-```cpp
-// Fwd declaration
-void putLightsOn();
-void colorChanged(const char*);
-void statusChanged(const char*);
+// Resource declarations, they're assigned a value in `main`.
+MbedCloudClientResource *ledColor;
+MbedCloudClientResource *ledStatus;
+MbedCloudClientResource *ledTimeout;
+MbedCloudClientResource *pirCount;
 
 // Variable that holds whether the light is on because the PIR sensor triggered (and timeout didn't happen yet)
 bool ledOnBecauseOfPir = false;
@@ -207,7 +111,7 @@ bool ledOnBecauseOfPir = false;
 // Timeout based on led/0/timeout, disables the light after a set interval
 Timeout pirTimeout;
 
-// Permanent statuses (set by led/0/permanent_status)
+// // Permanent statuses (set by led/0/permanent_status)
 enum PermanentStatus {
     STATUS_NONE = 0,
     STATUS_ON   = 1,
@@ -218,13 +122,6 @@ enum PermanentStatus {
 void putLightsOff() {
     setRgbColor(0.0f, 0.0f, 0.0f);
 }
-
-// Here are our resources:
-// We encode color in 3 bytes [R, G, B] and put it in an integer by providing the color as an hex value (default color: green)
-M2MResource *ledColor = add_resource(&obj_list, 3311, 0, 5706, "LED_Color", M2MResourceInstance::INTEGER, M2MBase::GET_PUT_ALLOWED, 0x00ff00, false, &colorChanged);
-M2MResource *ledTimeout = add_resource(&obj_list, 3311, 0, 5853, "LED_Timeout", M2MResourceInstance::INTEGER, M2MBase::GET_PUT_ALLOWED, 5, false);
-M2MResource *ledStatus = add_resource(&obj_list, 3311, 0, 5850, "LED_Permanent_status", M2MResourceInstance::INTEGER, M2MBase::GET_PUT_ALLOWED, STATUS_NONE, false, &statusChanged);
-M2MResource *pirCount = add_resource(&obj_list, 3201, 0, 5700, "PIR_Count", M2MResourceInstance::INTEGER, M2MBase::GET_ALLOWED, 0, true);
 
 // As said above, color is encoded in three bytes
 void putLightsOn() {
@@ -244,7 +141,7 @@ void putLightsOn() {
 
 // Color updated from the cloud,
 // if the LED is on because of the PIR, or if the LED is on permanently -> Set the color.
-void colorChanged(const char*) {
+void colorChanged(MbedCloudClientResource *resource, m2m::String newValue) {
     int status = ledStatus->get_value_int();
 
     if (ledOnBecauseOfPir || status == STATUS_ON) {
@@ -253,7 +150,7 @@ void colorChanged(const char*) {
 }
 
 // Status changes from the cloud
-void statusChanged(const char*) {
+void statusChanged(MbedCloudClientResource *resource, m2m::String newValue) {
     int newStatus = ledStatus->get_value_int();
 
     switch (newStatus) {
@@ -293,7 +190,98 @@ void pir_rise() {
     // And attach the timeout
     pirTimeout.attach(eventQueue.event(&onPirTimeout), static_cast<float>(ledTimeout->get_value_int()));
 }
+
+// Use the built-in LED as a status LED
+DigitalOut statusLed(LED1);
+int        statusLedBlinkId;    // Callback ID
+void blink_builtin_led() {
+    statusLed = !statusLed;
+}
+
+void registered(const ConnectorClientEndpointInfo *endpoint) {
+    // When we registered with Mbed Cloud, blink faster
+    eventQueue.cancel(statusLedBlinkId);
+
+    statusLedBlinkId = eventQueue.call_every(300, &blink_builtin_led);
+
+    printf("Connected to Mbed Cloud. Endpoint Name: %s\n", endpoint->internal_endpoint_name.c_str());
+}
+
+int main(int, char**) {
+    // Blink the built-in LED every 1000ms. After registering we'll blink every 300ms.
+    statusLedBlinkId = eventQueue.call_every(1000, &blink_builtin_led);
+
+    // Disable the LED
+    setRgbColor(0.0f, 0.0f, 0.0f);
+
+    // The PIR sensor uses interrupts, no need to poll
+    pir.rise(eventQueue.event(&pir_rise));
+
+    NetworkInterface* network = easy_connect(true);
+    if (!network) {
+        printf("Connect to internet failed... See serial output.\n");
+        return 1;
+    }
+
+    client = new SimpleMbedCloudClient(network, storage_selector(), fs);
+    client->on_registered(&registered);
+
+    int init_rt = client->init();
+    if (init_rt != 0) {
+        printf("Failed to initialize Mbed Cloud Client (%d)", init_rt);
+        return 1;
+    }
+
+    // Resource declarations
+    ledColor = client->create_resource("3311/0/5706", "LED_Color");
+    // We encode color in 3 bytes [R, G, B] and put it in an integer by providing the color as an hex value (default color: green)
+    ledColor->set_value(0x00ff00);
+    ledColor->methods(M2MMethod::GET | M2MMethod::PUT);
+    ledColor->attach_put_callback(&colorChanged);
+
+    ledTimeout = client->create_resource("3311/0/5853", "LED_Timeout");
+    ledTimeout->set_value(5);
+    ledTimeout->methods(M2MMethod::GET | M2MMethod::PUT);
+
+    ledStatus = client->create_resource("3311/0/5850", "LED_Status");
+    ledStatus->set_value(STATUS_NONE);
+    ledStatus->methods(M2MMethod::GET | M2MMethod::PUT);
+    ledStatus->attach_put_callback(&statusChanged);
+
+    pirCount = client->create_resource("3201/0/5700", "PIR_Count");
+    pirCount->set_value(0);
+    pirCount->methods(M2MMethod::GET);
+    pirCount->observable(true);
+
+    printf("Connecting to Mbed Cloud...\n");
+
+    // Start registering to the cloud.
+    client->register_and_connect();
+
+    // eventually you can also run this in a separate thread
+    eventQueue.dispatch_forever();
+}
 ```
+
+#### Resources
+
+The code sample above sets up the connection and declares some resources. You define a resource for every part of the program that needs to be available from the cloud:
+
+- The color of the LED should be configurable.
+- The period between the moment of motion detection to the moment lights go out should be configurable.
+- There should be a permanent-on mode for the lights.
+- You should notify Mbed Cloud whenever you detect movement.
+
+Think of resources as pieces of information the device makes available. You can read or write to them from the cloud, and the device can use a resource's value to determine the correct action to perform. You can reach a resource with a URI and access modifier (for example, only write allowed), and you can also subscribe to them, so you receive a notification when a resource changes.
+
+This application defines the following resources (under `// Resource declarations`):
+
+* `3311/0/5706` - the color of the LED.
+* `3311/0/5853` - the timeout (in seconds) after detection; lights are disabled when this period ends.
+* `3311/0/5850` - whether you should have the lights permanently on (or off).
+* `3201/0/5700` - the number of times the PIR sensor was triggered. Read only, and should allow notifications.
+
+You can use the `create_resource` function to define extra resources and attach actions to each resource.
 
 When you compile and flash this program, you'll see that when you wave your hand in front of the PIR sensor, the color of the LED changes to green, and the LED always turns off after 5 seconds.
 

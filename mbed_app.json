@@ -66,6 +66,10 @@
             "value": "\"light-system\""
         },
 
+        "format-storage-layer-on-error": {
+            "help": "Whether to format the storage layer when it cannot be read - always disable for production devices!",
+            "value": 1
+        },
         "developer-mode": {
             "help": "Enable Developer mode to skip Factory enrollment",
             "value": 1
@@ -111,7 +115,7 @@
             "platform.stdio-convert-newlines": true,
             "mbed-client.event-loop-size": 1024,
             "nanostack-hal.event_loop_thread_stack_size": 8192,
-            "storage-selector.storage": "SD_CARD",
+            "storage-selector.storage": "HEAP",
             "storage-selector.filesystem": "FAT",
             "storage-selector.mount-point": "\"sd\"",
             "update-client.storage-address"  : "(1024*1024*64)",
