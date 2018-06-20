@@ -87,7 +87,7 @@ Replace `connected-lights-cloud/source/main.cpp` with:
 ```cpp
 #include "mbed.h"
 #include "easy-connect.h"
-#include "led.h"                                      // Abstracts away the differens between the LED types
+#include "led.h"                                      // Abstracts away the differences between the LED types
 #include "simple-mbed-cloud-client.h"
 #include "storage-selector.h"
 
