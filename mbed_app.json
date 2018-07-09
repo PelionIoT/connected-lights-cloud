@@ -66,6 +66,10 @@
             "value": "\"light-system\""
         },
 
+        "format-storage-layer-on-error": {
+            "help": "Whether to format the storage layer when it cannot be read - always disable for production devices!",
+            "value": 1
+        },
         "developer-mode": {
             "help": "Enable Developer mode to skip Factory enrollment",
             "value": 1
