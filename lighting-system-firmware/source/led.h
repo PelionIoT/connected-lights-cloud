@@ -1,6 +1,10 @@
 #ifndef CONNECTED_LIGHTS_LED_H_
 #define CONNECTED_LIGHTS_LED_H_
 
+#define GROVE_CHAINABLE    1
+#define TRICOLOR_ANODE     2
+#define TRICOLOR_CATHODE   3
+
 #if MBED_CONF_APP_LED_TYPE == GROVE_CHAINABLE
 #include "ChainableLED.h"       // Library to talk to the Grove Chainable LED
 static ChainableLED led(MBED_CONF_APP_GROVE_CLOCK_PIN, MBED_CONF_APP_GROVE_DATA_PIN, 1);
