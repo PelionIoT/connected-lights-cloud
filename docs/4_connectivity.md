@@ -97,7 +97,7 @@ FileSystem *fs = filesystem_selector();               // Mbed Cloud requires a f
 SimpleMbedCloudClient *client;
 
 // PIR sensor acts as an interrupt - signals us whenever it goes high (or low)
-InterruptIn pir(SW2);   // This pin value comes out mbed_app.json
+InterruptIn pir(PIR_PIN);   // This pin value comes out mbed_app.json
 
 // Resource declarations, they're assigned a value in `main`.
 MbedCloudClientResource *ledColor;
