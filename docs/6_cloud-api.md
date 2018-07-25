@@ -158,7 +158,7 @@ TOKEN = "YOUR_ACCESS_TOKEN"
 
 # set up the Python SDK
 config = {}
-config['api_key'] = os.environ['TOKEN'] or TOKEN
+config['api_key'] = os.getenv('TOKEN') or TOKEN
 config['host'] = 'https://api.us-east-1.mbedcloud.com'
 api = ConnectAPI(config)
 api.start_notifications()
