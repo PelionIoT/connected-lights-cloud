@@ -2,7 +2,7 @@ import os
 import pprint
 from mbed_cloud.connect import ConnectAPI
 
-TOKEN = "YOUR_ACCESS_TOKEN"
+TOKEN = "YOUR_ACCESS_KEY"
 
 # set up the Python SDK
 config = {}

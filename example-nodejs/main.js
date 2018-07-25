@@ -1,4 +1,4 @@
-var TOKEN = 'YOUR_ACCESS_TOKEN';
+var TOKEN = 'YOUR_ACCESS_KEY';
 
 var mbed = require('mbed-cloud-sdk');
 var api = new mbed.ConnectApi({

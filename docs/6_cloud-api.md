@@ -72,7 +72,7 @@ $ npm install mbed-cloud-sdk --save
 Next, create a new file `main.js` in the same folder where you installed the library, and fill it with the following content (replace `YOUR_ACCESS_KEY` with your access key):
 
 ```js
-var TOKEN = 'YOUR_ACCESS_TOKEN';
+var TOKEN = 'YOUR_ACCESS_KEY';
 
 var mbed = require('mbed-cloud-sdk');
 var api = new mbed.ConnectApi({
@@ -154,7 +154,7 @@ import os
 import pprint
 from mbed_cloud.connect import ConnectAPI
 
-TOKEN = "YOUR_ACCESS_TOKEN"
+TOKEN = "YOUR_ACCESS_KEY"
 
 # set up the Python SDK
 config = {}
