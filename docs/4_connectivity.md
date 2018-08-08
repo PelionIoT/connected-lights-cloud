@@ -8,10 +8,10 @@ Now that you've built the basic circuit and written the code to control that cir
 
 1. Go to the [Mbed Cloud Portal](https://portal.us-east-1.mbedcloud.com), and sign in.
 1. If prompted for your login credentials, use your Mbed Cloud credentials. These are different from your credentials for the Mbed Online Compiler.
-1. Select **Device Identity** > **Certificates**.
-1. Click **Actions** > **Create a developer certificate**.
+1. Select **Device identity** > **Certificates**.
+1. Click **New certificate** > **Create a developer certificate**.
 1. Enter a name for the certificate, and click **Create certificate**.
-1. Click **Download Developer C file**. Your certificate file downloads.
+1. Click **Download developer C file**. Your certificate file downloads.
 
     <span class="images">![The certificate is located in the white box](https://s3-us-west-2.amazonaws.com/cloud-docs-images/lights16.png)</span>
 
@@ -290,4 +290,3 @@ When the connection to Mbed Cloud is created, the onboard LED blinks faster. You
 <span class="notes">**Note:** No connection? [Inspect the logs on the device](https://os.mbed.com/docs/v5.7/tutorials/serial-comm.html). Use baud rate 115,200 to communicate with your device.</span>
 
 <span class="notes">**Note:** If you receive an `fcc_init` error, re-format the SD card (FAT). If your computer does not have an SD-card slot, see the [format-sd-card](https://os.mbed.com/users/janjongboom/code/format-sd-card/) Mbed program.</span>
-
