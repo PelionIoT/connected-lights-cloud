@@ -6,7 +6,7 @@ The Mbed Cloud Portal that you used in the previous section is a wrapper around 
 
 To talk to the API, you need an API key. This key is used to authenticate with the API. To create a new access key, go to the [Manage access](https://portal.us-east-1.mbedcloud.com/access/keys) page in the Mbed Cloud Portal.
 
-Click **Create new API Key** to create a new API key, and give it a descriptive name.
+Click **New API Key** to create a new API key, and name it.
 
 <span class="images">![Creating a new access key in Mbed Cloud](https://s3-us-west-2.amazonaws.com/cloud-docs-images/lights14.png)</span>
 
@@ -51,7 +51,7 @@ It will return something like this:
 ]
 ```
 
-<span class="notes">**Note:** The official API documentation for the Mbed Cloud REST API interface is [located here](/docs/v1.2/api-references/index.html).</span>
+<span class="notes">**Note:** Please see the official [API documentation](/docs/v1.2/api-references/index.html) for the Mbed Cloud REST API interface.</span>
 
 ### Using the official libraries
 
@@ -133,21 +133,22 @@ See the [full docs](https://cloud.mbed.com/docs/v1.2/mbed-cloud-sdk-javascript/)
 
 #### Python
 
-First, make sure that you have installed [Python 2.7](https://www.python.org/downloads/) and [pip](https://pip.pypa.io/en/stable/installing/). Then, create a new folder, and install the Mbed Cloud SDK through pip:
+1. Install [Python 2.7](https://www.python.org/downloads/) and [pip](https://pip.pypa.io/en/stable/installing/) if you have not already.
+1. Create a new folder.
+1. Install the Mbed Cloud SDK through pip:
 
 **Windows, Linux**
-
 ```bash
 $ pip install mbed-cloud-sdk
 ```
-
 **MacOS**
 
 ```bash
 $ pip install mbed-cloud-sdk --user python
 ```
+**The remaining steps are the same regardless of which OS you use.**
 
-Next, create a new file - `lights.py` - in the same folder where you installed the library, and fill it with the following content (replace `YOUR_ACCESS_KEY` with your access key):
+1. Create a new file - `lights.py` - in the same folder where you installed the library, and fill it with the following content (replace `YOUR_ACCESS_KEY` with your access key):
 
 ```python
 import os
