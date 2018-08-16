@@ -129,7 +129,7 @@ Motion detected at 015b58400ce40000000000010010022a new count is 1
 Motion detected at 015b58400ce40000000000010010022a new count is 2
 ```
 
-See the [full docs](https://cloud.mbed.com/docs/v1.2/mbed-cloud-sdk-javascript/) on how to use the JavaScript SDK.
+See the [full docs](https://cloud.mbed.com/docs/current/mbed-cloud-sdk-javascript/) on how to use the JavaScript SDK.
 
 #### Python
 
