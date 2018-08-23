@@ -4,7 +4,7 @@ The Device Management Portal that you used in the previous section is a wrapper 
 
 ### Obtaining an access key
 
-To talk to the API, you need an API key. This key is used to authenticate with the API. To create a new access key, go to the [Manage access](https://portal.us-east-1.mbedcloud.com/access/keys) page in the Device Management Portal.
+To talk to the API, you need an API key. This key is used to authenticate with the API. To create a new access key, go to the [Access management](https://portal.mbedcloud.com/access/keys) page in the Mbed Cloud Portal.
 
 Click **New API Key** to create a new API key, and name it.
 
@@ -51,7 +51,7 @@ It will return something like this:
 ]
 ```
 
-<span class="notes">**Note:** Please see the official [API documentation](/docs/v1.2/api-references/index.html) for the Device Management REST API interface.</span>
+<span class="notes">**Note:** Please see the official [API documentation](/docs/current/service-api-references/index.html) for the Mbed Cloud REST API interface.</span>
 
 ### Using the official libraries
 
@@ -129,7 +129,7 @@ Motion detected at 015b58400ce40000000000010010022a new count is 1
 Motion detected at 015b58400ce40000000000010010022a new count is 2
 ```
 
-See the [full docs](https://cloud.mbed.com/docs/v1.2/mbed-cloud-sdk-javascript/) on how to use the JavaScript SDK.
+See the [full docs](https://cloud.mbed.com/docs/current/mbed-cloud-sdk-javascript/) on how to use the JavaScript SDK.
 
 #### Python
 
@@ -195,4 +195,4 @@ Motion detected at 015b58400ce40000000000010010022a, new count is 7
 Motion detected at 015b58400ce40000000000010010022a, new count is 8
 ```
 
-See the [full docs](https://cloud.mbed.com/docs/v1.2/mbed-cloud-sdk-python/index.html) on how to use the Python library.
+See the [full docs](https://cloud.mbed.com/docs/current/mbed-cloud-sdk-python/index.html) on how to use the Python library.
