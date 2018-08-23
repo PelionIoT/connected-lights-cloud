@@ -6,7 +6,7 @@ Currently, your application sends a notification to the cloud every time the PIR
 
 ### Building with Mbed CLI
 
-To enable firmware updates, the device needs to have the [Mbed bootloader](https://github.com/armmbed/mbed-bootloader). The bootloader verifies the firmware on the device and can swap firmware for other firmware. To enable the bootloader you need to configure the linker to put your application in a separate part of flash. The bootloader can then run first.
+To enable firmware updates, the device needs to have the [Device Management bootloader](https://github.com/armmbed/mbed-bootloader). The bootloader verifies the firmware on the device and can swap firmware for other firmware. To enable the bootloader you need to configure the linker to put your application in a separate part of flash. The bootloader can then run first.
 
 Open `connected-lights-cloud/mbed_app.json` and replace the `target_overrides` section by:
 

@@ -1,8 +1,8 @@
 ## Tutorial: Building an internet connected lighting system
 
-In this tutorial, you'll use the ARM Mbed IoT Device Platform to build a complete connected lighting system that you can deploy in your house or office. The system consists of one (or more) extra-bright RGB LEDs hooked up to an Mbed OS development board. A motion sensor can turn the lights on and off. The lights are also connected to the internet, so you can change their color. The system uses Device Management to connect to the internet. It is secured end-to-end, and you can update it through over-the-air firmware updates.
+In this tutorial, you'll use the Pelion IoT Platform to build a complete connected lighting system that you can deploy in your house or office. The system consists of one (or more) extra-bright RGB LEDs hooked up to an Mbed OS development board. A motion sensor can turn the lights on and off. The lights are also connected to the internet, so you can change their color. The system uses Device Management to connect to the internet. It is secured end-to-end, and you can update it through over-the-air firmware updates.
 
-You'll learn all the steps required to build the hardware, the cloud integration and the application. At the end of the tutorial, you'll have a firm understanding of building complete connected IoT solutions on the Mbed IoT Device Platform. You'll also have a cool light.
+You'll learn all the steps required to build the hardware, the cloud integration and the application. At the end of the tutorial, you'll have a firm understanding of building complete connected IoT solutions using Pelion. You'll also have a cool light.
 
 ### Requirements
 
@@ -25,4 +25,4 @@ You need the following hardware:
 
 You also need:
 
-* [An account](https://portal.us-east-1.mbedcloud.com) to access to the Pelion Portal.
+* [An account](https://portal.us-east-1.mbedcloud.com) to access to the Device Management Portal.

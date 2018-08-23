@@ -1,12 +1,12 @@
 ## Adding connectivity
 
-Now that you've built the basic circuit and written the code to control that circuit, you can add connectivity to the project. Part of the ARM Mbed IoT Device Platform is Device Management, a unified solution to connect devices to the internet and communicate with them, regardless of *how* these devices connect to the internet. Libraries are available for a variety of connectivity methods, including Ethernet, Wi-Fi and cellular. You also can add new connectivity methods with the [unified networking APIs](https://docs.mbed.com/docs/mbed-os-api-reference/en/latest/APIs/communication/network_sockets/) in Mbed OS 5.
+Now that you've built the basic circuit and written the code to control that circuit, you can add connectivity to the project. Part of the Pelion IoT Platform is Device Management, a unified solution to connect devices to the internet and communicate with them, regardless of *how* these devices connect to the internet. Libraries are available for a variety of connectivity methods, including Ethernet, Wi-Fi and cellular. You also can add new connectivity methods with the [unified networking APIs](https://docs.mbed.com/docs/mbed-os-api-reference/en/latest/APIs/communication/network_sockets/) in Mbed OS 5.
 
 ### Obtaining a device certificate
 
-[Mbed TLS](https://tls.mbed.org) encrypts all data that goes from the device to Device Management (and from Device Management to the device). You need a security certificate to set up secure communication, which you can get from the Pelion Portal:
+[Mbed TLS](https://tls.mbed.org) encrypts all data that goes from the device to Device Management (and from Device Management to the device). You need a security certificate to set up secure communication, which you can get from the Device Management Portal:
 
-1. Go to the [Pelion Portal](https://portal.us-east-1.mbedcloud.com), and sign in.
+1. Go to the [Device Management Portal](https://portal.us-east-1.mbedcloud.com), and sign in.
 1. If prompted for your login credentials, use your Pelion credentials. These are different from your credentials for the Mbed Online Compiler.
 1. Select **Device identity** > **Certificates**.
 1. Click **New certificate** > **Create a developer certificate**.

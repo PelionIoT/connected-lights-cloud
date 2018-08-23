@@ -4,7 +4,7 @@ The Device Management Portal that you used in the previous section is a wrapper 
 
 ### Obtaining an access key
 
-To talk to the API, you need an API key. This key is used to authenticate with the API. To create a new access key, go to the [Access management](https://portal.mbedcloud.com/access/keys) page in the Mbed Cloud Portal.
+To talk to the API, you need an API key. This key is used to authenticate with the API. To create a new access key, go to the [Access management](https://portal.mbedcloud.com/access/keys) page in the Device Management Portal.
 
 Click **New API Key** to create a new API key, and name it.
 
@@ -51,7 +51,7 @@ It will return something like this:
 ]
 ```
 
-<span class="notes">**Note:** Please see the official [API documentation](/docs/current/service-api-references/index.html) for the Mbed Cloud REST API interface.</span>
+<span class="notes">**Note:** Please see the official [API documentation](/docs/current/service-api-references/index.html) for the Device Management REST API interface.</span>
 
 ### Using the official libraries
 

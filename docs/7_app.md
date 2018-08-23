@@ -20,7 +20,7 @@ Here is a screenshot of the app running on an Android phone:
 
 *This is what the mobile interface looks like with two lights connected. Tap the color to change it.*
 
-<span class="notes">**Note:** To give the lights a more friendly name (such as "living room"), change the name of the device in the Pelion Portal.</span>
+<span class="notes">**Note:** To give the lights a more friendly name (such as "living room"), change the name of the device in the Device Management Portal.</span>
 
 ### Running the application
 
