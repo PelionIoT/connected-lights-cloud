@@ -1,6 +1,6 @@
 # Connected Lights Web Application
 
-This is the web application that goes with the article [Building an internet connected lighting system](), in which we build a lighting system on top of the Pelion IoT Platform.
+This is the web application that goes with the article [Building an internet connected lighting system](), in which we build a lighting system on top of the Pelion IoT Platform and Mbed OS.
 
 To get started, install a recent version of [node.js](https://nodejs.org/en/). Then:
 
