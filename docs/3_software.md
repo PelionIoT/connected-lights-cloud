@@ -4,7 +4,7 @@ Now you can write some software to verify that the circuit works. The software w
 
 ### Setting up Mbed CLI
 
-Part of the ARM Mbed IoT Device Platform is Mbed CLI, an offline compilation tool, which you will use to write and compile software. To get started:
+Part of the Arm Mbed IoT Platform is Mbed CLI, an offline compilation tool, which you will use to write and compile software. To get started:
 
 1. [Install Mbed CLI](https://github.com/armmbed/mbed-cli#installation).
 1. Open a terminal or command prompt.

@@ -1,14 +1,14 @@
-## Using the Mbed Cloud API
+## Using the Device Management API
 
-The Mbed Cloud Portal that you used in the previous section is a wrapper around the Mbed Cloud API. Through this API, you can connect any app to any device. You can use this API to build an app that allows you to control any of the lighting systems that you deploy in your house or office.
+The Device Management Portal that you used in the previous section is a wrapper around the Device Management API. Through this API, you can connect any app to any device. You can use this API to build an app that allows you to control any of the lighting systems that you deploy in your house or office.
 
 ### Obtaining an access key
 
-To talk to the API, you need an API key. This key is used to authenticate with the API. To create a new access key, go to the [Access management](https://portal.mbedcloud.com/access/keys) page in the Mbed Cloud Portal.
+To talk to the API, you need an API key. This key is used to authenticate with the API. To create a new access key, go to the [Access management](https://portal.mbedcloud.com/access/keys) page in the Device Management Portal.
 
 Click **New API Key** to create a new API key, and name it.
 
-<span class="images">![Creating a new access key in Mbed Cloud](https://s3-us-west-2.amazonaws.com/cloud-docs-images/lights14.png)</span>
+<span class="images">![Creating a new access key in Device Management](https://s3-us-west-2.amazonaws.com/cloud-docs-images/lights14.png)</span>
 
 ### Testing the API
 
@@ -51,11 +51,11 @@ It will return something like this:
 ]
 ```
 
-<span class="notes">**Note:** Please see the official [API documentation](/docs/current/service-api-references/index.html) for the Mbed Cloud REST API interface.</span>
+<span class="notes">**Note:** Please see the official [API documentation](/docs/current/service-api-references/index.html) for the Device Management REST API interface.</span>
 
 ### Using the official libraries
 
-Official Mbed Cloud SDKs are available for Node.js and Python. These APIs are asynchronous because for many functions, an action (such as writing to a device) might not happen immediately - the device might be in deep sleep or otherwise slow to respond. Therefore, you need to listen to callbacks on a notification channel. The official libraries abstract the notification channels and set up the channels for you, which makes it easier for you to write applications on top of Mbed Cloud.
+Official Device Management SDKs are available for Node.js and Python. These APIs are asynchronous because for many functions, an action (such as writing to a device) might not happen immediately - the device might be in deep sleep or otherwise slow to respond. Therefore, you need to listen to callbacks on a notification channel. The official libraries abstract the notification channels and set up the channels for you, which makes it easier for you to write applications on top of Device Management.
 
 An additional feature of the libraries is that they support subscriptions. You can subscribe to resources and get a notification whenever they change. This is useful for the `3201/0/5700` (PIR count) resource because you can receive a notification whenever someone moves in front of the sensor.
 
@@ -63,7 +63,7 @@ The following sections show an example of changing the color of the light and re
 
 #### Node.js
 
-First, make sure you have installed [Node.js](http://nodejs.org). Then, create a new folder, and install the Mbed Cloud Node.js SDK via npm:
+First, make sure you have installed [Node.js](http://nodejs.org). Then, create a new folder, and install the Device Management Node.js SDK via npm:
 
 ```bash
 $ npm install mbed-cloud-sdk --save
@@ -135,7 +135,7 @@ See the [full docs](https://cloud.mbed.com/docs/current/mbed-cloud-sdk-javascrip
 
 1. Install [Python 2.7](https://www.python.org/downloads/) and [pip](https://pip.pypa.io/en/stable/installing/) if you have not already.
 1. Create a new folder.
-1. Install the Mbed Cloud SDK through pip:
+1. Install the Device Management SDK through pip:
 
 **Windows, Linux**
 ```bash

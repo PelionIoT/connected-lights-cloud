@@ -1,12 +1,12 @@
 ## Applying firmware updates to the device
 
-One of the big features of Mbed Cloud is the ability to update devices through a firmware update over the air. This is not applicable when you're developing, but it is important when you have deployed thousands of devices in the field. Through the firmware update process, you can patch bugs and apply security updates.
+One of the big features of Device Management is the ability to update devices through a firmware update over the air. This is not applicable when you're developing, but it is important when you have deployed thousands of devices in the field. Through the firmware update process, you can patch bugs and apply security updates.
 
 Currently, your application sends a notification to the cloud every time the PIR sensor is triggered. That is wasteful if someone is standing in front of the sensor. The lights are already on, but the sensor keeps firing, so the networking stack needs to wake up all the time. Modify the code, so it does not send events when the lights are already on.
 
 ### Building with Mbed CLI
 
-To enable firmware updates, the device needs to have the [Mbed bootloader](https://github.com/armmbed/mbed-bootloader). The bootloader verifies the firmware on the device and can swap firmware for other firmware. To enable the bootloader you need to configure the linker to put your application in a separate part of flash. The bootloader can then run first.
+To enable firmware updates, the device needs to have the [Device Management bootloader](https://github.com/armmbed/mbed-bootloader). The bootloader verifies the firmware on the device and can swap firmware for other firmware. To enable the bootloader you need to configure the linker to put your application in a separate part of flash. The bootloader can then run first.
 
 Open `connected-lights-cloud/mbed_app.json` and replace the `target_overrides` section by:
 
@@ -130,7 +130,7 @@ Flash `combined.bin` to your development board.
 
 ### Creating the updated firmware
 
-When your board is back online in Mbed Cloud, you can then prepare an update. Open `main.cpp`, and change the `pir_rise()` function to:
+When your board is back online in Device Management, you can then prepare an update. Open `main.cpp`, and change the `pir_rise()` function to:
 
 ```cpp
 // When the PIR sensor fires...
@@ -156,7 +156,7 @@ Then rebuild the application, but do not flash the binary to your development bo
 
 ### Updating the device
 
-Now we can push this new application to your development through Mbed Cloud. The manifest tool can both sign the update - using the private key generated earlier - and upload it to Mbed Cloud in a single command.
+Now we can push this new application to your development through Device Management. The manifest tool can both sign the update - using the private key generated earlier - and upload it to Device Management in a single command.
 
 Run:
 
@@ -164,7 +164,7 @@ Run:
 $ manifest-tool update device -p BUILD/YOUR_BOARD_NAME/GCC_ARM/connected-lights-cloud_application.bin -D YOUR_ENDPOINT_NAME
 ```
 
-Replace `YOUR_BOARD_NAME` with the name of your development board, and replace `YOUR_ENDPOINT_NAME` with the endpoint name in Mbed Cloud.
+Replace `YOUR_BOARD_NAME` with the name of your development board, and replace `YOUR_ENDPOINT_NAME` with the endpoint name in Device Management.
 
 Inspect the logs on the device (via a serial monitor) to see the firmware update progress. It looks similar to:
 
