@@ -4,6 +4,8 @@ In this tutorial, you'll use the Pelion IoT Platform to build a complete connect
 
 You'll learn all the steps required to build the hardware, the cloud integration and the application. At the end of the tutorial, you'll have a firm understanding of building complete connected IoT solutions using Device Management. You'll also have a cool light.
 
+This tutorial was written using Device Management Client 2.0.0.
+
 ### Requirements
 
 You need the following hardware:

@@ -21,62 +21,44 @@ Now that you've built the basic circuit and written the code to control that cir
 
 ### Adding connectivity to the board
 
-**Built-in Ethernet, Wi-Fi or Cellular**
+#### Built-in connectivity
 
 This example assumes that the network has DHCP enabled and the firewall does not block connections to *https://mbedcloud.com*.
 
 If you have a development board that connects over Ethernet, just plug in an Ethernet cable. If you have a board that connects over cellular or Wi-Fi, no actions are required.
 
-**ESP8266 Wi-Fi module**
+**Setting the Wi-Fi credentials**
 
-To wire the ESP8266 module to your development board, look at the [ESP8266 Cookbook page](https://os.mbed.com/users/4180_1/notebook/using-the-esp8266-with-the-mbed-lpc1768/). This means hooking up the ESP8266's TX pin to `D0` and RX pin to `D1`.
-
-<span class="notes">**Note about ESP8266 on NUCLEO boards:** The NUCLEO boards reserve pins D0 and D1 for serial communication with the computer. Use pins `D8` (to ESP8266 TX) and `D2` (to ESP8266 RX) instead.</span>
-
-### Adding libraries with Mbed CLI
-
-For the device and Device Management to talk, you need the [Device Management Client library](https://cloud.mbed.com/docs/latest/mbed-cloud-client/index.html). This is a cross-platform library that runs on Mbed OS and Linux and that you can port to other RTOSes. This example uses an additional library built on top of Device Management Client: SimpleM2MClient. We created this library specifically to use Mbed OS 5, so you can expose variables and resources to the cloud.
-
-You will also use [EasyConnect](https://github.com/ARMmbed/easy-connect) to handle connectivity.
-
-These libraries are already in the project (see the `.lib` files in the project directory).
-
-### Updating configuration
-
-You need to tell **EasyConnect** which connectivity method to use. Open `mbed_app.json`, and locate the `network-interface` field. Change the `value` to the connectivity method used:
+If you're using Wi-Fi, you'll need to set your Wi-Fi SSID and Password. Open `mbed_app.json` and locate the section that mentions `nsapi.default-wifi`:
 
 ```json
 /* mbed_app.json */
 
 /* snip */
 
-        "network-interface":{
-            "help": "options are ETHERNET, WIFI_ESP8266, WIFI_IDW0XX1, WIFI_ODIN, WIFI_RTW, WIFI_WIZFI310, WIFI_ISM43362, MESH_LOWPAN_ND, MESH_THREAD, CELLULAR_ONBOARD",
-            "value": "ETHERNET"
-        },
-        "esp8266-tx": {
-            "help": "Pin used as TX (connects to ESP8266 RX)",
-            "value": "D1"
-        },
-        "esp8266-rx": {
-            "help": "Pin used as RX (connects to ESP8266 TX)",
-            "value": "D0"
-        },
-        "wifi-ssid": {
-            "value": "\"SSID\""
-        },
-        "wifi-password": {
-            "value": "\"Password\""
-        },
-        "esp8266-debug": {
-            "value": true
-        }
-    }
+            "nsapi.default-wifi-security"       : "WPA_WPA2",
+            "nsapi.default-wifi-ssid"           : "\"SSID\"",
+            "nsapi.default-wifi-password"       : "\"Password\""
 
 /* snip */
 ```
 
-If you are using Wi-Fi, you also need to set your Wi-Fi SSID and your password.
+Update these to reflect your Wi-Fi network.
+
+#### No built-in connectivity
+
+If your board does not have built-in connectivity, or when you want to use a different connectivity module (f.e. an external Wi-Fi module) you need to:
+
+1. Add the driver for the module to your project.
+1. Replace the call to `NetworkInterface::get_default_instance()` with a call to the driver.
+
+More information on the networking API, and a list of drivers are available in the [IP Networking section](https://os.mbed.com/docs/latest/reference/ip-networking.html) of the Mbed OS documentation.
+
+### Adding libraries with Mbed CLI
+
+For the device and Device Management to talk, you need the [Device Management Client library](https://cloud.mbed.com/docs/latest/mbed-cloud-client/index.html). This is a cross-platform library that runs on Mbed OS and Linux and that you can port to other RTOSes. This example uses an additional library built on top of Device Management Client: SimpleM2MClient. We created this library specifically to use Mbed OS 5, so you can expose variables and resources to the cloud.
+
+This libraries are already in the project (see the `.lib` files in the project directory).
 
 ### Writing code
 
@@ -88,13 +70,15 @@ Replace `connected-lights-cloud/source/main.cpp` with:
 
 ```cpp
 #include "mbed.h"
-#include "easy-connect.h"
+#include "FATFileSystem.h"
 #include "led.h"                                      // Abstracts away the differences between the LED types
 #include "simple-mbed-cloud-client.h"
-#include "storage-selector.h"
 
 EventQueue eventQueue;                                // An event queue
-FileSystem *fs = filesystem_selector();               // Device Management requires a filesystem, mount it (based on parameters in mbed_app.json)
+
+// Pelion Device Management requires a filesystem, mount it (based on parameters in mbed_app.json)
+BlockDevice *bd = BlockDevice::get_default_instance();
+FATFileSystem fs("fs", bd);
 
 SimpleMbedCloudClient *client;
 
@@ -201,12 +185,12 @@ void blink_builtin_led() {
 }
 
 void registered(const ConnectorClientEndpointInfo *endpoint) {
-    // When we registered with Device Management, blink faster
+    // When we registered with Pelion Device Management, blink faster
     eventQueue.cancel(statusLedBlinkId);
 
     statusLedBlinkId = eventQueue.call_every(300, &blink_builtin_led);
 
-    printf("Connected to Device Management. Endpoint Name: %s\n", endpoint->internal_endpoint_name.c_str());
+    printf("Connected to Pelion Device Management. Endpoint Name: %s\n", endpoint->internal_endpoint_name.c_str());
 }
 
 int main(int, char**) {
@@ -219,18 +203,20 @@ int main(int, char**) {
     // The PIR sensor uses interrupts, no need to poll
     pir.rise(eventQueue.event(&pir_rise));
 
-    NetworkInterface* network = easy_connect(true);
-    if (!network) {
-        printf("Connect to internet failed... See serial output.\n");
+    printf("Connecting to the internet...\n");
+    NetworkInterface *network = NetworkInterface::get_default_instance();
+    if (network->connect() != NSAPI_ERROR_OK) {
+        printf("Connect to internet failed...\n");
         return 1;
     }
+    printf("Connected to the network successfully. IP address: %s\n", network->get_ip_address());
 
-    client = new SimpleMbedCloudClient(network, storage_selector(), fs);
+    client = new SimpleMbedCloudClient(network, bd, &fs);
     client->on_registered(&registered);
 
     int init_rt = client->init();
     if (init_rt != 0) {
-        printf("Failed to initialize Device Management Client (%d)", init_rt);
+        printf("Failed to initialize Pelion Device Management Client (%d)", init_rt);
         return 1;
     }
 
@@ -255,7 +241,7 @@ int main(int, char**) {
     pirCount->methods(M2MMethod::GET);
     pirCount->observable(true);
 
-    printf("Connecting to Device Management...\n");
+    printf("Connecting to Pelion Device Management...\n");
 
     // Start registering to the cloud.
     client->register_and_connect();
