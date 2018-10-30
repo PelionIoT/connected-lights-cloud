@@ -46,7 +46,7 @@
 #ifdef __linux__
 #define MBED_CLOUD_CLIENT_UPDATE_BUFFER          (2 * 1024 * 1024)
 #else
-#define MBED_CLOUD_CLIENT_UPDATE_BUFFER          (32 * 1024)
+#define MBED_CLOUD_CLIENT_UPDATE_BUFFER          2048
 #endif
 
 // Developer flags for Update feature
@@ -56,3 +56,4 @@
 #endif // MBED_CONF_APP_DEVELOPER_MODE
 
 #endif // MBED_CLOUD_CLIENT_USER_CONFIG_H
+
