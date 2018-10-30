@@ -47,7 +47,7 @@ Update these to reflect your Wi-Fi network.
 
 #### No built-in connectivity
 
-If your board does not have built-in connectivity, or when you want to use a different connectivity module (f.e. an external Wi-Fi module) you need to:
+If your board does not have built-in connectivity, or when you want to use a different connectivity module (such as an external Wi-Fi module) you need to:
 
 1. Add the driver for the module to your project.
 1. Replace the call to `NetworkInterface::get_default_instance()` with a call to the driver.
@@ -58,7 +58,7 @@ More information on the networking API, and a list of drivers are available in t
 
 For the device and Device Management to talk, you need the [Device Management Client library](https://cloud.mbed.com/docs/latest/mbed-cloud-client/index.html). This is a cross-platform library that runs on Mbed OS and Linux and that you can port to other RTOSes. This example uses an additional library built on top of Device Management Client: SimpleM2MClient. We created this library specifically to use Mbed OS 5, so you can expose variables and resources to the cloud.
 
-This libraries are already in the project (see the `.lib` files in the project directory).
+These libraries are already in the project (see the `.lib` files in the project directory).
 
 ### Writing code
 
@@ -76,7 +76,7 @@ Replace `connected-lights-cloud/source/main.cpp` with:
 
 EventQueue eventQueue;                                // An event queue
 
-// Pelion Device Management requires a filesystem, mount it (based on parameters in mbed_app.json)
+// Pelion Device Management requires a filesystem, mount it based on parameters in mbed_app.json
 BlockDevice *bd = BlockDevice::get_default_instance();
 FATFileSystem fs("fs", bd);
 

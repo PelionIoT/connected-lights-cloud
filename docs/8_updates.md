@@ -12,13 +12,11 @@ This step requires Mbed CLI version 1.8.2 or higher. To check your Mbed CLI vers
 $ mbed --version
 ```
 
-To update Mbed CLI, run:
+To update Mbed CLI, either use the installer for your platform or run:
 
 ```
 $ pip install mbed-cli --upgrade
 ```
-
-Or use the installer for your platform.
 
 ### Update certificates
 
@@ -40,7 +38,7 @@ $ mbed device-management init -d yourdomain.com --model-name lighting-system-200
 
 **Note:** Make sure to replace `YOUR_MBED_CLOUD_API_KEY` with the API key you created earlier.
 
-Now that the update certificate is in place, you can build and flash the application as you'd normally do.
+Now that the update certificate is in place, you can build and flash the application as you normally do.
 
 ### Creating the updated firmware
 
