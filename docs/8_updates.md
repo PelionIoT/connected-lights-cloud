@@ -72,7 +72,7 @@ Then rebuild the application, but do not flash the binary to your development bo
 
 An application that is managed by Device Management consists of two parts. Your application and a [bootloader](https://github.com/armmbed/mbed-bootloader). The bootloader verifies the firmware on the device and can swap firmware for other firmware. These two applications are automatically combined into a single binary when building. However, for firmware updates we want the binary without the bootloader. It's located in your build folder as `connected-lights-cloud_application.bin`.
 
-We can push this new application to your development through Device Management. The manifest tool can both sign the update - using the private key generated earlier - and upload it to Device Management in a single command.
+We can push this new application to your development board through Device Management. Mbed CLI can both sign the update - using the private key generated earlier - and upload it to Device Management in a single command.
 
 Run:
 
