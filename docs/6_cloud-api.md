@@ -153,7 +153,7 @@ $ pip install mbed-cloud-sdk --user python
 ```python
 import os
 import pprint
-from mbed_cloud.connect import ConnectAPI
+from mbed_cloud import ConnectAPI
 
 TOKEN = "YOUR_ACCESS_KEY"
 

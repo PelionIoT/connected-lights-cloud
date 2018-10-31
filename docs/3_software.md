@@ -96,8 +96,9 @@ int main(int, char**) {
     setRgbColor(0.0f, 0.0f, 0.0f);
 
     // The PIR sensor uses interrupts, no need to poll
-    pir.fall(&pir_fall);
-    pir.rise(&pir_rise);
+    // debounce to mbed_event_queue to avoid running this in an interrupt service routine
+    pir.fall(mbed_event_queue()->event(&pir_fall));
+    pir.rise(mbed_event_queue()->event(&pir_rise));
 }
 ```
 
