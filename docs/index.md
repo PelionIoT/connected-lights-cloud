@@ -1,4 +1,4 @@
-## Tutorial: Building an internet connected lighting system
+# Tutorial: Building an internet connected lighting system
 
 In this tutorial, you'll use the Pelion IoT Platform to build a complete connected lighting system that you can deploy in your house or office. The system consists of one (or more) extra-bright RGB LEDs hooked up to an Mbed OS development board. A motion sensor can turn the lights on and off. The lights are also connected to the internet, so you can change their color. The system uses Device Management to connect to the internet. It is secured end-to-end, and you can update it through over-the-air firmware updates.
 
@@ -6,7 +6,7 @@ You'll learn all the steps required to build the hardware, the cloud integration
 
 This tutorial was written using Device Management Client 2.0.0.
 
-### Requirements
+## Requirements
 
 You need the following hardware:
 
