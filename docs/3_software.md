@@ -2,7 +2,7 @@
 
 Now you can write some software to verify that the circuit works. The software will enable the LED whenever it sees movement. You can either build locally by using Mbed CLI, or build in the cloud by using the Mbed Online Compiler. This document first shows you how to build the application using Mbed CLI.
 
-## Setting up Mbed CLI
+# Setting up Mbed CLI
 
 Part of the Arm Mbed IoT Platform is Mbed CLI, an offline compilation tool, which you will use to write and compile software. To get started:
 
@@ -16,7 +16,7 @@ Part of the Arm Mbed IoT Platform is Mbed CLI, an offline compilation tool, whic
 
 This program contains a configuration file and all the source code, which you will use to configure the pins the software uses.
 
-## Adding the code
+# Adding the code
 
 Mbed OS comes with a powerful [configuration system](https://docs.mbed.com/docs/mbedmicro-api/en/latest/api/md_docs_config_system.html) that makes it easy to separate configuration and application code. In this application, you will separate the configuration of the LED (cathode, anode or a Grove LED), pins and connectivity method (next section).
 
@@ -102,9 +102,9 @@ int main(int, char**) {
 }
 ```
 
-## Compiling and flashing
+# Compiling and flashing
 
-### Compiling
+## Compiling
 
 To compile the code, go back to your terminal, and run:
 
@@ -122,7 +122,7 @@ $ mbed compile -t GCC_ARM -m YOUR_BOARD_NAME
 
 When the compilation has completed a `connected-lights-cloud.bin` file appears in the `BUILD\YOUR_BOARD_NAME\GCC_ARM` folder.
 
-### Flashing
+## Flashing
 
 When you connect your board to your computer, it mounts as a USB mass storage device, like a USB drive. To flash the new application onto the board, drag and drop the firmware file onto the mass storage device:
 
@@ -130,6 +130,6 @@ When you connect your board to your computer, it mounts as a USB mass storage de
 
 <span class="notes">**Note:** On some boards, you might need to press the *Reset* button to load the program.</span>
 
-### Testing the application
+## Testing the application
 
 After flashing the application, you can test it by waving your hand in front of the PIR sensor; the red LED lights up.

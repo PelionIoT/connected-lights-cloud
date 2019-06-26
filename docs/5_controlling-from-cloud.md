@@ -2,7 +2,7 @@
 
 Now, the device is connected through Device Management. In the code sample in the previous section, you defined resources using calls to `add_resource()`. These resources are automatically exposed to Device Management, from where you can read and write resources, and changes automatically sync with the device. That means that you already have a remote management interface for this device.
 
-## Seeing the status of a device
+# Seeing the status of a device
 
 Each device that you connect to Device Management has an endpoint name. This is a long string, which is the unique identifier of your device. If you don't know the endpoint name of your device, check the [serial output](https://os.mbed.com/docs/latest/tutorials/serial-comm.html) on your device for a line starting with 'Device Identity'.
 
@@ -12,7 +12,7 @@ You need to know the endpoint's name to check the device's status in the Device 
 
 <span class="images">![Two connected devices](https://s3-us-west-2.amazonaws.com/cloud-docs-images/lights11.png)<span>The Device Management Portal connectivity inspector page, showing two connected devices: our light-system and another device.</span></span>
 
-## Controlling the device
+# Controlling the device
 
 You created four resources before (see `main.cpp`):
 
@@ -23,7 +23,7 @@ You created four resources before (see `main.cpp`):
 
 You can control these resources through the Device Management Portal. For instance, when you write the value `1` to `3311/0/5850`, the lights stay on indefinitely.
 
-### Turning the lights on
+## Turning the lights on
 
 To test this, click on your Device ID in the device directory in Device Management Portal. This gives you access to a management console where you can quickly test interactions with resources.
 
@@ -40,7 +40,7 @@ To enable the lights:
 
 Now, your lights stay on until you change the status of this resource to 0 (listen to PIR sensor) or 2 (always off).
 
-### Setting the color
+## Setting the color
 
 You can control the color of the lights the same way. The color is encoded in an integer that stores three channels: red, green and blue. Each of the channels can have a value between 0 (off) and 255 (completely on).
 
@@ -59,6 +59,6 @@ encoded = (red << 16) + (green << 8) + blue;
 
 Use the API Console to write this value to resource `/3311/0/5706` and change the color of the LED to turquoise.
 
-### Other variables
+## Other variables
 
 You can also change the value of the timeout (in a real light system, you probably want at least 30 seconds) and read the number of times the PIR sensor triggered.
