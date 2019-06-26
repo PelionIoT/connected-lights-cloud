@@ -2,7 +2,7 @@
 
 Now that you've built the basic circuit and written the code to control that circuit, you can add connectivity to the project. Part of Arm's IoT Platform is Pelion Device Management, a unified solution to connect devices to the internet and communicate with them, regardless of *how* these devices connect to the internet. Libraries are available for a variety of connectivity methods, including Ethernet, Wi-Fi and cellular. You also can add new connectivity methods with the [unified networking APIs](https://docs.mbed.com/docs/mbed-os-api-reference/en/latest/APIs/communication/network_sockets/) in Mbed OS 5.
 
-## Obtaining a device certificate
+# Obtaining a device certificate
 
 [Mbed TLS](https://tls.mbed.org) encrypts all data that goes from the device to Device Management (and from Device Management to the device). You need a security certificate to set up secure communication, which you can get from the Device Management Portal:
 
@@ -19,9 +19,9 @@ Now that you've built the basic circuit and written the code to control that cir
 
 1. Copy the file (named `mbed_cloud_dev_credentials.c`) into your application's `source` directory.
 
-## Adding connectivity to the board
+# Adding connectivity to the board
 
-### Built-in connectivity
+## Built-in connectivity
 
 This example assumes that the network has DHCP enabled and the firewall does not block connections to *https://mbedcloud.com*.
 
@@ -45,7 +45,7 @@ If you're using Wi-Fi, you'll need to set your Wi-Fi SSID and Password. Open `mb
 
 Update these to reflect your Wi-Fi network.
 
-### No built-in connectivity
+## No built-in connectivity
 
 If your board does not have built-in connectivity, or when you want to use a different connectivity module (such as an external Wi-Fi module) you need to:
 
@@ -54,15 +54,15 @@ If your board does not have built-in connectivity, or when you want to use a dif
 
 More information on the networking API, and a list of drivers are available in the [IP Networking section](https://os.mbed.com/docs/latest/reference/ip-networking.html) of the Mbed OS documentation.
 
-## Adding libraries with Mbed CLI
+# Adding libraries with Mbed CLI
 
 For the device and Device Management to talk, you need the [Device Management Client library](https://cloud.mbed.com/docs/latest/mbed-cloud-client/index.html). This is a cross-platform library that runs on Mbed OS and Linux and that you can port to other RTOSes. This example uses an additional library built on top of Device Management Client: SimpleM2MClient. We created this library specifically to use Mbed OS 5, so you can expose variables and resources to the cloud.
 
 These libraries are already in the project (see the `.lib` files in the project directory).
 
-## Writing code
+# Writing code
 
-### Setting up a connection
+## Setting up a connection
 
 You need to add some code to the application, so it connects to the internet and sets up a connection to Device Management.
 
@@ -251,7 +251,7 @@ int main(int, char**) {
 }
 ```
 
-### Resources
+## Resources
 
 The code sample above sets up the connection and declares some resources. You define a resource for every part of the program that needs to be available from the cloud:
 

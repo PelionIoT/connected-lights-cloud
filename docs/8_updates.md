@@ -18,7 +18,7 @@ To update Mbed CLI, either use the installer for your platform or run:
 $ pip install mbed-cli --upgrade
 ```
 
-## Update certificates
+# Update certificates
 
 To enable updates, you need to embed an update certificate into the firmware of your application. This verifies that the update came from a trusted source because all firmware images are signed with a private key. The update certificate also prevents incompatible firmware to be flashed on the device because the certificate contains information about the manufacturer, device class and device ID.
 
@@ -26,7 +26,7 @@ For development, you can use a self-signed certificate, but please note that thi
 
 <span class="notes">**Note:** If you're deploying devices in the field, always use a certificate from a trusted certificate authority (CA). Instructions on how to use your own certificate are [in the manifest documentation](https://www.pelion.com/docs/device-management/current/updating-firmware/preparing-manifests.html).</span>
 
-### Generating an update certificate
+## Generating an update certificate
 
 To create a new self-signed certificate, run:
 
@@ -40,7 +40,7 @@ $ mbed device-management init -d yourdomain.com --model-name lighting-system-200
 
 Now that the update certificate is in place, you can build and flash the application as you normally do.
 
-## Creating the updated firmware
+# Creating the updated firmware
 
 When your board is back online in Device Management, you can then prepare an update. Open `main.cpp`, and change the `pir_rise()` function to:
 
@@ -66,7 +66,7 @@ void pir_rise() {
 
 Then rebuild the application, but do not flash the binary to your development board.
 
-## Updating the device
+# Updating the device
 
 An application that is managed by Device Management consists of two parts. Your application and a [bootloader](https://github.com/armmbed/mbed-bootloader). The bootloader verifies the firmware on the device and can swap firmware for other firmware. These two applications are automatically combined into a single binary when building. However, for firmware updates we want the binary without the bootloader. It's located in your build folder as `connected-lights-cloud_application.bin`.
 
