@@ -22,7 +22,7 @@ Here is a screenshot of the app running on an Android phone:
 
 <span class="notes">**Note:** To give the lights a more friendly name (such as "living room"), change the name of the device in the Device Management Portal.</span>
 
-# Running the application
+## Running the application
 
 To start the application, first open `connected-lights-cloud/webapp/main.js`, and paste your Device Management API key in the first line.:
 
@@ -42,6 +42,6 @@ To start the application, first open `connected-lights-cloud/webapp/main.js`, an
 
 Open your web browser, and go to [http://localhost:5265](http://localhost:5265) to see the application running.
 
-# Konekuta
+## Konekuta
 
 The web application is built on top of [Konekuta](https://github.com/armmbed/konekuta), a framework for building dynamic web applications on top of Device Management. Konekuta solves a number of common problems with building connected applications, including state syncing, going offline/online, handling errors and updating the UI when devices connect or disconnect from Device Management. Konekuta is open source and available on [GitHub](https://github.com/armmbed/konekuta).

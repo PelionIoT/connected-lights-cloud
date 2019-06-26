@@ -2,13 +2,13 @@
 
 First, build a basic circuit by connecting the RGB LED and the PIR sensor to the development board.
 
-# SD card
+## SD card
 
 <span class="notes">**Note:** Before you start, put the SD card in the SD card reader on your development board.</span>
 
 Pelion Device Management requires an external storage to store the identity of the device, and to store firmware updates. This external storage does not necessarily have to be an SD card (which is too expensive to put in a production device), you can also use internal flash or external SPI flash. To modify the storage layer, you'll need to modify the bootloader (see 'Section 8 - Firmware updates') and the application (see `mbed_app.json` in the `connected-lights-cloud` application later in this tutorial); which is not covered in this tutorial. More information is in the [Device Management documentation](https://cloud.mbed.com/docs/).
 
-# Finding suitable pins
+## Finding suitable pins
 
 For the circuit, you need four digital pins. Three of these need to support pulse width modulation (PWM). Through PWM, you can control the amount of current flowing through a circuit, and you can use this to dim the colors of the LED on one of the three RGB channels.
 
@@ -20,7 +20,7 @@ You also need a pin for the PIR sensor. This can be any digital pin, as long as 
 
 <span class="notes">**Note:** In general, it's a good idea not to use any of the I2C and SPI pins for LEDs and basic sensors because connectivity shields (such as Wi-Fi) might need them.</span>
 
-# Connecting the peripherals on a breadboard
+## Connecting the peripherals on a breadboard
 
 Here is a diagram of hooking up the PIR sensor and the RGB LED to your board. Replace the pins D2, D5, D6 and D7 with the pins you found for your board. If you have a four-pin RGB LED, you must position the LED so that the longest pin is the second from the left. (Hold it [like this](http://howtomechatronics.com/wp-content/uploads/2015/09/RGB-LED.png?28ea0f).)
 
