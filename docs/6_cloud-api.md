@@ -51,7 +51,7 @@ It will return something like this:
 ]
 ```
 
-<span class="notes">**Note:** Please see the official [API documentation](/docs/current/service-api-references/index.html) for the Device Management REST API interface.</span>
+<span class="notes">**Note:** Please see the official [API documentation](https://www.pelion.com/docs/device-management/current/service-api-references/index.html) for the Device Management REST API interface.</span>
 
 ## Using the official libraries
 

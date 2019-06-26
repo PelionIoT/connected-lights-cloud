@@ -24,7 +24,7 @@ To enable updates, you need to embed an update certificate into the firmware of 
 
 For development, you can use a self-signed certificate, but please note that this is not secure.
 
-<span class="notes">**Note:** If you're deploying devices in the field, always use a certificate from a trusted certificate authority (CA). Instructions on how to use your own certificate are [in the manifest documentation](/docs/current/updating-firmware/preparing-manifests.html).</span>
+<span class="notes">**Note:** If you're deploying devices in the field, always use a certificate from a trusted certificate authority (CA). Instructions on how to use your own certificate are [in the manifest documentation](https://www.pelion.com/docs/device-management/current/updating-firmware/preparing-manifests.html).</span>
 
 ### Generating an update certificate
 
