@@ -6,7 +6,7 @@ You'll learn all the steps required to build the hardware, the cloud integration
 
 This tutorial was written using Device Management Client 2.0.0.
 
-# Requirements
+## Requirements
 
 You need the following hardware:
 
