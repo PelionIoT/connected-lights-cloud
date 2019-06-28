@@ -12,7 +12,7 @@ Click **New API Key** to create a new API key, and name it.
 
 ## Testing the API
 
-You can quickly test if the access key works by sending a call to the API to query for all the devices. To retrieve a list of all devices, make a GET request to `https://api.us-east-1.mbedcloud.com/v2/endpoints`. You need to send an authorization header with this request:
+You can quickly test if the access key works by sending a call to the API to query for all the devices. To retrieve a list of all devices, make a GET request to `https://api.us-east-1.mbedcloud.com/v3/devices`. You need to send an authorization header with this request:
 
 ```
 Authorization: Bearer <your_access_key>
@@ -21,34 +21,56 @@ Authorization: Bearer <your_access_key>
 You can make this request with any request library, but if you're using curl, use the following command:
 
 ```
-curl -v -H "Authorization: Bearer <your_access_key>" https://api.us-east-1.mbedcloud.com/v2/endpoints
+curl -v -H "Authorization: Bearer <your_access_key>" https://api.us-east-1.mbedcloud.com/v3/devices
 ```
 
 It will return something like this:
-
 ```
-*   Trying 52.1.229.179...
-* Connected to api.us-east-1.mbedcloud.com (52.1.229.179) port 443 (#0)
-* TLS 1.2 connection using TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
-> GET /v2/endpoints HTTP/1.1
-> Host: api.us-east-1.mbedcloud.com
-> User-Agent: curl/7.43.0
-> Accept: */*
-> Authorization: Bearer ak_...
->
-< HTTP/1.1 200 OK
-< Content-Type: application/json; charset=utf-8
-< Server: nginx
-< Content-Length: 85
-< Connection: keep-alive
-<
-[
-    {
-        "name": "015b58400ce40000000000010010022a",
-        "type": "light-system",
-        "status": "ACTIVE"
-    }
-]
+{
+  "data" : [ {
+    "enrolment_list_timestamp" : "2017-05-22T12:37:55.576563Z",
+    "description" : "description",
+    "created_at" : "2017-05-22T12:37:55.576563Z",
+    "device_execution_mode" : 0,
+    "custom_attributes" : {
+      "key" : "value"
+    },
+    "updated_at" : "2017-05-22T12:37:55.576563Z",
+    "auto_update" : true,
+    "state" : "unenrolled",
+    "id" : "00000000000000000000000000000000",
+    "mechanism" : "connector",
+    "deployment" : "",
+    "device_key" : "00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00",
+    "mechanism_url" : "",
+    "manifest" : "",
+    "endpoint_name" : "00000000-0000-0000-0000-000000000000",
+    "manifest_timestamp" : "2017-05-22T12:37:55.576563Z",
+    "groups" : [ "00000000000000000000000000000000" ],
+    "serial_number" : "00000000-0000-0000-0000-000000000000",
+    "issuer_fingerprint" : "C42EDEFC75871E4CE2146FCDA67D03DDA05CC26FDF93B17B55F42C1EADFDC322",
+    "connector_expiration_date" : "2000-01-23",
+    "endpoint_type" : "",
+    "host_gateway" : "",
+    "account_id" : "00000000000000000000000000000000",
+    "bootstrapped_timestamp" : "2017-05-22T12:37:55.576563Z",
+    "bootstrap_expiration_date" : "2000-01-23",
+    "vendor_id" : "00000000-0000-0000-0000-000000000000",
+    "firmware_checksum" : "0000000000000000000000000000000000000000000000000000000000000000",
+    "name" : "00000000-0000-0000-0000-000000000000",
+    "device_class" : "",
+    "etag" : "2017-05-22T12:37:55.576563Z",
+    "ca_id" : "00000000000000000000000000000000",
+    "deployed_state" : "development",
+    "object" : "device"
+  } ],
+  "total_count" : 1,
+  "limit" : 50,
+  "after" : "01631667477600000000000100100374",
+  "has_more" : false,
+  "object" : "list",
+  "order" : "DESC"
+}
 ```
 
 <span class="notes">**Note:** Please see the official [API documentation](https://www.pelion.com/docs/device-management/current/service-api-references/index.html) for the Device Management REST API interface.</span>
