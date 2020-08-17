@@ -4,27 +4,24 @@ In this tutorial, you'll use the Pelion IoT Platform to build a complete connect
 
 You'll learn all the steps required to build the hardware, the cloud integration and the application. At the end of the tutorial, you'll have a firm understanding of building complete connected IoT solutions using Device Management. You'll also have a cool light.
 
-This tutorial was written using Device Management Client 2.0.0.
-
 ## Requirements
 
 You need the following hardware:
 
-* A [development board](https://developer.mbed.org/platforms/?software=16) capable of connecting to Device Management. Either:
-    * [NXP FRDM-K64F](https://developer.mbed.org/platforms/FRDM-K64F/) using Ethernet.
-    * [u-blox EVK-ODIN-W2](https://developer.mbed.org/platforms/ublox-EVK-ODIN-W2/) with Ethernet and Wi-Fi.
-    * [ST NUCLEO-F429ZI](https://developer.mbed.org/platforms/ST-NUCLEO-F429ZI) using Ethernet.
+* A [development board](https://os.mbed.com/platforms/?q=&Mbed+Enabled=Pelion+Device+Ready) capable of connecting to Device Management. Either:
+    * [NXP FRDM-K64F](https://os.mbed.com/platforms/FRDM-K64F/) using Ethernet.
+    * [NXP FRDM-K66F](https://os.mbed.com/platforms/FRDM-K66F/) using Ethernet.
+    * [u-blox EVK-ODIN-W2](https://os.mbed.com/platforms/ublox-EVK-ODIN-W2/) using Ethernet or Wi-Fi.
+    * [ST NUCLEO-F429ZI](https://os.mbed.com/platforms/ST-NUCLEO-F429ZI/) using Ethernet.
 * A breadboard to hook up the components.
 * A micro-SD card - FAT formatted.
 * A PIR sensor to detect motion.
+    * If you do not have a PIR sensor, you can also simulate this effect using the on-board user button.
 * An RGB LED - preferably an extra-bright one.
-    * For a better effect, you can also use a [Grove Chainable LED](http://wiki.seeed.cc/Grove-Chainable_RGB_LED/).
-    * After building the original application, you can exchange the LED for something [fancier](https://www.adafruit.com/product/1138).
+    * For a better effect, you can also use a [Grove Chainable LED](https://os.mbed.com/components/Grove-Chainable-RGB-LED/) or [Grove LED Bar](https://os.mbed.com/components/Grove-Seeed-LED-Bar/) with an optional [Grove Shield](https://os.mbed.com/components/Seeed-Grove-Shield-V2/).
+    * After building the original application, you can exchange the LED for [something fancier](https://www.adafruit.com/product/1138).
 * Jumper wires, both male-male and male-female.
 * Resistors: 1x 100 Ohm, 2x 220 Ohm.
+* [An account](https://portal.mbedcloud.com) to access to the Device Management Portal.
 
 <span class="images">![Components needed](https://s3-us-west-2.amazonaws.com/cloud-docs-images/lights2.png)<span>Components required to build our lighting system. Top row: RGB LED, PIR sensor, Grove Chainable LED. Bottom row: breadboard, NXP FRDM-K64F, jumper wires.</span></span>
-
-You also need:
-
-* [An account](https://portal.us-east-1.mbedcloud.com) to access to the Device Management Portal.
