@@ -23,7 +23,10 @@ Mbed OS comes with a powerful [configuration system](https://docs.mbed.com/docs/
 In the 'connected-lights-cloud' folder, open `mbed_app.json`. Edit the file to reflect your LED choice and the pins you used to connect the LED and the PIR sensor:
 
 1. If you have a common cathode LED, set the `value` of `led-type` to `TRICOLOR_CATHODE`.
-1. If you have a Grove Chainable LED, set the `value` of `led-type` to `TRICOLOR_ANODE`.
+1. If you have a common anode LED, set the `value` of `led-type` to `TRICOLOR_ANODE`.
+1. If you have a Grove Chainable LED, set the `value` of `led-type` to `GROVE_CHAINABLE`.
+1. If you have a Grove LED Bar, set the `value` of `led-type` to `GROVE_LED_BAR`.
+1. If you are using a user button instead of a PIR sensor, set the `value` of `pir-or-btn` to `SW2` or your board's user button pin name.
 1. Replace the pins D2, D5, D6 and D7 with the pins you used when building the circuit.
 
 ```js
@@ -31,15 +34,15 @@ In the 'connected-lights-cloud' folder, open `mbed_app.json`. Edit the file to r
 
 /* snip */
 
-        "pir-pin": {
-            "help": "Pin to which the PIR sensor is connected",
-            "macro_name": "PIR_PIN",
+        "pir-or-btn": {
+            "help": "Pin to which the PIR sensor or user button is connected",
+            "macro_name": "PIR_OR_BTN",
             "value": "D2"
         },
 
         "led-type": {
-            "help": "options are TRICOLOR_ANODE,TRICOLOR_CATHODE,GROVE_CHAINABLE",
-            "value": "TRICOLOR_ANODE"
+            "help": "options are TRICOLOR_ANODE,TRICOLOR_CATHODE,GROVE_CHAINABLE,GROVE_LED_BAR",
+            "value": "GROVE_CHAINABLE"
         },
 
         "led-pin-red": {
@@ -56,49 +59,48 @@ In the 'connected-lights-cloud' folder, open `mbed_app.json`. Edit the file to r
         },
 
         "grove-clock-pin": {
-            "help": "Only used for GROVE_CHAINABLE LED types",
+            "help": "Only used for GROVE_CHAINABLE & GROVE_LED_BAR LED types",
             "value": "D5"
         },
         "grove-data-pin": {
-            "help": "Only used for GROVE_CHAINABLE LED types",
+            "help": "Only used for GROVE_CHAINABLE & GROVE_LED_BAR LED types",
             "value": "D6"
         },
 
 /* snip */
 ```
 
-Next, create a file called `main.cpp` in the `source` directory:
+Next, create a file called `main.cpp` in the `lighting-system-firmware/source/` directory:
 
 ```cpp
 /* lighting-system-firmware/source/main.cpp */
 
 #include "mbed.h"
-#include "led.h"    // Abstracts away the differens between the LED types
+#include "led.h"    // Abstracts away the differences between the LED types
 
-// PIR sensor acts as an interrupt - signals us whenever it goes high (or low)
-InterruptIn pir(PIR_PIN);   // This pin value comes out mbed_app.json
+// The PIR sensor/user button acts as an interrupt - signals us whenever it goes high (or low)
+InterruptIn sensor(PIR_OR_BTN);   // This pin value comes out mbed_app.json
 
 // Whenever movement is not detected
-void pir_fall() {
+void sensor_fall() {
     setRgbColor(0.0f, 0.0f, 0.0f);
 }
 
 // Whenever movement is detected
-void pir_rise() {
-    // set the color to red
+void sensor_rise() {
     setRgbColor(1.0f, 0.0f, 0.0f);
 }
 
 int main(int, char**) {
     // Blink the LED when the application starts
-    setRgbColor(0.0f, 1.0f, 0.0f);
-    wait_ms(500);
+    setRgbColor(1.0f, 0.0f, 0.0f);
+    wait(0.1);
     setRgbColor(0.0f, 0.0f, 0.0f);
 
-    // The PIR sensor uses interrupts, no need to poll
+    // The PIR sensor/user button uses interrupts, no need to poll
     // debounce to mbed_event_queue to avoid running this in an interrupt service routine
-    pir.fall(mbed_event_queue()->event(&pir_fall));
-    pir.rise(mbed_event_queue()->event(&pir_rise));
+    sensor.fall(mbed_event_queue()->event(&sensor_fall));
+    sensor.rise(mbed_event_queue()->event(&sensor_rise));
 }
 ```
 
@@ -117,19 +119,14 @@ $ mbed detect
 
 # build the project, you'll need the GCC ARM cross-compilation toolchain installed
 # optionally, you can also build with ARMCC or IAR
-$ mbed compile -t GCC_ARM -m YOUR_BOARD_NAME
+# the --flash option auto flashes the program onto the board
+$ mbed compile -t GCC_ARM -m YOUR_BOARD_NAME --flash
 ```
 
-When the compilation has completed a `connected-lights-cloud.bin` file appears in the `BUILD\YOUR_BOARD_NAME\GCC_ARM` folder.
-
-### Flashing
-
-When you connect your board to your computer, it mounts as a USB mass storage device, like a USB drive. To flash the new application onto the board, drag and drop the firmware file onto the mass storage device:
-
-<span class="images">![Flashing the application on Windows](https://s3-us-west-2.amazonaws.com/cloud-docs-images/lights8.png)<span>Drag the firmware file onto the mass storage device to flash the application.</span></span>
+When the compilation has completed a `connected-lights-cloud.bin` file appears in the `BUILD\YOUR_BOARD_NAME\GCC_ARM` folder and is auto flashed onto the board.
 
 <span class="notes">**Note:** On some boards, you might need to press the *Reset* button to load the program.</span>
 
 ### Testing the application
 
-After flashing the application, you can test it by waving your hand in front of the PIR sensor; the red LED lights up.
+After flashing the application, you can test it by waving your hand in front of the PIR sensor or pressing the user button; the red LED lights up.
