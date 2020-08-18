@@ -1,13 +1,12 @@
 # Adding connectivity
 
-Now that you've built the basic circuit and written the code to control that circuit, you can add connectivity to the project. Part of Arm's IoT Platform is Pelion Device Management, a unified solution to connect devices to the internet and communicate with them, regardless of *how* these devices connect to the internet. Libraries are available for a variety of connectivity methods, including Ethernet, Wi-Fi and cellular. You also can add new connectivity methods with the [unified networking APIs](https://docs.mbed.com/docs/mbed-os-api-reference/en/latest/APIs/communication/network_sockets/) in Mbed OS.
+Now that you've built the basic circuit and written the code to control that circuit, you can add connectivity to the project. Part of Arm's IoT Platform is Pelion Device Management, a unified solution to connect devices to the internet and communicate with them, regardless of *how* these devices connect to the internet. Libraries are available for a variety of connectivity methods, including Ethernet, Wi-Fi and cellular. You also can add new connectivity methods with the [unified networking APIs](https://os.mbed.com/docs/mbed-os/latest/apis/network-socket.html) in Mbed OS.
 
 ## Obtaining a device certificate
 
 [Mbed TLS](https://tls.mbed.org) encrypts all data that goes from the device to Device Management (and from Device Management to the device). You need a security certificate to set up secure communication, which you can get from the Device Management Portal:
 
-1. Go to the [Device Management Portal](https://portal.us-east-1.mbedcloud.com), and sign in.
-1. If prompted for your login credentials, use your Device Management credentials. These are different from your credentials for the Mbed Online Compiler.
+1. Go to the [Device Management Portal](https://portal.mbedcloud.com/), and sign in.
 1. Select **Device identity** > **Certificates**.
 1. Click **New certificate** > **Create a developer certificate**.
 1. Enter a name for the certificate, and click **Create certificate**.
@@ -15,7 +14,7 @@ Now that you've built the basic circuit and written the code to control that cir
 1. Click on your new certificate.
 1. Click **Download developer C file**. Your certificate file downloads.
 
-    <span class="images">![The certificate is located in the white box](https://s3-us-west-2.amazonaws.com/cloud-docs-images/lights16.png)</span>
+    <span class="images">![The certificate is located in the white box](assets/4_lights1.png)</span>
 
 1. Copy the file (named `mbed_cloud_dev_credentials.c`) into your application's `lighting-system-firmware/source/` directory.
 
@@ -25,7 +24,7 @@ Now that you've built the basic circuit and written the code to control that cir
 
 This example assumes that the network has DHCP enabled and the firewall does not block connections to *https://mbedcloud.com*.
 
-If you have a development board that connects over Ethernet, just plug in an Ethernet cable. If you have a board that connects over cellular or Wi-Fi, no actions are required.
+If you have a development board that connects over Ethernet, just plug in an Ethernet cable. If you have a board that connects over Wi-Fi, more actions are required.
 
 **Setting the Wi-Fi credentials**
 
@@ -56,7 +55,7 @@ More information on the networking API, and a list of drivers are available in t
 
 ## Adding libraries with Mbed CLI
 
-For the device and Device Management to talk, you need the [Device Management Client library](https://cloud.mbed.com/docs/latest/mbed-cloud-client/index.html). This is a cross-platform library that runs on Mbed OS and Linux and that you can port to other RTOSes. This example uses an additional library built on top of Device Management Client: SimpleM2MClient. We created this library specifically to use Mbed OS 5, so you can expose variables and resources to the cloud.
+For the device and Device Management to talk, you need the [Device Management Client library](https://cloud.mbed.com/docs/latest/mbed-cloud-client/index.html). This is a cross-platform library that runs on Mbed OS and Linux and that you can port to other RTOSes to expose variables and resources to the cloud.
 
 These libraries are already in the project (see the `.lib` files in the project directory).
 
@@ -64,7 +63,7 @@ These libraries are already in the project (see the `.lib` files in the project 
 
 ### Setting up a connection
 
-You need to add some code to the application, so it connects to the internet and sets up a connection to Device Management.
+You need to add some code to the application, so it connects to the internet and sets up a connection to Device Management. The following code is adapted from the [mbed-os-example-pelion](https://github.com/ARMmbed/mbed-os-example-pelion/) Mbed Cloud Client example.
 
 Replace `lighting-system-firmware/source/main.cpp` with:
 
@@ -333,7 +332,7 @@ int main(int, char**) {
     M2MObjectList m2m_obj_list;
 
     // Resource declarations
-    ledColor = M2MInterfaceFactory::create_resource(m2m_obj_list, 3311, 0, 5706, M2MResourceInstance::INTEGER, M2MBase::GET_PUT_ALLOWED); // "LED_Color"
+    ledColor = M2MInterfaceFactory::create_resource(m2m_obj_list, 3311, 0, 5706, M2MResourceInstance::INTEGER, M2MBase::GET_PUT_ALLOWED);
     // We encode color in 3 bytes [R, G, B] and put it in an integer by providing the color as an hex value (default color: green)
     if (ledColor->set_value(0x00ff00) != true) {
         printf("ledColor->set_value() failed\n");
@@ -344,13 +343,13 @@ int main(int, char**) {
         return -1;
     }
 
-    ledTimeout = M2MInterfaceFactory::create_resource(m2m_obj_list, 3311, 0, 5853, M2MResourceInstance::INTEGER, M2MBase::GET_PUT_ALLOWED); // "LED_Timeout"
+    ledTimeout = M2MInterfaceFactory::create_resource(m2m_obj_list, 3311, 0, 5853, M2MResourceInstance::INTEGER, M2MBase::GET_PUT_ALLOWED);
     if (ledTimeout->set_value(5) != true) {
         printf("ledTimeout->set_value() failed\n");
         return -1;
     }
 
-    ledStatus = M2MInterfaceFactory::create_resource(m2m_obj_list, 3311, 0, 5850, M2MResourceInstance::INTEGER, M2MBase::GET_PUT_ALLOWED); // "LED_Status"
+    ledStatus = M2MInterfaceFactory::create_resource(m2m_obj_list, 3311, 0, 5850, M2MResourceInstance::INTEGER, M2MBase::GET_PUT_ALLOWED);
     if (ledStatus->set_value(STATUS_NONE) != true) {
         printf("ledStatus->set_value() failed\n");
         return -1;
@@ -360,7 +359,7 @@ int main(int, char**) {
         return -1;
     }
 
-    sensorCount = M2MInterfaceFactory::create_resource(m2m_obj_list, 3201, 0, 5700, M2MResourceInstance::INTEGER, M2MBase::GET_ALLOWED); // "SENSOR_Count"
+    sensorCount = M2MInterfaceFactory::create_resource(m2m_obj_list, 3201, 0, 5700, M2MResourceInstance::INTEGER, M2MBase::GET_ALLOWED);
     if (sensorCount->set_value(0) != true) {
         printf("sensorCount->set_value() failed\n");
         return -1;
