@@ -1,16 +1,14 @@
 # Controlling the device with Pelion Device Management
 
-Now, the device is connected through Device Management. In the code sample in the previous section, you defined resources using calls to `add_resource()`. These resources are automatically exposed to Device Management, from where you can read and write resources, and changes automatically sync with the device. That means that you already have a remote management interface for this device.
+Now, the device is connected through Device Management. In the code sample in the previous section, you defined resources using calls to `create_resource()`. These resources are automatically exposed to Device Management, from where you can read and write resources, and changes automatically sync with the device. That means that you already have a remote management interface for this device.
 
 ## Seeing the status of a device
 
-Each device that you connect to Device Management has an endpoint name. This is a long string, which is the unique identifier of your device. If you don't know the endpoint name of your device, check the [serial output](https://os.mbed.com/docs/latest/tutorials/serial-comm.html) on your device for a line starting with 'Device Identity'.
+Each device that you connect to Device Management has an endpoint name. This is a long string, which is the unique identifier of your device. If you don't know the endpoint name of your device, check the [serial output](https://os.mbed.com/docs/latest/tutorials/serial-comm.html) on your device for a line starting with 'Endpoint name'.
 
-You need to know the endpoint's name to check the device's status in the Device Management Portal. The [Device directory](https://portal.us-east-1.mbedcloud.com/devices) page lists all devices associated with your account and their current status. Click the **Connected only** toggle to only see connected devices.
+You need to know the endpoint's name to check the device's status in the Device Management Portal. The [Device directory](https://portal.mbedcloud.com/devices) page lists all devices associated with your account and their current status. Click the **Registered only** toggle to only see registered devices.
 
-<span class="tips">**Tip:** The Device Management interface lists your devices by type. You can categorize devices by setting the device type in the application running on the device. See the `endpoint-type` property in `mbed_app.json`.</span>
-
-<span class="images">![Two connected devices](https://s3-us-west-2.amazonaws.com/cloud-docs-images/lights11.png)<span>The Device Management Portal connectivity inspector page, showing two connected devices: our light-system and another device.</span></span>
+<span class="images">![Two connected devices](assets/5_lights1.png)<span>The Device Management Portal device directory page, showing a list of registered and deregistered devices.</span></span>
 
 ## Controlling the device
 
@@ -27,16 +25,17 @@ You can control these resources through the Device Management Portal. For instan
 
 To test this, click on your Device ID in the device directory in Device Management Portal. This gives you access to a management console where you can quickly test interactions with resources.
 
-<span class="images">![Viewing resources on the device](https://s3-us-west-2.amazonaws.com/cloud-docs-images/lights19.png)<span>These tables show the available resources on this device.</span></span>
+<span class="images">![Viewing resources on the device](assets/5_lights2.png)<span>These tables show the available resources on this device.</span></span>
 
 To enable the lights:
 
 1. Click **/3311/0/5850**.
 1. Click **Edit**.
-1. Enter `1`.
-1. Click **Save**.
+1. Click **Put**.
+1. Enter value `1`.
+1. Click **Send**.
 
-    <span class="images">![Updating the value of a resource](https://s3-us-west-2.amazonaws.com/cloud-docs-images/lights20.png)</span>
+    <span class="images">![Updating the value of a resource](assets/5_lights3.png)</span>
 
 Now, your lights stay on until you change the status of this resource to 0 (listen to PIR sensor) or 2 (always off).
 
