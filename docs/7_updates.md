@@ -36,7 +36,7 @@ $ mbed config -G CLOUD_SDK_API_KEY <YOUR_APPLICATION_KEY>
 $ mbed dm init -d "domain.com" --model-name "lighting-system-2000" --force -q
 ```
 
-**Note:** Make sure to replace `YOUR_MBED_CLOUD_API_KEY` with the application key you created earlier.
+**Note:** Make sure to replace `YOUR_APPLICATION_KEY` with the application key you created earlier.
 
 Now that the update certificate is in place, you can build and flash the application as you normally do.
 
@@ -80,17 +80,26 @@ We can push this new application to your development board through Device Manage
 Run:
 
 ```
-$ mbed device-management update device -D YOUR_ENDPOINT_NAME
+$ mbed dm update device -D YOUR_ENDPOINT_NAME
 ```
 
 Replace `YOUR_ENDPOINT_NAME` with the endpoint name in Device Management.
 
-Inspect the logs on the device (via a serial monitor) to see the firmware update progress. It looks similar to:
+Inspect the logs on the device (via a serial monitor) to see the firmware update progress (this may take a few minutes). It looks similar to:
 
 ```
-Firmware download requested
-Authorization granted
-Downloading: [+++-                                              ] 6 %
+Mbed Bootloader
+[DBG ] Update active firmware
+[DBG ] Erase active application
+[DBG ] Write header
+[DBG ] Copy application
+[DBG ] Verify application
+[DBG ] New active firmware is valid
+booting...
 ```
 
-When the download completes, the firmware is verified. If everything is OK, the firmware update is applied. Your device is now running the latest version of the application, and when you have the web app open, you see that you don't get PIR notifications if the light is already on.
+When the download completes, the firmware is verified. If everything is OK, the firmware update is applied. Your device is now running the latest version of the application.
+
+You can also verify that the firmware update was successful via the "Events Log" tab on the device page in the Device Management portal.
+
+<span class="images">![The device's events log page](assets/7_lights1.png)<span>The Events Log page for the device, showing that the firmware update was successful and the "device reached desired state".</span></span>

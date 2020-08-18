@@ -16,7 +16,7 @@ Now that you've built the basic circuit and written the code to control that cir
 
     <span class="images">![The certificate is located in the white box](assets/4_lights1.png)</span>
 
-1. Copy the file (named `mbed_cloud_dev_credentials.c`) into your application's `lighting-system-firmware/source/` directory.
+1. Copy the file (named `mbed_cloud_dev_credentials.c`) into the root directory.
 
 ## Adding connectivity to the board
 
