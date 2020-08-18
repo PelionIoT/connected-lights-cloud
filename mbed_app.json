@@ -33,10 +33,6 @@
             "value": "D6"
         },
 
-        "endpoint-type": {
-            "help": "Device type in Pelion Device Management (you can use this to find the device back through the SDK)",
-            "value": "\"light-system\""
-        },
         "format-storage-layer-on-error": {
             "help": "Whether to format the storage layer when it cannot be read - always disable for production devices!",
             "value": 1
