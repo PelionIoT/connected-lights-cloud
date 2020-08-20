@@ -6,7 +6,7 @@ The Device Management Portal that you used in the previous section is a wrapper 
 
 To talk to the API, you need to authenticate using an application key. To create a new application key, go to the [Access management](https://portal.mbedcloud.com/access/keys/) page in the Device Management Portal.
 
-Click **New API Key** to create a new API key, and name it.
+Click **New access key** to create a new access key, and name it.
 
 <span class="images">![Creating a new application key in Device Management](assets/6_lights1.png)</span>
 
@@ -82,7 +82,7 @@ It will return something like this:
 }
 ```
 
-<span class="notes">**Note:** Please see the official [Service API documentation](https://www.pelion.com/docs/device-management/current/service-api-references/index.html) for the Device Management Service API interface.</span>
+<span class="notes">**Note:** Please see the official [Service API documentation](https://www.pelion.com/docs/device-management/current/service-api-references/service-api-documentation.html) for the Device Management Service API interface.</span>
 
 ## Integrating with a web application
 
