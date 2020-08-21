@@ -85,7 +85,7 @@ $ mbed dm update device -D YOUR_ENDPOINT_NAME
 
 Replace `YOUR_ENDPOINT_NAME` with the endpoint name in Device Management.
 
-Inspect the logs on the device (via a serial monitor) to see the firmware update progress (this may take a few minutes). It looks similar to:
+Inspect the logs on the device (via a serial monitor) to see the firmware update progress. (This may take a few minutes.) It looks similar to:
 
 ```
 Mbed Bootloader
@@ -100,6 +100,6 @@ booting...
 
 When the download completes, the firmware is verified. If everything is OK, the firmware update is applied. Your device is now running the latest version of the application.
 
-You can also verify that the firmware update was successful via the "Events Log" tab on the device page in the Device Management portal.
+You can also verify the firmware update was successful through the **Events Log** tab on the device page in the Device Management portal.
 
 <span class="images">![The device's events log page](assets/7_lights1.png)<span>The Events Log page for the device, showing that the firmware update was successful and the "device reached desired state".</span></span>

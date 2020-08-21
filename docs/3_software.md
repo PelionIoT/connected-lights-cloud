@@ -22,12 +22,12 @@ Mbed OS comes with a powerful [configuration system](https://docs.mbed.com/docs/
 
 In the 'connected-lights-cloud' folder, open `mbed_app.json`. Edit the file to reflect your LED choice and the pins you used to connect the LED and the PIR sensor:
 
-1. If you have a common cathode LED, set the `value` of `led-type` to `TRICOLOR_CATHODE`.
-1. If you have a common anode LED, set the `value` of `led-type` to `TRICOLOR_ANODE`.
-1. If you have a Grove Chainable LED, set the `value` of `led-type` to `GROVE_CHAINABLE`.
-1. If you have a Grove LED Bar, set the `value` of `led-type` to `GROVE_LED_BAR`.
-1. If you are using a user button instead of a PIR sensor, set the `value` of `pir-or-btn` to `SW2` or your board's user button pin name.
-1. Replace the pins D2, D5, D6 and D7 with the pins you used when building the circuit.
+* If you have a common cathode LED, set the `value` of `led-type` to `TRICOLOR_CATHODE`.
+* If you have a common anode LED, set the `value` of `led-type` to `TRICOLOR_ANODE`.
+* If you have a Grove Chainable LED, set the `value` of `led-type` to `GROVE_CHAINABLE`.
+* If you have a Grove LED Bar, set the `value` of `led-type` to `GROVE_LED_BAR`.
+* If you are using a user button instead of a PIR sensor, set the `value` of `pir-or-btn` to `SW2` or your board's user button pin name.
+* Replace the pins D2, D5, D6 and D7 with the pins you used when building the circuit.
 
 ```js
 /* mbed_app.json */
@@ -123,7 +123,7 @@ $ mbed detect
 $ mbed compile -t GCC_ARM -m YOUR_BOARD_NAME --flash
 ```
 
-When the compilation has completed a `connected-lights-cloud.bin` file appears in the `BUILD\YOUR_BOARD_NAME\GCC_ARM` folder and is auto flashed onto the board.
+When the compilation has completed, a `connected-lights-cloud.bin` file appears in the `BUILD\YOUR_BOARD_NAME\GCC_ARM` folder and is automatically flashed onto the board.
 
 <span class="notes">**Note:** On some boards, you might need to press the *Reset* button to load the program.</span>
 

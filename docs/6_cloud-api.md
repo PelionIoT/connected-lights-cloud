@@ -86,6 +86,6 @@ It will return something like this:
 
 ## Integrating with a web application
 
-The Device Management API allows you to read, write, and control the resources available on the device. Using this API we can integrate Device Management REST API calls into a web application to control the lights in this tutorial.
+With the Device Management API, you can read, write and control the resources available on the device. Using this API, you can integrate Device Management REST API calls into a web application to control the lights in this tutorial.
 
-Please see the following tutorial on [Building and deploying a web application using the Connect APIs](https://www.pelion.com/docs/device-management/current/integrate-web-app/building-and-deploying-a-web-application-using-the-connect-apis.html) utilizing the Resource IDs defined in this tutorial (`3311/0/5706`, `3311/0/5853`, `3311/0/5850`, and `3201/0/5700`).
+Please see the tutorial on [Building and deploying a web application using the Connect APIs](https://www.pelion.com/docs/device-management/current/integrate-web-app/building-and-deploying-a-web-application-using-the-connect-apis.html) using the Resource IDs defined in this tutorial (`3311/0/5706`, `3311/0/5853`, `3311/0/5850`, and `3201/0/5700`).

@@ -18,7 +18,7 @@ To find pins that you can use, look at the [platform page](https://developer.mbe
 
 You also need a pin for the PIR sensor. This can be any digital pin, as long as it's not marked as UART (D0 and D1 on the pinout above). In this example, you can use pin D2.
 
-If you do not have a PIR sensor available you can use one of the on-board user buttons. This can be any of the available user input buttons, as long as it's not the RESET button. In this example, you can use pin SW2.
+If you do not have a PIR sensor available, you can use one of the on-board user buttons. This can be any of the available user input buttons, as long as it's not the RESET button. In this example, you can use pin SW2.
 
 <span class="notes">**Note:** In general, it's a good idea not to use any of the I2C and SPI pins for LEDs and basic sensors because connectivity shields (such as Wi-Fi) might need them.</span>
 

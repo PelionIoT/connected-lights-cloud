@@ -1,6 +1,6 @@
 # Adding connectivity
 
-Now that you've built the basic circuit and written the code to control that circuit, you can add connectivity to the project. Part of Arm's IoT Platform is Pelion Device Management, a unified solution to connect devices to the internet and communicate with them, regardless of *how* these devices connect to the internet. Libraries are available for a variety of connectivity methods, including Ethernet, Wi-Fi and cellular. You also can add new connectivity methods with the [unified networking APIs](https://os.mbed.com/docs/mbed-os/latest/apis/network-socket.html) in Mbed OS.
+Now that you've built the basic circuit and written the code to control that circuit, you can add connectivity to the project. Pelion Device Management is a unified solution to connect devices to the internet and communicate with them, regardless of *how* these devices connect to the internet. Libraries are available for a variety of connectivity methods, including Ethernet, Wi-Fi and cellular. You also can add new connectivity methods with the [unified networking APIs](https://os.mbed.com/docs/mbed-os/latest/apis/network-socket.html) in Mbed OS.
 
 ## Obtaining a device certificate
 
@@ -63,7 +63,7 @@ These libraries are already in the project (see the `.lib` files in the project 
 
 ### Setting up a connection
 
-You need to add some code to the application, so it connects to the internet and sets up a connection to Device Management. The following code is adapted from the [mbed-os-example-pelion](https://github.com/ARMmbed/mbed-os-example-pelion/) Mbed Cloud Client example.
+You need to add some code to the application, so it connects to the internet and sets up a connection to Device Management. The following code is adapted from the [mbed-os-example-pelion](https://github.com/ARMmbed/mbed-os-example-pelion/) example.
 
 Replace `lighting-system-firmware/source/main.cpp` with:
 
@@ -400,7 +400,7 @@ This application defines the following resources (under `// Resource declaration
 * `3311/0/5706` - the color of the LED.
 * `3311/0/5853` - the timeout (in seconds) after detection; lights are disabled when this period ends.
 * `3311/0/5850` - whether you should have the lights permanently on (or off).
-* `3201/0/5700` - the number of times the PIR sensor/user button was triggered. Read only, and should allow notifications.
+* `3201/0/5700` - the number of times the PIR sensor or user button was triggered. Read only, and should allow notifications.
 
 You can use the `create_resource` function to define extra resources and attach actions to each resource.
 
@@ -410,4 +410,4 @@ When the connection to Device Management is created, the onboard LED blinks fast
 
 <span class="notes">**Note:** No connection? [Inspect the logs on the device](https://os.mbed.com/docs/mbed-os/latest/program-setup/serial-communication.html). Use baud rate 115200 to communicate with your device.</span>
 
-<span class="notes">**Note:** If you receive an `fcc_init` error, re-format the SD card (FAT).</span>
+<span class="notes">**Note:** If you receive an `fcc_init` error, reformat the SD card (FAT).</span>
