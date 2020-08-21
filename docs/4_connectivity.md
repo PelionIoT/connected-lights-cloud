@@ -1,6 +1,10 @@
-# Adding connectivity
+# Adding Device Management
 
-Now that you've built the basic circuit and written the code to control that circuit, you can add connectivity to the project. Pelion Device Management is a unified solution to connect devices to the internet and communicate with them, regardless of *how* these devices connect to the internet. Libraries are available for a variety of connectivity methods, including Ethernet, Wi-Fi and cellular. You also can add new connectivity methods with the [unified networking APIs](https://os.mbed.com/docs/mbed-os/latest/apis/network-socket.html) in Mbed OS.
+Now that you've built the basic circuit and written the code to control that circuit, you can add device management to the project. Part of Arm's IoT Platform is Pelion Device Management, a unified solution to connect and manage devices to the internet and communicate with them, regardless of the underlying connectivity technology used. For the device to connect to Pelion Device Management, you need the [Device Management Client library](https://cloud.mbed.com/docs/latest/mbed-cloud-client/index.html), a cross-platform library that runs on a variety of RTOS's (including Mbed and FreeRTOS) and Linux.
+
+<span class="notes">**Note:** The library is already included in the project (see `mbed-cloud-client.lib` file in the project directory) so you are ready to start writing code !</span>
+
+First, let's start by obtaining the necessary certificate in order for the device to securely connect to Pelion Device Management.
 
 ## Obtaining a device certificate
 
@@ -22,9 +26,9 @@ Now that you've built the basic circuit and written the code to control that cir
 
 ### Built-in connectivity
 
-This example assumes that the network has DHCP enabled and the firewall does not block connections to *https://mbedcloud.com*.
+If you have a development board that connects over Ethernet, just plug in an Ethernet cable. The board should receive it's IP address through DHCP automatically. If you have a board that connects over Wi-Fi, more actions are required, since we need to supply the necessary credentials.
 
-If you have a development board that connects over Ethernet, just plug in an Ethernet cable. If you have a board that connects over Wi-Fi, more actions are required.
+<span class="notes">**Note:** This example assumes that the network has DHCP enabled.</span>
 
 **Setting the Wi-Fi credentials**
 
@@ -42,7 +46,7 @@ If you're using Wi-Fi, you'll need to set your Wi-Fi SSID and Password. Open `mb
 /* snip */
 ```
 
-Update these to reflect your Wi-Fi network.
+Update these to reflect the credentials of your own Wi-Fi network.
 
 ### No built-in connectivity
 
@@ -52,12 +56,6 @@ If your board does not have built-in connectivity, or when you want to use a dif
 1. Replace the call to `NetworkInterface::get_default_instance()` with a call to the driver.
 
 More information on the networking API, and a list of drivers are available in the [IP Networking section](https://os.mbed.com/docs/latest/reference/ip-networking.html) of the Mbed OS documentation.
-
-## Adding libraries with Mbed CLI
-
-For the device and Device Management to talk, you need the [Device Management Client library](https://cloud.mbed.com/docs/latest/mbed-cloud-client/index.html). This is a cross-platform library that runs on Mbed OS and Linux and that you can port to other RTOSes to expose variables and resources to the cloud.
-
-These libraries are already in the project (see the `.lib` files in the project directory).
 
 ## Writing code
 
@@ -384,9 +382,19 @@ int main(int, char**) {
 }
 ```
 
+### Compiling and flashing
+
+To compile and flash the code, go back to your terminal, and run:
+
+```
+$ mbed compile -t GCC_ARM -m YOUR_BOARD_NAME --flash
+```
+
+replacing YOUR_BOARD_NAME with the board name you used on the previous step. 
+
 ### Resources
 
-The code sample above sets up the connection and declares some resources. You define a resource for every part of the program that needs to be available from the cloud:
+The code sample above sets up the connection and declares some resources. You define a resource for every part of the program that needs to be available and managed from the cloud:
 
 - The color and status of the LED should be configurable.
 - The period between the moment of motion detection to the moment lights go out should be configurable.

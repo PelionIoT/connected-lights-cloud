@@ -94,7 +94,7 @@ void sensor_rise() {
 int main(int, char**) {
     // Blink the LED when the application starts
     setRgbColor(1.0f, 0.0f, 0.0f);
-    wait(0.1);
+    ThisThread::sleep_for(1000);
     setRgbColor(0.0f, 0.0f, 0.0f);
 
     // The PIR sensor/user button uses interrupts, no need to poll
