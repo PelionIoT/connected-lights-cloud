@@ -1,6 +1,6 @@
 # Controlling the device with Pelion Device Management
 
-Now, the device is connected to Pelion Device Management. In the code sample in the previous section, you defined resources using calls to `create_resource()`. These resources are automatically exposed for device management, from where you can read and write to resources, and any changes made are automatically synced with the device. That means that you already have a remote management interface for this device.
+Now, the device is connected to Pelion Device Management. In the code sample in the previous section, you defined resources using calls to `create_resource()`. These resources are automatically exposed for device management, from which you can read and write to them, and any changes made are automatically synced with the device. That means that you already have a remote management interface for this device.
 
 ## Seeing the status of a device
 
