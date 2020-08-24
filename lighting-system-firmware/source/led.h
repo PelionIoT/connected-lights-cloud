@@ -22,7 +22,7 @@ void setRgbColor(float red, float green, float blue) {
 #if MBED_CONF_APP_LED_TYPE == GROVE_CHAINABLE
     led.setColorRGB(0, static_cast<uint8_t>(red * 255.0f), static_cast<uint8_t>(green * 255.0f), static_cast<uint8_t>(blue * 255.0f));
 #elif MBED_CONF_APP_LED_TYPE == GROVE_LED_BAR
-    // Instead of setting the color, the LED Bar's level get changed
+    // Instead of setting the color, the LED Bar's level gets changed
     // between 0-10 depending on the red percentage out of 255.0f
     led.setLevel((int)(red * 10.0f));
 #elif MBED_CONF_APP_LED_TYPE == TRICOLOR_ANODE
