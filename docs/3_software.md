@@ -108,7 +108,7 @@ int main(int, char**) {
 
 ### Compiling
 
-To compile the code, go back to your terminal, and run:
+To compile and flash the code, go back to your terminal, and run:
 
 ```
 # go into the connected-lights-cloud folder

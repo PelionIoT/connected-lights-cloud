@@ -1,6 +1,6 @@
 # Controlling the device with Pelion Device Management
 
-Now, the device is connected to Pelion Device Management. In the code sample in the previous section, you defined resources using calls to `create_resource()`. These resources are automatically exposed for device management from where you can read and write to them and any changes made, are automatically synced back to the device. That means that you already have a remote management interface for this device.
+Now, the device is connected to Pelion Device Management. In the code sample in the previous section, you defined resources using calls to `create_resource()`. These resources are automatically exposed for device management, from where you can read and write to resources, and any changes made are automatically synced with the device. That means that you already have a remote management interface for this device.
 
 ## Seeing the status of a device
 
@@ -60,4 +60,4 @@ Use the API Console to write this value to resource `/3311/0/5706` and change th
 
 ### Other variables
 
-You can also change the value of the timeout (`3311/0/5853`) (in a real light system, you probably want at least 30 seconds) and read the number of times the PIR sensor triggered (`3201/0/5700`).
+You can also change the value of the timeout (`3311/0/5853`), in a real light system you probably want at least 30 seconds, and read the number of times the PIR sensor or user button is triggered (`3201/0/5700`).
