@@ -2,7 +2,7 @@
 
 One of the big features of Device Management is the ability to update devices through a firmware update over the air. This is not applicable when you're developing, but it is important when you have deployed thousands of devices in the field. Through the firmware update process, you can patch bugs and apply security updates.
 
-Currently, your application sends a notification to the cloud every time the PIR sensor is triggered. That is wasteful if someone is standing in front of the sensor. The lights are already on, but the sensor keeps firing, so the networking stack needs to wake up all the time. Modify the code, so it does not send events when the lights are already on.
+Currently, your application sends a notification to the cloud every time the PIR sensor or user button is triggered. That is wasteful if someone is standing in front of the sensor. The lights are already on, but the sensor keeps firing, so the networking stack needs to wake up all the time. Modify the code, so it does not send events when the lights are already on.
 
 **Updating Mbed CLI**
 
@@ -31,40 +31,45 @@ For development, you can use a self-signed certificate, but please note that thi
 To create a new self-signed certificate, run:
 
 ```
-$ mbed config -G YOUR_MBED_CLOUD_API_KEY
+$ mbed config -G CLOUD_SDK_API_KEY <YOUR_APPLICATION_KEY>
 
-$ mbed device-management init -d yourdomain.com --model-name lighting-system-2000 --force -q
+$ mbed dm init -d "domain.com" --model-name "lighting-system-2000" --force -q
 ```
 
-**Note:** Make sure to replace `YOUR_MBED_CLOUD_API_KEY` with the API key you created earlier.
+**Note:** Make sure to replace `YOUR_APPLICATION_KEY` with the application key you created earlier.
 
 Now that the update certificate is in place, you can build and flash the application as you normally do.
 
 ## Creating the updated firmware
 
-When your board is back online in Device Management, you can then prepare an update. Open `main.cpp`, and change the `pir_rise()` function to:
+When your board is back online in Device Management, you can then prepare an update. Open `main.cpp`, and change the `sensor_rise()` function to:
 
 ```cpp
-// When the PIR sensor fires...
-void pir_rise() {
-    // Update the resource if the light is not on yet (because of the PIR sensor)
-    if (!ledOnBecauseOfPir) {
-        pirCount->set_value(pirCount->get_value_int() + 1);
+// When the PIR sensor/user button fires...
+void sensor_rise() {
+    // Update the resource if the light is not on yet (because of the PIR sensor/user button)
+    if (!ledOnBecauseOfSensor) {
+        sensorCount->set_value((int)sensorCount->get_value_int() + 1);
     }
 
     // Permanent off? Don't put the lights on...
-    if (ledStatus->get_value_int() == STATUS_OFF) return;
+    if ((int)ledStatus->get_value_int() == STATUS_OFF) return;
 
     // Otherwise do it!
-    ledOnBecauseOfPir = true;
+    ledOnBecauseOfSensor = true;
     putLightsOn();
 
     // And attach the timeout
-    pirTimeout.attach(eventQueue.event(&onPirTimeout), static_cast<float>(ledTimeout->get_value_int()));
+    std::chrono::seconds timeout{ledTimeout->get_value_int()};
+    sensorTimeout.attach(eventQueue.event(&onSensorTimeout), timeout);
 }
 ```
 
-Then rebuild the application, but do not flash the binary to your development board.
+Then rebuild the application, but do not flash the binary to your development board:
+
+```
+$ mbed compile -t GCC_ARM -m YOUR_BOARD_NAME
+```
 
 ## Updating the device
 
@@ -75,17 +80,26 @@ We can push this new application to your development board through Device Manage
 Run:
 
 ```
-$ mbed device-management update device -D YOUR_ENDPOINT_NAME
+$ mbed dm update device -D YOUR_ENDPOINT_NAME
 ```
 
 Replace `YOUR_ENDPOINT_NAME` with the endpoint name in Device Management.
 
-Inspect the logs on the device (via a serial monitor) to see the firmware update progress. It looks similar to:
+Inspect the logs on the device (via a serial monitor) to see the firmware update progress. (This may take a few minutes.) It looks similar to:
 
 ```
-Firmware download requested
-Authorization granted
-Downloading: [+++-                                              ] 6 %
+Mbed Bootloader
+[DBG ] Update active firmware
+[DBG ] Erase active application
+[DBG ] Write header
+[DBG ] Copy application
+[DBG ] Verify application
+[DBG ] New active firmware is valid
+booting...
 ```
 
-When the download completes, the firmware is verified. If everything is OK, the firmware update is applied. Your device is now running the latest version of the application, and when you have the web app open, you see that you don't get PIR notifications if the light is already on.
+When the download completes, the firmware is verified. If everything is OK, the firmware update is applied. Your device is now running the latest version of the application.
+
+You can also verify the firmware update was successful through the **Events Log** tab on the device page in the Device Management portal.
+
+<span class="images">![The device's events log page](assets/7_lights1.png)<span>The Events Log page for the device, showing that the firmware update was successful and the "device reached desired state".</span></span>

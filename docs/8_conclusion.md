@@ -1,0 +1,7 @@
+# Conclusion
+
+The Pelion IoT Platform is a diverse set of tools, all of which make developing and managing IoT appliances easier. This document covered the basics required to build connected devices and how to address and manage these devices over the internet. There is more to Mbed OS and the Pelion IoT Platform than what is in this article: Mbed OS has connectivity methods for a variety of other standards, such as [LoRa](https://os.mbed.com/docs/mbed-os/latest/apis/LoRa-tutorial.html), [Bluetooth](https://os.mbed.com/docs/mbed-os/latest/apis/ble.html) and a complete set of [security libraries](https://os.mbed.com/docs/mbed-os/latest/apis/security.html) to build more secure IoT applications. Pelion Device Management includes services for [device management](https://cloud.mbed.com/product-overview) (such as firmware updates over the air) and telemetry services. For more information, please [contact us](https://www.arm.com/company/contact-us/pelion-iot-product-inquiries).
+
+If you want to continue developing the light system, start by attaching a brighter (or bigger) light source. [Neopixel LEDs](https://www.adafruit.com/category/168) come in a variety of forms (like LED strips) and are super bright - a great choice for your home or office. [See the documentation](https://os.mbed.com/components/NeoPixel-LED-chain-using-high-speed-SPI/) on how to use the Neopixel LEDs on Mbed OS.
+
+Happy hacking!

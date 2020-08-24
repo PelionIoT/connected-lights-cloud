@@ -10,4 +10,4 @@ combined.bin
 .manifest_tool.json
 *.pyc
 *.manifest
-
+.DS_Store
